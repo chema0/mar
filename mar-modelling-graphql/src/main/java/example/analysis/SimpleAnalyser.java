@@ -26,7 +26,7 @@ public class SimpleAnalyser {
 		ILoader loader = factory.newLoader();
 		
 	    try {
-			Resource r = loader.toEMF(new File("src/main/resources/models/DC.ecore"));
+			Resource r = loader.toEMF(new File("mar-modelling-graphql/src/main/resources/models/DC.ecore"));
 			
 			EList<EObject> l = r.getContents();
 	        EPackage pkg = (EPackage) l.get(0);
@@ -37,7 +37,6 @@ public class SimpleAnalyser {
 	            	System.out.println("classifier: " + classifier.getName());
 	            }
 	        }
-
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
