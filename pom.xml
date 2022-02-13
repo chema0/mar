@@ -31,7 +31,7 @@
 	<activeByDefault>true</activeByDefault>
       </activation>      
       <properties>
-	<testcase.excluded.groups>mar.common.test.HBaseTest</testcase.excluded.groups>
+	<testcase.excluded.groups>mar.common.example.HBaseTest</testcase.excluded.groups>
       </properties>
     </profile>
   </profiles>
@@ -45,8 +45,8 @@
     <module>mar-modelling-pnml</module>
     <module>mar-modelling-xtext</module>    
     <module>mar-modelling-eclipse</module>
-
     <module>mar-indexer-lucene</module>
-    <module>mar-indexer-spark</module>    
+    <module>mar-indexer-spark</module>
+    <module>mar-modelling-graphql</module>
   </modules>
 </project>

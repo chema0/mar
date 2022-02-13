@@ -7,7 +7,7 @@ import crawler_common as common
 
 def insert_repo_info(c, id, name):
     c.execute('INSERT INTO repo_info(id, name, full_name, html_url, git_url, stargazers_count, forks_count, topics, description, creation_date, last_update) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-              (id, name, name, 'http://' + name, 'git://' + name, 10, 5, 'test,model', 'a model', 1000, 2000))
+              (id, name, name, 'http://' + name, 'git://' + name, 10, 5, 'example,model', 'a model', 1000, 2000))
     c.connection.commit()
     
 def insert_file(c, full_file, filename):
@@ -34,14 +34,14 @@ def process(test_input, extension, output_folder):
                 crawled_files.append([os.path.join(dirpath, filename), os.path.join(rel, filename)])
 
             
-    insert_repo_info(cursor, 1, 'test-repo')
+    insert_repo_info(cursor, 1, 'example-repo')
     for full, f in crawled_files:
         insert_file(cursor, full, f)
             
 def parse_args():
-    parser = argparse.ArgumentParser(description='Simulate downloading test files.')
+    parser = argparse.ArgumentParser(description='Simulate downloading example files.')
     parser.add_argument('input', metavar='INPUT_FOLDER', type=str,
-                   help='input folder for the test files')    
+                   help='input folder for the example files')
     parser.add_argument('extension', metavar='EXTENSION', type=str,
                    help='File extension to crawl')
     parser.add_argument('output', metavar='OUTPUT_FOLDER', type=str,

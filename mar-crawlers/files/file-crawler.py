@@ -42,7 +42,7 @@ def process(test_input, extension, output_folder, repo_name):
 def parse_args():
     parser = argparse.ArgumentParser(description='Simulate downloading files from a file based repository.')
     parser.add_argument('input', metavar='INPUT_FOLDER', type=str,
-                   help='input folder for the test files')    
+                   help='input folder for the example files')
     parser.add_argument('extension', metavar='EXTENSION', type=str,
                    help='File extension to crawl')
     parser.add_argument('output', metavar='OUTPUT_FOLDER', type=str,

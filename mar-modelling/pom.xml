@@ -222,8 +222,8 @@
 				<version>0.1.11</version> <configuration> <thriftExecutable>/usr/bin/thrift</thriftExecutable> 
 				<thriftSourceRoot>${basedir}/src/main/thrift</thriftSourceRoot> </configuration> 
 				<executions> <execution>"generate-thrift.sh" <id>thrift-sources</id> <phase>generate-sources</phase> 
-				<goals> <goal>compile</goal> </goals> </execution> <execution> <id>thrift-test-sources</id> 
-				<phase>generate-test-sources</phase> <goals> <goal>testCompile</goal> </goals> 
+				<goals> <goal>compile</goal> </goals> </execution> <execution> <id>thrift-example-sources</id>
+				<phase>generate-example-sources</phase> <goals> <goal>testCompile</goal> </goals>
 				</execution> </executions> </plugin> -->
 
 			<!-- Alternative: do it with antrun -->

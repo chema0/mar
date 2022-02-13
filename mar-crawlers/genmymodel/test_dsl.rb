@@ -7,16 +7,16 @@ require "selenium-webdriver"
 # - Download geckodriver
 # - export PATH=/path/to/geckodriver:$PATH
 module TestDSL
-  def test(name, &block)
+  def example(name, &block)
     # Init the driver to control Firefox
     @driver = Selenium::WebDriver.for :firefox
-    # Start the test
+    # Start the example
     block.call
   rescue Selenium::WebDriver::Error::NoSuchElementError => e
     puts "Could not find element"
     puts e.message
   ensure
-    # End test
+    # End example
     puts "Test finished!"
     @driver.quit
   end

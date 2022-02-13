@@ -34,7 +34,7 @@ end
 
 def download_all(models, folder)
   include TestDSL
-  test 'genmymodel' do
+  example 'genmymodel' do
     go_to 'https://app.genmymodel.com/api/login'
 
     fill 'username', 'jesusc'
