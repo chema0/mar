@@ -15,6 +15,7 @@
         <module name="mar-spark-merge" />
         <module name="mar-modelling-pnml" />
         <module name="mar-common" />
+        <module name="mar-api-graphql" />
         <module name="mar-modelling-graphql" />
         <module name="mar-modelling" />
       </profile>

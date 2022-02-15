@@ -1,0 +1,44 @@
+schema {
+  query: Query
+}
+
+# The query type, represents all of the entry points into our object graph
+type Query {
+  model(type: ModelType): Model
+}
+
+type Model {
+  id: ID!
+  type: ModelType!
+  info: Info!
+  stats: [Stat]!
+}
+
+type EcoreInfo {
+  name: String!
+  packages: [String]
+}
+
+# Types of models
+enum ModelType {
+  ECORE
+  XTEXT
+  UML
+  BPMN2
+  PNML
+  SCULPTOR
+  RDS
+  SIMULINK
+  ARCHIMATE
+}
+
+# Interface for model information
+interface Info {
+  name: String!
+}
+
+# Interface for model stat element
+interface Stat {
+  type: String!
+  count: Int!
+}

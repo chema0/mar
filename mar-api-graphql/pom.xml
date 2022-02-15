@@ -1,0 +1,108 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<modelVersion>4.0.0</modelVersion>
+
+<parent>
+    <groupId>ml2.mar</groupId>
+    <artifactId>mar-main</artifactId>
+    <version>1.0-SNAPSHOT</version>
+</parent>
+
+<artifactId>mar-api-graphql</artifactId>
+<name>mar-api-graphql</name>
+<packaging>jar</packaging>
+
+<properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+</properties>
+
+<dependencies>
+    <!-- MongoDB dependencies -->
+    <!-- GraphQL dependencies -->
+    <!-- Other tools -->
+
+    <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>${junit.test.version}</version>
+        <scope>test</scope>
+    </dependency>
+
+    <!-- Project dependencies -->
+</dependencies>
+
+<!-- https://pnml.lip6.fr/documentation.html -->
+<!-- <repositories> -->
+<!-- <repository> -->
+<!-- <id>pnml.framework</id> -->
+<!-- <url>http://miage11.u-paris10.fr:8081/nexus/content/groups/public/</url> -->
+<!-- <releases> -->
+<!-- <enabled>true</enabled> -->
+<!-- </releases> -->
+<!-- <snapshots> -->
+<!-- <enabled>true</enabled> -->
+<!-- </snapshots> -->
+<!-- </repository> -->
+<!-- </repositories> -->
+
+<build>
+    <plugins>
+
+        <!-- Java 11 -->
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.8.0</version>
+            <configuration>
+                <release>11</release>
+            </configuration>
+        </plugin>
+
+
+<!--        <plugin>-->
+<!--            <groupId>org.apache.maven.plugins</groupId>-->
+<!--            <artifactId>maven-assembly-plugin</artifactId>-->
+<!--            <configuration>-->
+<!--                <archive>-->
+<!--                    <manifest>-->
+<!--                        <addClasspath>true</addClasspath>-->
+<!--                        <mainClass>mar.validation.AnalyserMain</mainClass>-->
+<!--                    </manifest>-->
+<!--                    <manifestEntries>-->
+<!--                        <Class-Path>.</Class-Path>-->
+<!--                    </manifestEntries>-->
+<!--                </archive>-->
+<!--                <descriptorRefs>-->
+<!--                    <descriptorRef>jar-with-dependencies</descriptorRef>-->
+<!--                </descriptorRefs>-->
+<!--            </configuration>-->
+<!--            <executions>-->
+<!--                <execution>-->
+<!--                    <id>assemble-all</id>-->
+<!--                    <phase>package</phase>-->
+<!--                    <goals>-->
+<!--                        <goal>single</goal>-->
+<!--                    </goals>-->
+<!--                </execution>-->
+<!--            </executions>-->
+
+<!--        </plugin>-->
+
+
+        <!-- Doesn't work in Eclipse. So, we rely on a fallback generate.sh which
+            produces files in source file -->
+        <!-- <plugin> <groupId>org.apache.thrift.tools</groupId> <artifactId>maven-thrift-plugin</artifactId>
+            <version>0.1.11</version> <configuration> <thriftExecutable>/usr/bin/thrift</thriftExecutable>
+            <thriftSourceRoot>${basedir}/src/main/thrift</thriftSourceRoot> </configuration>
+            <executions> <execution>"generate-thrift.sh" <id>thrift-sources</id> <phase>generate-sources</phase>
+            <goals> <goal>compile</goal> </goals> </execution> <execution> <id>thrift-example-sources</id>
+            <phase>generate-example-sources</phase> <goals> <goal>testCompile</goal> </goals>
+            </execution> </executions> </plugin> -->
+
+        <!-- Alternative: do it with antrun -->
+        <!-- https://gist.github.com/tomazk/988802/ab569273093ba705991419d1fc7771fcda0a181f -->
+
+    </plugins>
+</build>
+</project>

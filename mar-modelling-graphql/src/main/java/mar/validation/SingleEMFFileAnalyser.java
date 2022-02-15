@@ -54,7 +54,8 @@ public class SingleEMFFileAnalyser implements ISingleFileAnalyser {
 	/**
 	 * Analysis data provided by subclasses.
 	 */
-	protected static class AnalysisData {
+	// TODO: manually changed protcted -> public
+	public static class AnalysisData {
 		public static AnalysisData EMPTY = new AnalysisData(null, null, null);
 		
 		public final Map<String, Integer> stats;

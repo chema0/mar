@@ -48,5 +48,6 @@
     <module>mar-indexer-lucene</module>
     <module>mar-indexer-spark</module>
     <module>mar-modelling-graphql</module>
+      <module>mar-api-graphql</module>
   </modules>
 </project>
