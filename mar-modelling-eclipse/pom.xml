@@ -49,7 +49,7 @@
 		<!-- Archimate: https://github.com/archi-contribs/eclipse-update-site -->
 		<dependency>
 			<groupId>archimate</groupId>
-			<artifactId>archimate-analysisModel</artifactId>
+			<artifactId>archimate-model</artifactId>
 			<version>4.2.0</version>
 		</dependency>
 		<dependency>

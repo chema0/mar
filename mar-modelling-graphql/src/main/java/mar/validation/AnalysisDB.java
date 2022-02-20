@@ -98,7 +98,7 @@ public class AnalysisDB implements Closeable {
 
         List<Model> allModels = modelService.findModelsExcludingByStatus(Status.NOT_PROCESSED);
         System.out.println("excluded models: " + allModels.size());
-        allModels.forEach(m -> alreadyChecked.put(m.getId(), m.getStatus()));
+        allModels.forEach(m -> alreadyChecked.put(m.getModelId(), m.getStatus()));
 
         modelService.deleteAllModelsByStatus(Status.NOT_PROCESSED);
     }
@@ -185,6 +185,8 @@ public class AnalysisDB implements Closeable {
             originalModelId = Iterables.getLast(duplicatedModels).getModelId();
             status.set(Status.DUPLICATED);
         }
+
+        System.out.println("type: " + type);
 
         // We can insert
         Model model = Model.builder()

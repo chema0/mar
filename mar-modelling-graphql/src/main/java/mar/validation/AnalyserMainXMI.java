@@ -59,7 +59,7 @@ public class AnalyserMainXMI implements Callable<Integer> {
 		
 		//ISingleFileAnalyser singleAnalyser = factory.newAnalyser()) {
 		try(ISingleFileAnalyser.Remote singleAnalyser = (Remote) factory.newRemoteAnalyser(options)) {			
-			try(ResourceAnalyser analyser = new ResourceAnalyser(singleAnalyser, provider, outputDatabase)) {
+			try(ResourceAnalyser analyser = new ResourceAnalyser(singleAnalyser, provider, "ecore", outputDatabase)) {
 				analyser.check();
 			}
 		}

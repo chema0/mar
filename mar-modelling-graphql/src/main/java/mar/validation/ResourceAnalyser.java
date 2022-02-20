@@ -95,13 +95,7 @@ public class ResourceAnalyser implements AutoCloseable {
         this.fileProvider = fileProvider;
         this.analyser = analyser;
         this.validationDB = new AnalysisDB();
-
-        Optional<ModelType> modalType = Enums.getIfPresent(ModelType.class, type);
-        if (modalType.isPresent()) {
-            this.type = modalType.get();
-        } else {
-            this.type = null;
-        }
+        this.type = ModelType.valueOf(type.toUpperCase());
     }
 
     public ResourceAnalyser withParallelThreads(int parallelThreads) {
