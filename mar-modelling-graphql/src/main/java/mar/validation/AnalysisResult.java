@@ -9,9 +9,7 @@ import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import mar.validation.AnalysisDB.Status;
+import mar.bean.Status;
 
 /**
  * Represents the results of the analysis of a model. The main result of an analysis

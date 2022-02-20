@@ -5,7 +5,7 @@
 
 	<artifactId>mar.restservice</artifactId>
 	<name>mar-restservice</name>
-	<description>A Rest server to browse a model repository</description>
+	<description>A Rest server to browse a analysisModel repository</description>
 
 	<parent>
 		<groupId>ml2.mar</groupId>

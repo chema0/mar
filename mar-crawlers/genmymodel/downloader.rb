@@ -32,7 +32,7 @@ class Model
   end
 end
 
-def download_all(models, folder)
+def download_all(analysisModels, folder)
   include TestDSL
   example 'genmymodel' do
     go_to 'https://app.genmymodel.com/api/login'
@@ -46,7 +46,7 @@ def download_all(models, folder)
 
     sleep(1)
     
-    models.each { |m|
+    analysisModels.each { |m|
       puts "Downloading #{m.href}"
       if m.href.include?("0bc69cab-6a7b-4cfb-a69b-bcd468d41af4")
         next
@@ -64,7 +64,7 @@ end
 
 if __FILE__ == $0
   if ARGV.size < 2 
-    puts "downloader model-type folder [first:last]"
+    puts "downloader analysisModel-type folder [first:last]"
     exit
   end
 
@@ -80,7 +80,7 @@ if __FILE__ == $0
   folder = ARGV[1]
   index = make_index(init, last)
 
-  models = index[model_type]
+  analysisModels = index[model_type]
 
   # links
   # projectId
@@ -89,14 +89,14 @@ if __FILE__ == $0
   # lastModificationDate
 
   to_download = []
-  models.each { |m|
+  analysisModels.each { |m|
     xmi_link = m['links'].find { |l| l['rel'] == 'xmi' }
     unless xmi_link.nil?
       to_download << Model.new(xmi_link['href'], m)
     end
   }
 
-  puts "Collected #{to_download.size} models"
+  puts "Collected #{to_download.size} analysisModels"
   download_all(to_download, folder)  
 end
   

@@ -80,7 +80,7 @@ public class SingleEcoreFileAnalyser extends SingleEMFFileAnalyser {
 	}
 
 	@Override
-	// TODO: manually changed protcted -> public
+	// TODO: manually changed protected -> public
 	public AnalysisData getAdditionalAnalysis(Resource r) {
 		List<String> uris = new ArrayList<String>();
 		

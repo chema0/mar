@@ -16,7 +16,7 @@ if MAR is None:
     print("Variable REPO_MAR not defined")
     exit(-1)
 
-ml_models = MAR + '/external-resources/ml-models/'
+ml_models = MAR + '/external-resources/ml-analysisModels/'
 
 stemmer = PorterStemmer()
 def custom_tokenizer(words):

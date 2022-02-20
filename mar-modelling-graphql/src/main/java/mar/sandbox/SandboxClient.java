@@ -47,12 +47,15 @@ public abstract class SandboxClient implements AutoCloseable {
 		ServerProcess process = checkOrRestartServer();
 		
 		try {
+			System.out.println("primer try");
 			TSocket transport = newSocket(process);
 			transport.setSocketTimeout(TIMEOUT_MS);
 			transport.open();
 			TProtocol protocol = new TBinaryProtocol(transport);
-	
+			System.out.println("transport: " + transport);
+
 			try {
+				System.out.println("segundo try");
 				return invoker.invoke(protocol);
 			} finally {
 				transport.close();

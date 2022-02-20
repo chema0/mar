@@ -1,21 +1,20 @@
 package mar.validation.server;
 
-import java.io.IOException;
-import java.util.function.Supplier;
-
-import javax.annotation.CheckForNull;
-import javax.annotation.Nonnull;
-
+import mar.bean.Status;
 import mar.analysis.thrift.Result;
 import mar.analysis.thrift.ValidateService;
 import mar.analysis.thrift.ValidationJob;
 import mar.ingestion.IngestedMetadata;
 import mar.sandbox.SandboxClient;
-import mar.validation.AnalysisDB.Status;
 import mar.validation.AnalysisMetadataDocument;
 import mar.validation.AnalysisResult;
 import mar.validation.IFileInfo;
 import mar.validation.ResourceAnalyser.OptionMap;
+
+import javax.annotation.CheckForNull;
+import javax.annotation.Nonnull;
+import java.io.IOException;
+import java.util.function.Supplier;
 
 public class AnalysisClient extends SandboxClient {
 	

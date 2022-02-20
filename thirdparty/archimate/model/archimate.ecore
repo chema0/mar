@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="model" nsURI="http://www.archimatetool.com/archimate" nsPrefix="archimate">
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="analysisModel" nsURI="http://www.archimatetool.com/archimate" nsPrefix="archimate">
   <eClassifiers xsi:type="ecore:EDataType" name="File" instanceClassName="java.io.File"
       serializable="false"/>
   <eClassifiers xsi:type="ecore:EClass" name="Adapter" abstract="true" interface="true">
@@ -150,7 +150,7 @@
       eSuperTypes="#//ArchimateRelationship"/>
   <eClassifiers xsi:type="ecore:EClass" name="ArchimateModel" eSuperTypes="#//FolderContainer #//ArchimateModelObject #//Properties">
     <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
-      <details key="name" value="model"/>
+      <details key="name" value="analysisModel"/>
     </eAnnotations>
     <eOperations name="setDefaults"/>
     <eOperations name="getDefaultFolderForObject" eType="#//Folder">
@@ -291,7 +291,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="referencedModel" eType="#//DiagramModel"
         resolveProxies="false">
       <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
-        <details key="name" value="model"/>
+        <details key="name" value="analysisModel"/>
         <details key="kind" value="attribute"/>
       </eAnnotations>
     </eStructuralFeatures>

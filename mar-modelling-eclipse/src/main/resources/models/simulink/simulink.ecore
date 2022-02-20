@@ -2,7 +2,7 @@
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="simulink" nsURI="http://hu.bme.mit.massif/simulink/1.0" nsPrefix="simulink">
   <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-    <details key="documentation" value="The Simulink EPackage represents the core concepts of Matlab Simulink models with a strong focus on the structure&#xD;&#xA; and less focus on the behavior, simulation and layout specific details.&#xD;&#xA;&#xD;&#xA;The five main concepts (easily recognised by #{simulink.SimulinkElement} and its subtypes) are the following:&#xD;&#xA; * Elements on a Simulink model that can be identified and named are subtypes of #{simulink.SimulinkElement},&#xD;&#xA; which stores the identifier as a #{simulink.SimulinkReference} element.&#xD;&#xA; * The root element, #{simulink.SimulinkModel}, stores the file path and version for the original Simulink system it represents&#xD;&#xA; to help in handling changes in the represented system.&#xD;&#xA; * The Simulink model contains a hierarchy of #{simulink.Block} elements that may have properties and specify a source&#xD;&#xA; block from a Simulink library. The source block is set if the internal structure and behavior of the block is defined by a library block.&#xD;&#xA; * The communication between blocks is done through #{simulink.Port} elements, that can be either output or input. &#xD;&#xA; Each port is represented by a #{simulink.PortBlock}  inside the block.&#xD;&#xA; * The output ports are connected to input ports using #{simulink.Connection} elements that can be one-to-one single connections or one-to-many multiconnections."/>
+    <details key="documentation" value="The Simulink EPackage represents the core concepts of Matlab Simulink analysisModels with a strong focus on the structure&#xD;&#xA; and less focus on the behavior, simulation and layout specific details.&#xD;&#xA;&#xD;&#xA;The five main concepts (easily recognised by #{simulink.SimulinkElement} and its subtypes) are the following:&#xD;&#xA; * Elements on a Simulink analysisModel that can be identified and named are subtypes of #{simulink.SimulinkElement},&#xD;&#xA; which stores the identifier as a #{simulink.SimulinkReference} element.&#xD;&#xA; * The root element, #{simulink.SimulinkModel}, stores the file path and version for the original Simulink system it represents&#xD;&#xA; to help in handling changes in the represented system.&#xD;&#xA; * The Simulink analysisModel contains a hierarchy of #{simulink.Block} elements that may have properties and specify a source&#xD;&#xA; block from a Simulink library. The source block is set if the internal structure and behavior of the block is defined by a library block.&#xD;&#xA; * The communication between blocks is done through #{simulink.Port} elements, that can be either output or input. &#xD;&#xA; Each port is represented by a #{simulink.PortBlock}  inside the block.&#xD;&#xA; * The output ports are connected to input ports using #{simulink.Connection} elements that can be one-to-one single connections or one-to-many multiconnections."/>
   </eAnnotations>
   <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
     <details key="settingDelegates" value="org.eclipse.viatra.query.querybasedfeature"/>
@@ -19,7 +19,7 @@
         <details key="documentation" value="The value is computed from the name feature of the #{simulink.SimulinkReference} stored in simulinkRef."/>
       </eAnnotations>
       <eAnnotations source="org.eclipse.viatra.query.querybasedfeature">
-        <details key="patternFQN" value="hu.bme.mit.massif.models.simulink.derived.name"/>
+        <details key="patternFQN" value="hu.bme.mit.massif.analysisModels.simulink.derived.name"/>
       </eAnnotations>
     </eStructuralFeatures>
   </eClassifiers>
@@ -37,7 +37,7 @@
         <details key="documentation" value="The values are computed by filtering Trigger ports from the values of the ports feature."/>
       </eAnnotations>
       <eAnnotations source="org.eclipse.viatra.query.querybasedfeature">
-        <details key="patternFQN" value="hu.bme.mit.massif.models.simulink.derived.trigger"/>
+        <details key="patternFQN" value="hu.bme.mit.massif.analysisModels.simulink.derived.trigger"/>
       </eAnnotations>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="enabler" eType="#//Enable"
@@ -46,7 +46,7 @@
         <details key="documentation" value="The values are computed by filtering Enable ports from the values of the ports feature."/>
       </eAnnotations>
       <eAnnotations source="org.eclipse.viatra.query.querybasedfeature">
-        <details key="patternFQN" value="hu.bme.mit.massif.models.simulink.derived.enabler"/>
+        <details key="patternFQN" value="hu.bme.mit.massif.analysisModels.simulink.derived.enabler"/>
       </eAnnotations>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="inports" upperBound="-1"
@@ -55,7 +55,7 @@
         <details key="documentation" value="The values are computed by filtering Inports from the values of the ports feature."/>
       </eAnnotations>
       <eAnnotations source="org.eclipse.viatra.query.querybasedfeature">
-        <details key="patternFQN" value="hu.bme.mit.massif.models.simulink.derived.inports"/>
+        <details key="patternFQN" value="hu.bme.mit.massif.analysisModels.simulink.derived.inports"/>
       </eAnnotations>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="outports" upperBound="-1"
@@ -64,7 +64,7 @@
         <details key="documentation" value="The values are computed by filtering Outports from the values of the ports feature."/>
       </eAnnotations>
       <eAnnotations source="org.eclipse.viatra.query.querybasedfeature">
-        <details key="patternFQN" value="hu.bme.mit.massif.models.simulink.derived.outports"/>
+        <details key="patternFQN" value="hu.bme.mit.massif.analysisModels.simulink.derived.outports"/>
       </eAnnotations>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="parent" eType="#//SubSystem"
@@ -75,7 +75,7 @@
         <details key="documentation" value="The value of the reference is computed by finding the element with the same name and qualifier as stored in the sourceBlockRef.&#xD;&#xA;&#xD;&#xA;b{Validation}&#xD;&#xA; * WARN: Cannot find block specified by source block reference."/>
       </eAnnotations>
       <eAnnotations source="org.eclipse.viatra.query.querybasedfeature">
-        <details key="patternFQN" value="hu.bme.mit.massif.models.simulink.derived.sourceBlock"/>
+        <details key="patternFQN" value="hu.bme.mit.massif.analysisModels.simulink.derived.sourceBlock"/>
       </eAnnotations>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="sourceBlockRef" eType="#//LibraryLinkReference"
@@ -181,7 +181,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SimulinkModel" eSuperTypes="#//SimulinkElement">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-      <details key="documentation" value="This EClass represents the root of an imported Simulink system that contains blocks. The version and file path informations are stored to allow change management. The library attribute stores whether the model was a library or a regular model in Matlab."/>
+      <details key="documentation" value="This EClass represents the root of an imported Simulink system that contains blocks. The version and file path informations are stored to allow change management. The library attribute stores whether the analysisModel was a library or a regular analysisModel in Matlab."/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="version" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -246,7 +246,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GotoTagVisibility" eSuperTypes="#//VirtualBlock">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-      <details key="documentation" value="The Goto Tag Visibility block defines the accessibility of #{simulink.Goto} block tags that have scoped visibility.&#xD;&#xA; The tag specified as the Goto tag parameter is accessible by #{simulink.From} blocks in the same subsystem that contains the Goto Tag Visibility block and in subsystems below it in the model hierarchy.&#xD;&#xA;&#xD;&#xA;See @{http://www.mathworks.com/help/simulink/slref/gototagvisibility.html}"/>
+      <details key="documentation" value="The Goto Tag Visibility block defines the accessibility of #{simulink.Goto} block tags that have scoped visibility.&#xD;&#xA; The tag specified as the Goto tag parameter is accessible by #{simulink.From} blocks in the same subsystem that contains the Goto Tag Visibility block and in subsystems below it in the analysisModel hierarchy.&#xD;&#xA;&#xD;&#xA;See @{http://www.mathworks.com/help/simulink/slref/gototagvisibility.html}"/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="gotoBlock" eType="#//Goto"/>
   </eClassifiers>
@@ -285,15 +285,15 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ModelReference" eSuperTypes="#//Block">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-      <details key="documentation" value="This EClass represents a #{simulink.SimulinkModel} included as a block in this model.&#xD;&#xA;&#xD;&#xA;See @{http://www.mathworks.com/help/simulink/slref/model.html}"/>
+      <details key="documentation" value="This EClass represents a #{simulink.SimulinkModel} included as a block in this analysisModel.&#xD;&#xA;&#xD;&#xA;See @{http://www.mathworks.com/help/simulink/slref/analysisModel.html}"/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="referencedModel" eType="#//SimulinkModel"
         changeable="false" volatile="true" transient="true" derived="true">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="The value of the reference is computed by finding the model with the same name and qualifier as stored in the modelRef.&#xD;&#xA;&#xD;&#xA;b{Validation}&#xD;&#xA; * WARN: Cannot find model specified by model reference."/>
+        <details key="documentation" value="The value of the reference is computed by finding the analysisModel with the same name and qualifier as stored in the modelRef.&#xD;&#xA;&#xD;&#xA;b{Validation}&#xD;&#xA; * WARN: Cannot find analysisModel specified by analysisModel reference."/>
       </eAnnotations>
       <eAnnotations source="org.eclipse.viatra.query.querybasedfeature">
-        <details key="patternFQN" value="hu.bme.mit.massif.models.simulink.derived.referencedModel"/>
+        <details key="patternFQN" value="hu.bme.mit.massif.analysisModels.simulink.derived.referencedModel"/>
       </eAnnotations>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="modelRef" eType="#//IdentifierReference"
@@ -301,7 +301,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="BusSpecification" abstract="true" eSuperTypes="#//Block">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-      <details key="documentation" value="This EClass is an abstract supertype for blocks that handle bus signals. A bus signal is used for bundling a set of signals &#xD;&#xA;into one signal to reduce the number of ports and connections required in the model."/>
+      <details key="documentation" value="This EClass is an abstract supertype for blocks that handle bus signals. A bus signal is used for bundling a set of signals &#xD;&#xA;into one signal to reduce the number of ports and connections required in the analysisModel."/>
     </eAnnotations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="BusSignalMapping">
@@ -323,7 +323,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="mappingPath" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="incomplete" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="A true value indicates that the mappingFrom OutPort is not the real source of the selected signal, when the actual source is not part of the model."/>
+        <details key="documentation" value="A true value indicates that the mappingFrom OutPort is not the real source of the selected signal, when the actual source is not part of the analysisModel."/>
       </eAnnotations>
     </eStructuralFeatures>
   </eClassifiers>

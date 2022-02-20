@@ -10,7 +10,7 @@
 
 <h1>About</h1>
 
-<p>MAR is a search engine specifically designed for models.</p>
+<p>MAR is a search engine specifically designed for analysisModels.</p>
 
 <h4>Authors</h4>
 <ul>
@@ -25,7 +25,7 @@
 
 <h4>Research</h4>
 <ul>
-    <li><a href="https://arxiv.org/pdf/2008.11858">José Antonio Hernández López and Jesús Sánchez Cuadrado. MAR: A structure-based search engine for models. MoDELS'20.</a></li>
+    <li><a href="https://arxiv.org/pdf/2008.11858">José Antonio Hernández López and Jesús Sánchez Cuadrado. MAR: A structure-based search engine for analysisModels. MoDELS'20.</a></li>
 </ul>
 
 

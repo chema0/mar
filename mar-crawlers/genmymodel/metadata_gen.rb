@@ -1,6 +1,6 @@
 ##
 ## Reads "page files" downloaded from GenMyModel and
-## given a list of downloaded models generate a csv file
+## given a list of downloaded analysisModels generate a csv file
 ## with its metadata
 ##
 require 'csv'
@@ -8,8 +8,8 @@ require 'sqlite3'
 require_relative 'indexer'
 require_relative '../common/ruby_common'
 
-def find_model(id, models)
-  models.each { |m|
+def find_model(id, analysisModels)
+  analysisModels.each { |m|
     project_id = m['projectId']
     if project_id == id 
       return m
@@ -38,7 +38,7 @@ end
 
 if __FILE__ == $0
   if ARGV.size < 5
-    puts "metadata_gen model-type extension pages-folder input_folder outputfile"
+    puts "metadata_gen analysisModel-type extension pages-folder input_folder outputfile"
     exit
   end
 
@@ -54,7 +54,7 @@ if __FILE__ == $0
     exit
   end
   
-  models = index[model_type]
+  analysisModels = index[model_type]
   
   # CSV.open(output, "w") do |csv|
   
@@ -63,7 +63,7 @@ if __FILE__ == $0
       filename = filename.chomp
       fname = filename.split('/').last
       id = filename.split('/').last.sub('.' + extension, '')
-      m = find_model(id, models)
+      m = find_model(id, analysisModels)
       if m.nil?
         puts "Model #{filename} -- #{id} not found"
       else

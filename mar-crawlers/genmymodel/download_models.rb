@@ -33,8 +33,8 @@ class Model
   end
 end
 
-def download_all(models, folder)
-  models.each { |m|
+def download_all(analysisModels, folder)
+  analysisModels.each { |m|
     puts "Downloading #{m.href}"
     begin
       if m.download(self, folder)
@@ -48,7 +48,7 @@ end
 
 if __FILE__ == $0
   if ARGV.size < 3
-    puts "downloader model-type extension output_folder [first:last]"
+    puts "downloader analysisModel-type extension output_folder [first:last]"
     exit
   end
 
@@ -75,7 +75,7 @@ if __FILE__ == $0
   end
   
   
-  models = index[model_type]
+  analysisModels = index[model_type]
 
   # links
   # projectId
@@ -84,14 +84,14 @@ if __FILE__ == $0
   # lastModificationDate
 
   to_download = []
-  models.each { |m|
+  analysisModels.each { |m|
     model_link = m['links'].find { |l| l['rel'] == genmymodel_extension }
     unless model_link.nil?
       to_download << Model.new(model_link['href'], m, target_extension)
     end
   }
 
-  puts "Collected #{to_download.size} models"
+  puts "Collected #{to_download.size} analysisModels"
   download_all(to_download, folder)  
 end
   

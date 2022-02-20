@@ -1,9 +1,5 @@
 package mar.validation.server;
 
-import java.util.Map;
-
-import org.apache.thrift.TException;
-
 import mar.analysis.thrift.InvalidOperation;
 import mar.analysis.thrift.Result;
 import mar.analysis.thrift.ValidationJob;
@@ -13,6 +9,9 @@ import mar.validation.IFileInfo;
 import mar.validation.ISingleFileAnalyser;
 import mar.validation.ResourceAnalyser.Factory;
 import mar.validation.ResourceAnalyser.OptionMap;
+import org.apache.thrift.TException;
+
+import java.util.Map;
 
 public class ValidateServiceImpl implements mar.analysis.thrift.ValidateService.Iface {
 
@@ -36,7 +35,7 @@ public class ValidateServiceImpl implements mar.analysis.thrift.ValidateService.
 		ISingleFileAnalyser analyser = factory.newAnalyser(map);
 		AnalysisResult r = analyser.analyse(new IFileInfo.FileInfoById(job.modelId, job.relative_path, job.full_path));
 		System.out.println("\nanalysys result: ");
-		System.out.println(r.getStats());
+		System.out.println(r.getStatus());
 		return new Result(r.getStatus().name(), r.getStats(), r.getMetadata()).
 				setMetadata_json(r.getJsonMetadata());
 	}

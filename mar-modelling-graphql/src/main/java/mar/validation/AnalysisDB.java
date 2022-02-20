@@ -1,102 +1,106 @@
 package mar.validation;
 
+import com.google.common.base.Preconditions;
+import com.google.common.collect.Iterables;
+import mar.bean.*;
+import mar.services.ModelService;
+
+import javax.annotation.CheckForNull;
+import javax.annotation.Nonnull;
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
-
-import javax.annotation.CheckForNull;
-import javax.annotation.Nonnull;
-
-import com.google.common.base.Preconditions;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class AnalysisDB implements Closeable {
 
-    public enum Status {
-        NOT_PROCESSED, DUPLICATED, TOO_SMALL, VALID, CRASHED, TIMEOUT, NO_VALIDATE, NOT_HANDLED
-
-    }
-
     @Nonnull
     private Connection connection;
+    private ModelService modelService;
     @Nonnull
     private Map<String, Status> alreadyChecked = new HashMap<>();
 
-    @Nonnull
-    public AnalysisDB(File file) {
-        String url = getConnectionString(file);
+    public AnalysisDB() {
 
-        try {
-            Connection conn = DriverManager.getConnection(url);
-            if (conn != null) {
-                if (!file.exists()) {
-                    DatabaseMetaData meta = conn.getMetaData();
-                    System.out.println("The driver name is " + meta.getDriverName());
-                    System.out.println("A new database has been created.");
-                }
+        // TODO: handle errors in database connection
+        modelService = AnalyserMain.modelService;
 
-                String models = "CREATE TABLE IF NOT EXISTS models (\n"
-                        + "    id            varchar(255) PRIMARY KEY,\n"
-                        + "    relative_file text NOT NULL,\n"
-                        + "    hash          text NOT NULL,\n"
-                        + "    status        varchar(255) NOT NULL,\n"
-                        + "    metadata_document TEXT,\n"
-                        + "    duplicate_of  varchar(255)\n"  // in case it is a duplicate
-                        + ");";
+        // String url = getConnectionString(file);
 
-                String stats = "CREATE TABLE IF NOT EXISTS stats (\n"
-                        + "    id    varchar(255) NOT NULL,\n"  // FK (models)
-                        + "    type  varchar (255) NOT NULL,\n"    // e.g., total_elements, statemachine, num_classes
-                        + "    count integer NOT NULL\n"
-                        + ");";
+//        try {
+//            Connection conn = DriverManager.getConnection(url);
+//            if (conn != null) {
+//                if (!file.exists()) {
+//                    DatabaseMetaData meta = conn.getMetaData();
+//                    System.out.println("The driver name is " + meta.getDriverName());
+//                    System.out.println("A new database has been created.");
+//                }
+//
+//                String models = "CREATE TABLE IF NOT EXISTS models (\n"
+//                        + "    id            varchar(255) PRIMARY KEY,\n"
+//                        + "    relative_file text NOT NULL,\n"
+//                        + "    hash          text NOT NULL,\n"
+//                        + "    status        varchar(255) NOT NULL,\n"
+//                        + "    metadata_document TEXT,\n"
+//                        + "    duplicate_of  varchar(255)\n"  // in case it is a duplicate
+//                        + ");";
+//
+//                String stats = "CREATE TABLE IF NOT EXISTS stats (\n"
+//                        + "    id    varchar(255) NOT NULL,\n"  // FK (models)
+//                        + "    type  varchar (255) NOT NULL,\n"    // e.g., total_elements, statemachine, num_classes
+//                        + "    count integer NOT NULL\n"
+//                        + ");";
+//
+//                String metadata = "CREATE TABLE IF NOT EXISTS metadata (\n"
+//                        + "    id    varchar(255) NOT NULL,\n"  // FK (models)
+//                        + "    type  varchar (255) NOT NULL,\n"    // e.g., total_elements, statemachine, num_classes
+//                        + "    value text NOT NULL\n"
+//                        + ");";
+//
+//                Statement stmt = conn.createStatement();
+//                stmt.execute(models);
+//
+//                stmt = conn.createStatement();
+//                stmt.execute(stats);
+//
+//                stmt = conn.createStatement();
+//                stmt.execute(metadata);
+//            }
+//
+//            this.connection = conn;
+//            this.connection.setAutoCommit(false);
+//
+//            PreparedStatement allModels = connection.prepareStatement("SELECT id, status FROM models WHERE status <> ?");
+//            allModels.setString(1, Status.NOT_PROCESSED.name());
+//            allModels.execute();
+//            ResultSet rs = allModels.getResultSet();
+//            while (rs.next()) {
+//                String id = rs.getString(1);
+//                Status status = Status.valueOf(rs.getString(2));
+//                alreadyChecked.put(id, status);
+//            }
+//            allModels.close();
+//
+//            PreparedStatement removeNotProcessed = connection.prepareStatement("DELETE FROM models WHERE status = ?");
+//            removeNotProcessed.setString(1, Status.NOT_PROCESSED.name());
+//            removeNotProcessed.execute();
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
 
-                String metadata = "CREATE TABLE IF NOT EXISTS metadata (\n"
-                        + "    id    varchar(255) NOT NULL,\n"  // FK (models)
-                        + "    type  varchar (255) NOT NULL,\n"    // e.g., total_elements, statemachine, num_classes
-                        + "    value text NOT NULL\n"
-                        + ");";
+        List<Model> allModels = modelService.findModelsExcludingByStatus(Status.NOT_PROCESSED);
+        System.out.println("excluded models: " + allModels.size());
+        allModels.forEach(m -> alreadyChecked.put(m.getId(), m.getStatus()));
 
-                Statement stmt = conn.createStatement();
-                stmt.execute(models);
-
-                stmt = conn.createStatement();
-                stmt.execute(stats);
-
-                stmt = conn.createStatement();
-                stmt.execute(metadata);
-            }
-
-            this.connection = conn;
-            this.connection.setAutoCommit(false);
-
-            PreparedStatement allModels = connection.prepareStatement("SELECT id, status FROM models WHERE status <> ?");
-            allModels.setString(1, Status.NOT_PROCESSED.name());
-            allModels.execute();
-            ResultSet rs = allModels.getResultSet();
-            while (rs.next()) {
-                String id = rs.getString(1);
-                Status status = Status.valueOf(rs.getString(2));
-                alreadyChecked.put(id, status);
-            }
-            allModels.close();
-
-            PreparedStatement removeNotProcessed = connection.prepareStatement("DELETE FROM models WHERE status = ?");
-            removeNotProcessed.setString(1, Status.NOT_PROCESSED.name());
-            removeNotProcessed.execute();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        modelService.deleteAllModelsByStatus(Status.NOT_PROCESSED);
     }
 
     public void setAutocommit(boolean autocommit) {
@@ -153,53 +157,48 @@ public class AnalysisDB implements Closeable {
         return result;
     }
 
-    public List<Model> getValidModels(@Nonnull Function<String, String> relativePathTransformer) throws SQLException {
-        List<Model> models = new ArrayList<>(1024);
-        PreparedStatement statement = connection.prepareStatement(getValidModelsQuery());
-        statement.execute();
-
-        ResultSet rs = statement.getResultSet();
-        while (rs.next()) {
-            String id = rs.getString(2);
-            File file = new File(relativePathTransformer.apply(rs.getString(1)));
-            String metadata = rs.getString(3);
-            models.add(new Model(id, file, metadata));
-        }
-
-        return models;
-    }
+//    public List<Model> getValidModels(@Nonnull Function<String, String> relativePathTransformer) throws SQLException {
+//        List<Model> models = new ArrayList<>(1024);
+//        PreparedStatement statement = connection.prepareStatement(getValidModelsQuery());
+//        statement.execute();
+//
+//        ResultSet rs = statement.getResultSet();
+//        while (rs.next()) {
+//            String id = rs.getString(2);
+//            File file = new File(relativePathTransformer.apply(rs.getString(1)));
+//            String metadata = rs.getString(3);
+//            models.add(new Model(id, file, metadata));
+//        }
+//
+//        return models;
+//    }
 
     @CheckForNull
-    public Status addFile(@Nonnull String modelId, @Nonnull String relativeName, @Nonnull String hash) {
-        try {
-            Status status = Status.NOT_PROCESSED;
+    public Status addFile(@Nonnull String modelId, @Nonnull ModelType type, @Nonnull String relativeName, @Nonnull String hash) {
+        AtomicReference<Status> status = new AtomicReference<>(Status.NOT_PROCESSED);
 
-            // We check that the hash is not repeated
-            String originalModelId = null;
-            PreparedStatement hashStatement = connection.prepareStatement("SELECT id FROM models WHERE hash = ? AND duplicate_of IS NULL");
-            hashStatement.setString(1, hash);
-            hashStatement.execute();
-            ResultSet rs = hashStatement.getResultSet();
-            if (rs.next()) {
-                originalModelId = rs.getString(1);
-                status = Status.DUPLICATED;
-            }
-            hashStatement.close();
+        // We check that the hash is not repeated
+        String originalModelId = null;
+        List<Model> duplicatedModels = modelService.findModelsByHashNotDuplicated(hash);
 
-            // We can insert
-            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO models(id, relative_file, hash, status, duplicate_of) VALUES (?, ?, ?, ?, ?)");
-            preparedStatement.setString(1, modelId);
-            preparedStatement.setString(2, relativeName);
-            preparedStatement.setString(3, hash);
-            preparedStatement.setString(4, status.name());
-            preparedStatement.setString(5, originalModelId);
-            preparedStatement.executeUpdate();
-            preparedStatement.close();
-
-            return status;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        if (duplicatedModels.size() > 0) {
+            originalModelId = Iterables.getLast(duplicatedModels).getModelId();
+            status.set(Status.DUPLICATED);
         }
+
+        // We can insert
+        Model model = Model.builder()
+                .modelId(modelId)
+                .type(type)
+                .relativeFile(relativeName)
+                .hash(hash)
+                .status(status.get())
+                .duplicateOf(originalModelId)
+                .build();
+
+        modelService.insertModel(model);
+
+        return status.get();
     }
 
 
@@ -238,17 +237,8 @@ public class AnalysisDB implements Closeable {
         }
     }
 
-    public void updateStatus(@Nonnull String modelId, @Nonnull Status status, @CheckForNull String jsonDocument) {
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE models SET status = ?, metadata_document = ? WHERE id = ?");
-            preparedStatement.setString(1, status.name());
-            preparedStatement.setString(2, jsonDocument);
-            preparedStatement.setString(3, modelId);
-            int count = preparedStatement.executeUpdate();
-            Preconditions.checkState(count == 1);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+    public void updateStatus(@Nonnull String modelId, @Nonnull Status status) {
+        modelService.updateModelStatus(modelId, status);
     }
 
     public void updateMetadata(@Nonnull String modelId, @CheckForNull String jsonDocument) {
@@ -263,54 +253,33 @@ public class AnalysisDB implements Closeable {
         }
     }
 
-    public void addStats(@Nonnull String modelId, @Nonnull String type, int count) {
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO stats(id, type, count) VALUES (?, ?, ?)");
-            preparedStatement.setString(1, modelId);
-            preparedStatement.setString(2, type);
-            preparedStatement.setInt(3, count);
-            preparedStatement.execute();
-            preparedStatement.close();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+    public void addProperties(@Nonnull String modelId, ModelInfo modelInfo, List<ModelStat> modelStats) {
+        modelService.updateModelProperties(modelId, modelInfo, modelStats);
     }
 
-    public void addMetadata(@Nonnull String modelId, @Nonnull String type, @Nonnull String value) {
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO metadata(id, type, value) VALUES (?, ?, ?)");
-            preparedStatement.setString(1, modelId);
-            preparedStatement.setString(2, type);
-            preparedStatement.setString(3, value);
-            preparedStatement.execute();
-            preparedStatement.close();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
+//    @Nonnull
+//    public List<Model> findByMetadata(@Nonnull String key, @Nonnull String
+//            value, @Nonnull Function<String, String> relativePathTransformer) {
+//        try (PreparedStatement stm = connection.prepareStatement("SELECT m.id, relative_file, metadata_document FROM models m, metadata mm WHERE m.id = mm.id AND m.status IN ('VALID', 'INVALID') AND mm.type = ? AND mm.value = ?")) {
+//            stm.setString(1, key);
+//            stm.setString(2, value);
+//            stm.execute();
+//
+//            List<Model> result = new ArrayList<>();
+//            ResultSet rs = stm.getResultSet();
+//            while (rs.next()) {
+//                String id = rs.getString(1);
+//                File relativeFile = new File(relativePathTransformer.apply(rs.getString(2)));
+//                String metadataDocument = rs.getString(3);
+//                result.add(new Model(id, relativeFile, metadataDocument));
+//            }
+//            return result;
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 
-    @Nonnull
-    public List<Model> findByMetadata(@Nonnull String key, @Nonnull String value, @Nonnull Function<String, String> relativePathTransformer) {
-        try (PreparedStatement stm = connection.prepareStatement("SELECT m.id, relative_file, metadata_document FROM models m, metadata mm WHERE m.id = mm.id AND m.status IN ('VALID', 'INVALID') AND mm.type = ? AND mm.value = ?")) {
-            stm.setString(1, key);
-            stm.setString(2, value);
-            stm.execute();
-
-            List<Model> result = new ArrayList<>();
-            ResultSet rs = stm.getResultSet();
-            while (rs.next()) {
-                String id = rs.getString(1);
-                File relativeFile = new File(relativePathTransformer.apply(rs.getString(2)));
-                String metadataDocument = rs.getString(3);
-                result.add(new Model(id, relativeFile, metadataDocument));
-            }
-            return result;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public static class Model {
+    public static class AnalysisModel {
         @Nonnull
         private String id;
         @Nonnull
@@ -318,7 +287,7 @@ public class AnalysisDB implements Closeable {
         @Nonnull
         private String metadata;
 
-        public Model(@Nonnull String id, @Nonnull File file, String metadata) {
+        public AnalysisModel(@Nonnull String id, @Nonnull File file, String metadata) {
             this.id = id;
             this.file = file;
             this.metadata = metadata;

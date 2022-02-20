@@ -46,13 +46,13 @@ public class HBaseNeuralScorer extends AbstractHBaseAccess implements IScorer{
 	}
 
 	@Override
-	public Set<String> getStopWords(String model) throws IOException {
-		return hsf.getStopWords(model);
+	public Set<String> getStopWords(String analysisModel) throws IOException {
+		return hsf.getStopWords(analysisModel);
 	}
 	
-	protected Table getIndex(String model) throws IOException {
+	protected Table getIndex(String analysisModel) throws IOException {
 		Connection connection = getConnection();
-		return connection.getTable(TableName.valueOf("inverted_index_"+model));
+		return connection.getTable(TableName.valueOf("inverted_index_"+analysisModel));
 	}
 	
 	private Embeddings getHbaseEmbeddings(String modelId) throws IOException {

@@ -7,7 +7,7 @@ import crawler_common as common
 
 def insert_repo_info(c, id, name):
     c.execute('INSERT INTO repo_info(id, name, full_name, html_url, git_url, stargazers_count, forks_count, topics, description, creation_date, last_update) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-              (id, name, name, 'http://' + name, 'git://' + name, 10, 5, 'example,model', 'a model', 1000, 2000))
+              (id, name, name, 'http://' + name, 'git://' + name, 10, 5, 'example,analysisModel', 'a analysisModel', 1000, 2000))
     c.connection.commit()
     
 def insert_file(c, full_file, filename):

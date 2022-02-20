@@ -1,16 +1,13 @@
 package example.analysis;
 
 import com.mongodb.client.MongoClients;
-import example.mongodb.model.*;
 import mar.analysis.ecore.SingleEcoreFileAnalyser;
+import mar.bean.*;
 import mar.modelling.loader.ILoader;
 import mar.validation.AnalyserRegistry;
-import mar.validation.IFileInfo;
 import mar.validation.ResourceAnalyser.Factory;
 import mar.validation.SingleEMFFileAnalyser;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -21,7 +18,6 @@ import org.springframework.data.mongodb.core.SimpleMongoClientDatabaseFactory;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 

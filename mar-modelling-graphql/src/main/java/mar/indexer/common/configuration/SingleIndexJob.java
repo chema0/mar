@@ -70,6 +70,7 @@ public class SingleIndexJob implements Serializable {
 	}
 	
 	public String getModelDb() {
+		System.out.println(model_db);
 		return replaceEnv(model_db, System.getenv());
 	}
 

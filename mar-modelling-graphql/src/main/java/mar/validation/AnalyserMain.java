@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import mar.services.ModelService;
 import mar.indexer.common.cmd.CmdOptions;
 import mar.indexer.common.configuration.IndexJobConfigurationData;
 import mar.indexer.common.configuration.SingleIndexJob;
@@ -41,6 +42,8 @@ public class AnalyserMain implements Callable<Integer> {
 	@Option(required = false, names = { "-parallel" }, description = "Use parallel mode")
 	private Integer parallel;
 
+	public static ModelService modelService;
+
 	@Override
 	public Integer call() throws Exception {
 		IndexJobConfigurationData configuration = CmdOptions
@@ -51,7 +54,7 @@ public class AnalyserMain implements Callable<Integer> {
 			showAvailableAnalysers();
 			return -1;
 		}
-		
+
 		factory.configureEnvironment();
 
 		List<SingleIndexJob> repositories;
@@ -62,7 +65,7 @@ public class AnalyserMain implements Callable<Integer> {
 			repositories = configuration.getRepositoriesOfType(type);
 		}
 		
-		for(SingleIndexJob repo : repositories) {					
+		for(SingleIndexJob repo : repositories) {
 			File outputAnalysisDB = repo.getModelDbFile();
 			// Try to create the output folder
 			outputAnalysisDB.getParentFile().mkdirs();
@@ -71,19 +74,19 @@ public class AnalyserMain implements Callable<Integer> {
 	
 			if (mode.equals("plain")) {
 				ISingleFileAnalyser singleAnalyser = factory.newAnalyser();
-				try (ResourceAnalyser analyser = new ResourceAnalyser(singleAnalyser, new IFileProvider.DBFileProvider(crawler), outputAnalysisDB)) {					
+				try (ResourceAnalyser analyser = new ResourceAnalyser(singleAnalyser, new IFileProvider.DBFileProvider(crawler), type, outputAnalysisDB)) {
 					analyser.check();
 				}
 			} else if (mode.equals("resilient")) {				
 				ISingleFileAnalyser singleAnalyser = factory.newResilientAnalyser();
-				try (ResourceAnalyser analyser = new ResourceAnalyser(singleAnalyser, new IFileProvider.DBFileProvider(crawler), outputAnalysisDB)) {					
+				try (ResourceAnalyser analyser = new ResourceAnalyser(singleAnalyser, new IFileProvider.DBFileProvider(crawler), type, outputAnalysisDB)) {
 					if (parallel != null && parallel > 1)
 						analyser.withParallelThreads(parallel);
 					analyser.check();
 				}
 			} else if (mode.equals("remote")) {
 				try (ISingleFileAnalyser.Remote singleAnalyser = (Remote) factory.newRemoteAnalyser()) {
-					try (ResourceAnalyser analyser = new ResourceAnalyser(singleAnalyser, new IFileProvider.DBFileProvider(crawler), outputAnalysisDB)) {
+					try (ResourceAnalyser analyser = new ResourceAnalyser(singleAnalyser, new IFileProvider.DBFileProvider(crawler), type, outputAnalysisDB)) {
 						if (parallel != null && parallel > 1)
 							analyser.withParallelThreads(parallel);
 						analyser.check();
@@ -98,7 +101,8 @@ public class AnalyserMain implements Callable<Integer> {
 		return 0;
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args, ModelService modelService) {
+		AnalyserMain.modelService = modelService;
 		int exitCode = new CommandLine(new AnalyserMain()).execute(args);
 		System.exit(exitCode);
 	}

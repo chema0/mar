@@ -3,7 +3,7 @@
 
     function buttonStyle(selected, type) {
         var active = (selected == type) ? 'active' : '';
-        return `btn btn-secondary mr-2 ${active} btn-model-type`
+        return `btn btn-secondary mr-2 ${active} btn-analysisModel-type`
     }
 
     let ecoreStyle, umlStyle

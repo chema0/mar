@@ -38,19 +38,19 @@ if __FILE__ == $0
   doc = Nokogiri::HTML.parse(web)
 
   #puts doc
-  models = doc.xpath("//h3")
+  analysisModels = doc.xpath("//h3")
 
   data_folder = File.join(output_folder, 'data')
   output_db = File.join(output_folder, 'crawler.db')
   FileUtils.mkdir_p data_folder
 
   open_database(output_db) do |db| 
-    # The structure of a model is
+    # The structure of a analysisModel is
     # <h3>NAME</h3>
     # <hr/>
     # <p>DATE</p>
     # <p>DOMAIN</p>
-    models.each { |m|
+    analysisModels.each { |m|
       if m.attribute('id')
         next
       end

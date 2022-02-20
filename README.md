@@ -1,6 +1,6 @@
-# MAR - A search engine for models
+# MAR - A search engine for analysisModels
 
-A search engine of models built over Apache HBase.
+A search engine of analysisModels built over Apache HBase.
 You can try it at http://mar-search.org
 
 ## Features

@@ -6,10 +6,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.annotation.Nonnull;
 
+import mar.bean.Status;
 import io.github.resilience4j.timelimiter.TimeLimiter;
 import io.github.resilience4j.timelimiter.TimeLimiterConfig;
 import io.github.resilience4j.timelimiter.TimeLimiterRegistry;
-import mar.validation.AnalysisDB.Status;
+//import mar.validation.AnalysisDB.Status;
 
 public class ResilientAnalyser implements ISingleFileAnalyser {
 

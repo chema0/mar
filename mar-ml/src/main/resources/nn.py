@@ -13,7 +13,7 @@ if MAR is None:
     print("Variable REPO_MAR not defined")
     exit(-1)
 
-ml_models = MAR + '/external-resources/ml-models/'
+ml_models = MAR + '/external-resources/ml-analysisModels/'
 
 def RepresentsInt(s):
     try: 
@@ -132,7 +132,7 @@ def tokenizeFile(string):
     return result
 
 name_data = ml_models + 'multitag-modelset-ecore.data'
-# Load the model
+# Load the analysisModel
 model2 = SimpleNN()
 
 checkpoint = torch.load(name_data)

@@ -71,7 +71,7 @@
         <div class="col">
             <!---
             <Dropzone on:drop={handleFilesSelect} accept={['*']}>
-                <p>Drop your model here</p>
+                <p>Drop your analysisModel here</p>
             </Dropzone>
         -->
             <!-- <div id="dropzone"></div> -->

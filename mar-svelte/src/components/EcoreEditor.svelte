@@ -30,7 +30,7 @@ class Column {
     var selected = modelTypes[e.detail.modelType];
     if (selected === null) selected = modelTypes["all"];
     modelType = selected;
-    console.log("Selected model type: " + modelType);
+    console.log("Selected analysisModel type: " + modelType);
   }
 
   let searchText = null;
@@ -65,7 +65,7 @@ class Column {
     class="alert alert-info"
     style="padding: 4px; padding-left: 8px"
     role="alert">
-    Write a model fragment to search
+    Write a analysisModel fragment to search
   </div>
   <form
     action="#xxx"

@@ -3,11 +3,11 @@
 	import { onMount } from 'svelte';
     let url = MAR.toStatusURL();
 	
-    let models = undefined;
+    let analysisModels = undefined;
 	onMount(async () => {
 		const res = await fetch(url);
 		const status = await res.json();
-        models = status.models
+        analysisModels = status.analysisModels
 	});
 </script>
 
@@ -22,22 +22,22 @@
 </style>
 
 <h4>Stats</h4>
-{#if models == undefined }
+{#if analysisModels == undefined }
 	<p>Loading...</p>
-{:else if models.length == 0}
-    <p>There is something weird going on... No models found :-(</p>
+{:else if analysisModels.length == 0}
+    <p>There is something weird going on... No analysisModels found :-(</p>
 {:else}
     <ul>
-    {#each models as m}
+    {#each analysisModels as m}
         <li>{m.name} - {m.count}</li>
     {/each}
     </ul>    
 {/if}
 
-<h4>Raw models</h4>
+<h4>Raw analysisModels</h4>
 <p>
-    The following packages contain the raw models crawled by MAR. It should be ok to use these models for research purposes (and even better if you cite our MAR papers!).
-    You can also checkout <a href="http://modelset.github.io">ModelSet</a> which is a curated and labelled dataset of models.
+    The following packages contain the raw analysisModels crawled by MAR. It should be ok to use these analysisModels for research purposes (and even better if you cite our MAR papers!).
+    You can also checkout <a href="http://modelset.github.io">ModelSet</a> which is a curated and labelled dataset of analysisModels.
 </p>
 <ul>    
     <li><a href="http://sanchezcuadrado.es/files/raw/repo-github-ecore.tar.gz">Ecore - GitHub</a></li>

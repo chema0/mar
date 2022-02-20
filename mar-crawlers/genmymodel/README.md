@@ -19,9 +19,9 @@ This crawler works in four steps.
     the pagination number. 
 
  2. Use `indexer.rb` to analyse the page files and show the number of
-    model per type.
+    analysisModel per type.
    
- 3. Download the models per type:
+ 3. Download the analysisModels per type:
     Example:
     ```
       ruby download_models.rb EMF xmi:ecore ecore
@@ -31,5 +31,5 @@ This crawler works in four steps.
 	file follows the convetion [id.extension] where `id` is the GenMyModel
 	id and `extension` could be `xmi, ecore, etc.`.
 	```
-    ruby metadata_gen.rb EMF ecore pages/ ecore-models/ path/to/db/crawler.db
+    ruby metadata_gen.rb EMF ecore pages/ ecore-analysisModels/ path/to/db/crawler.db
     ```

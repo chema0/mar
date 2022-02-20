@@ -76,8 +76,8 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.camunda.bpm.model</groupId>
-			<artifactId>camunda-bpmn-model</artifactId>
+			<groupId>org.camunda.bpm.analysisModel</groupId>
+			<artifactId>camunda-bpmn-analysisModel</artifactId>
 			<version>7.13.0-alpha3</version>
 		</dependency>
 

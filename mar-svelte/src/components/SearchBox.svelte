@@ -58,8 +58,8 @@
                 type="text"
                 id="searchText"
                 class="form-control"
-                placeholder="Search for any type of model"
-                aria-label="Relevant keywords for your model" />
+                placeholder="Search for any type of analysisModel"
+                aria-label="Relevant keywords for your analysisModel" />
         </div>
     </div>
     <div class="row justify-content-end">

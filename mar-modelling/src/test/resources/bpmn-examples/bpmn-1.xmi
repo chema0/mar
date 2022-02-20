@@ -1,4 +1,4 @@
-<bpmn2:Definitions xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL-XMI" xmi:id="_qNJeEJH3EeqcytSjwrQ0Dg" name="model" targetNamespace="http://genmymodel.com/bpmn2">
+<bpmn2:Definitions xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL-XMI" xmi:id="_qNJeEJH3EeqcytSjwrQ0Dg" name="analysisModel" targetNamespace="http://genmymodel.com/bpmn2">
   <eAnnotations xmi:id="_qNJeEZH3EeqcytSjwrQ0Dg" source="genmymodel">
     <details xmi:id="_qNJeEpH3EeqcytSjwrQ0Dg" key="uuid" value="ffa66c8a-6278-4c02-931c-2c476f3ac018"/>
     <details xmi:id="_qNJeE5H3EeqcytSjwrQ0Dg" key="author" value="teomaximo"/>

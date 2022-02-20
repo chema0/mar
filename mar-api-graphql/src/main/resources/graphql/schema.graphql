@@ -4,7 +4,7 @@ schema {
 
 # The query type, represents all of the entry points into our object graph
 type Query {
-  model(type: ModelType): Model
+  analysisModel(type: ModelType): Model
 }
 
 type Model {
@@ -19,7 +19,7 @@ type EcoreInfo {
   packages: [String]
 }
 
-# Types of models
+# Types of analysisModels
 enum ModelType {
   ECORE
   XTEXT
@@ -32,12 +32,12 @@ enum ModelType {
   ARCHIMATE
 }
 
-# Interface for model information
+# Interface for analysisModel information
 interface Info {
   name: String!
 }
 
-# Interface for model stat element
+# Interface for analysisModel stat element
 interface Stat {
   type: String!
   count: Int!

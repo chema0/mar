@@ -6,6 +6,7 @@ import java.io.IOException;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 
+import mar.bean.Status;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
@@ -13,7 +14,7 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import mar.analysis.ecore.EcoreRepository;
 import mar.modelling.loader.ILoader;
 import mar.validation.AnalysisDB;
-import mar.validation.AnalysisDB.Status;
+//import mar.validation.AnalysisDB.Status;
 import mar.validation.AnalysisResult;
 import mar.validation.IFileInfo;
 import mar.validation.ISingleFileAnalyser;
@@ -56,7 +57,8 @@ public class XMIAnalyser implements ISingleFileAnalyser {
 	private final EcoreRepository repo;
 
 	public XMIAnalyser(@Nonnull File ecoreDatabaseFile, File ecoreRootFolder) {
-		this.repo = new EcoreRepository(new AnalysisDB(ecoreDatabaseFile), ecoreRootFolder);
+//		this.repo = new EcoreRepository(new AnalysisDB(ecoreDatabaseFile), ecoreRootFolder);
+		this.repo = new EcoreRepository(new AnalysisDB(), ecoreRootFolder);
 	}
 	
 	@Override
