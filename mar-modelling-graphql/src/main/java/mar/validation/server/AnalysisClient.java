@@ -38,10 +38,8 @@ public class AnalysisClient extends SandboxClient {
 			ValidateService.Client client = new ValidateService.Client(protocol);
 
 			ValidationJob job = new ValidationJob(f.getModelId(), f.getRelativePath(), f.getAbsolutePath(), type, options);
-			System.out.println("job -> " + job);
 
 			Result jobResult = client.validate(job);
-			System.out.println("jobResult -> " + jobResult);
 
 			AnalysisResult r = new AnalysisResult(f.getModelId(), Status.valueOf(jobResult.getStatus()));
 			if (jobResult.isSetStats())

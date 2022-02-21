@@ -77,8 +77,7 @@ public interface IFileProvider {
 			this.models = ingestionDB.getModels();
 		}
 		
-		@Override
-		public List<? extends IFileInfo> getLocalFiles() {			
+		 public List<? extends IFileInfo> getLocalFiles() {
 			return models;
 		}
 		

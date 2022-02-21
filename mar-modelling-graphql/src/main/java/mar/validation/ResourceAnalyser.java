@@ -1,8 +1,7 @@
 package mar.validation;
 
-import com.google.common.base.Enums;
-import com.google.common.base.Optional;
 import com.google.common.io.BaseEncoding;
+import lombok.Builder;
 import mar.bean.ModelInfo;
 import mar.bean.ModelStat;
 import mar.bean.ModelType;
@@ -192,18 +191,25 @@ public class ResourceAnalyser implements AutoCloseable {
         }
 
         // TODO: check
-        Map<String, List<String>> metadata = r.getMetadata();
+        /* Map<String, List<String>> metadata = r.getMetadata();
         if (metadata != null) {
             metadata.forEach((type, values) -> {
                 values.forEach(value -> {
                     // validationDB.addMetadata(r.getModelId(), type, value);
                 });
             });
+        } */
+
+        ModelInfo.ModelInfoBuilder builder = ModelInfo.builder();
+
+        AnalysisMetadataDocument document = null;
+        if (r.getJsonMetadata() != null) {
+            document = AnalysisMetadataDocument.loadFromJSON(r.getJsonMetadata());
+            builder.name(document.getExplicitName());
         }
 
-        ModelInfo modelInfo = new ModelInfo("nombre", new ArrayList<String>());
-
-        validationDB.addProperties(r.getModelId(), modelInfo, modelStats);
+        ModelInfo info = builder.build();
+        validationDB.addProperties(r.getModelId(), info, modelStats);
 
 //        if (processCounter.incrementAndGet() % 100 == 0) {
 //            validationDB.commit();

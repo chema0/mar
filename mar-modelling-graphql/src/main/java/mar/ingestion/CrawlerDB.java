@@ -63,6 +63,7 @@ public class CrawlerDB implements IngestionDB {
 				String id = IngestedModel.newId(origin, modelType, model_id);
 				File path = new File(rootFolder + File.separator + fname); 
 				models.add(new IngestedModel(id, new File(fname), path, download_url).
+						withExplicitName(name).
 						withSizeBytes(size).
 						withStars(stars).
 						withForks(forks).
