@@ -9,7 +9,9 @@ import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import mar.bean.Status;
+import com.google.common.collect.Multimap;
+import mar.beans.Metamodel;
+import mar.beans.Status;
 
 /**
  * Represents the results of the analysis of a model. The main result of an analysis
@@ -38,6 +40,7 @@ public class AnalysisResult {
 	@JsonProperty
 	private Map<String, Integer> stats;
 	private Map<String, List<String>> metadata;
+	private Map<String, List<String>> metamodel;
 	@JsonProperty
 	private String jsonMetadata;
 
@@ -89,6 +92,16 @@ public class AnalysisResult {
 		this.jsonMetadata = jsonMetadata;
 		return this;
 	}
+
+	@Nonnull
+	public AnalysisResult withMetamodel(@CheckForNull Map<String, List<String>> metamodel) {
+		if (metamodel == null) {
+			return this;
+		}
+
+		this.metamodel = metamodel;
+		return this;
+	}
 	
 	@CheckForNull
 	public Map<String, Integer> getStats() {
@@ -114,5 +127,8 @@ public class AnalysisResult {
 	public String getJsonMetadata() {
 		return jsonMetadata;
 	}
+
+	@CheckForNull
+	public Map<String, List<String>> getMetamodel() { return metamodel; };
 
 }

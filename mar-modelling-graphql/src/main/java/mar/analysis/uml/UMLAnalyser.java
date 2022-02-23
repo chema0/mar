@@ -133,6 +133,6 @@ public class UMLAnalyser extends SingleEMFFileAnalyser {
 			}
 		}
 			
-		return new AnalysisData(types, null, null);		
+		return new AnalysisData(types, null, null,null);
 	}		
 }

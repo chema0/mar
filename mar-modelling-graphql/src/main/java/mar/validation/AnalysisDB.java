@@ -2,7 +2,8 @@ package mar.validation;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
-import mar.bean.*;
+import com.google.common.collect.Multimap;
+import mar.beans.*;
 import mar.services.ModelService;
 
 import javax.annotation.CheckForNull;
@@ -33,71 +34,7 @@ public class AnalysisDB implements Closeable {
         // TODO: handle errors in database connection
         modelService = AnalyserMain.modelService;
 
-        // String url = getConnectionString(file);
-
-//        try {
-//            Connection conn = DriverManager.getConnection(url);
-//            if (conn != null) {
-//                if (!file.exists()) {
-//                    DatabaseMetaData meta = conn.getMetaData();
-//                    System.out.println("The driver name is " + meta.getDriverName());
-//                    System.out.println("A new database has been created.");
-//                }
-//
-//                String models = "CREATE TABLE IF NOT EXISTS models (\n"
-//                        + "    id            varchar(255) PRIMARY KEY,\n"
-//                        + "    relative_file text NOT NULL,\n"
-//                        + "    hash          text NOT NULL,\n"
-//                        + "    status        varchar(255) NOT NULL,\n"
-//                        + "    metadata_document TEXT,\n"
-//                        + "    duplicate_of  varchar(255)\n"  // in case it is a duplicate
-//                        + ");";
-//
-//                String stats = "CREATE TABLE IF NOT EXISTS stats (\n"
-//                        + "    id    varchar(255) NOT NULL,\n"  // FK (models)
-//                        + "    type  varchar (255) NOT NULL,\n"    // e.g., total_elements, statemachine, num_classes
-//                        + "    count integer NOT NULL\n"
-//                        + ");";
-//
-//                String metadata = "CREATE TABLE IF NOT EXISTS metadata (\n"
-//                        + "    id    varchar(255) NOT NULL,\n"  // FK (models)
-//                        + "    type  varchar (255) NOT NULL,\n"    // e.g., total_elements, statemachine, num_classes
-//                        + "    value text NOT NULL\n"
-//                        + ");";
-//
-//                Statement stmt = conn.createStatement();
-//                stmt.execute(models);
-//
-//                stmt = conn.createStatement();
-//                stmt.execute(stats);
-//
-//                stmt = conn.createStatement();
-//                stmt.execute(metadata);
-//            }
-//
-//            this.connection = conn;
-//            this.connection.setAutoCommit(false);
-//
-//            PreparedStatement allModels = connection.prepareStatement("SELECT id, status FROM models WHERE status <> ?");
-//            allModels.setString(1, Status.NOT_PROCESSED.name());
-//            allModels.execute();
-//            ResultSet rs = allModels.getResultSet();
-//            while (rs.next()) {
-//                String id = rs.getString(1);
-//                Status status = Status.valueOf(rs.getString(2));
-//                alreadyChecked.put(id, status);
-//            }
-//            allModels.close();
-//
-//            PreparedStatement removeNotProcessed = connection.prepareStatement("DELETE FROM models WHERE status = ?");
-//            removeNotProcessed.setString(1, Status.NOT_PROCESSED.name());
-//            removeNotProcessed.execute();
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-
         List<Model> allModels = modelService.findModelsExcludingByStatus(Status.NOT_PROCESSED);
-        System.out.println("excluded models: " + allModels.size());
         allModels.forEach(m -> alreadyChecked.put(m.getModelId(), m.getStatus()));
 
         modelService.deleteAllModelsByStatus(Status.NOT_PROCESSED);
@@ -174,7 +111,7 @@ public class AnalysisDB implements Closeable {
 //    }
 
     @CheckForNull
-    public Status addFile(@Nonnull String modelId, @Nonnull ModelType type, @Nonnull String relativeName, @Nonnull String hash) {
+    public Status addFile(@Nonnull String modelId, @Nonnull Type type, @Nonnull String relativeName, @Nonnull String hash) {
         AtomicReference<Status> status = new AtomicReference<>(Status.NOT_PROCESSED);
 
         // We check that the hash is not repeated
@@ -185,8 +122,6 @@ public class AnalysisDB implements Closeable {
             originalModelId = Iterables.getLast(duplicatedModels).getModelId();
             status.set(Status.DUPLICATED);
         }
-
-        System.out.println("type: " + type);
 
         // We can insert
         Model model = Model.builder()
@@ -255,8 +190,9 @@ public class AnalysisDB implements Closeable {
         }
     }
 
-    public void addProperties(@Nonnull String modelId, ModelInfo modelInfo, List<ModelStat> modelStats) {
-        modelService.updateModelProperties(modelId, modelInfo, modelStats);
+    public void addProperties(@Nonnull String modelId, @Nonnull Map<String, Integer> stats, @Nonnull Metadata metadata,
+                              @Nonnull Map<String, List<String>> metamodel) {
+        modelService.updateModelProperties(modelId, stats, metadata, metamodel);
     }
 
 //    @Nonnull

@@ -1,9 +1,9 @@
 package mar.validation.server;
 
-import mar.bean.Status;
 import mar.analysis.thrift.Result;
 import mar.analysis.thrift.ValidateService;
 import mar.analysis.thrift.ValidationJob;
+import mar.beans.Status;
 import mar.ingestion.IngestedMetadata;
 import mar.sandbox.SandboxClient;
 import mar.validation.AnalysisMetadataDocument;
@@ -45,7 +45,7 @@ public class AnalysisClient extends SandboxClient {
 			if (jobResult.isSetStats())
 				jobResult.stats.forEach((k, v) -> r.withStats(k, v));
 			if (jobResult.isSetMetadata())
-				r.withMetadata(jobResult.metadata);			
+				r.withMetadata(jobResult.metadata);
 			if (jobResult.isSetMetadata_json()) {
 				AnalysisMetadataDocument document = AnalysisMetadataDocument.loadFromJSON(jobResult.metadata_json);
 				addIngestedMetadata(f, document);
@@ -54,7 +54,10 @@ public class AnalysisClient extends SandboxClient {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-			}	
+			}
+			if (jobResult.isSetMetamodel()) {
+				r.withMetamodel(jobResult.metamodel);
+			}
 			return r;
 		};
 		

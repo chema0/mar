@@ -1,11 +1,8 @@
 package mar.validation;
 
+import com.google.common.collect.Multimap;
 import com.google.common.io.BaseEncoding;
-import lombok.Builder;
-import mar.bean.ModelInfo;
-import mar.bean.ModelStat;
-import mar.bean.ModelType;
-import mar.bean.Status;
+import mar.beans.*;
 import mar.modelling.loader.ILoader;
 import mar.validation.server.RemoteModelAnalyser;
 import org.apache.logging.log4j.LogManager;
@@ -17,10 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.security.MessageDigest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -41,7 +35,7 @@ public class ResourceAnalyser implements AutoCloseable {
     @Nonnull
     private final ISingleFileAnalyser analyser;
     @Nonnull
-    private final ModelType type;
+    private final Type type;
 
     private int parallelThreads = -1;
 
@@ -94,7 +88,7 @@ public class ResourceAnalyser implements AutoCloseable {
         this.fileProvider = fileProvider;
         this.analyser = analyser;
         this.validationDB = new AnalysisDB();
-        this.type = ModelType.valueOf(type.toUpperCase());
+        this.type = Type.valueOf(type.toUpperCase());
     }
 
     public ResourceAnalyser withParallelThreads(int parallelThreads) {
@@ -182,38 +176,32 @@ public class ResourceAnalyser implements AutoCloseable {
         validationDB.updateStatus(r.getModelId(), r.getStatus());
 
         Map<String, Integer> stats = r.getStats();
-        List<ModelStat> modelStats = new ArrayList<ModelStat>();
-        if (stats != null) {
-            stats.forEach((type, count) -> {
-                // validationDB.addStats(r.getModelId(), type, count);
-                modelStats.add(new ModelStat(type, count));
-            });
-        }
 
         // TODO: check
         /* Map<String, List<String>> metadata = r.getMetadata();
         if (metadata != null) {
             metadata.forEach((type, values) -> {
                 values.forEach(value -> {
-                    // validationDB.addMetadata(r.getModelId(), type, value);
+                    validationDB.addMetadata(r.getModelId(), type, value);
                 });
             });
         } */
 
-        ModelInfo.ModelInfoBuilder builder = ModelInfo.builder();
-
+        Metadata metadata = new Metadata();
         AnalysisMetadataDocument document = null;
         if (r.getJsonMetadata() != null) {
             document = AnalysisMetadataDocument.loadFromJSON(r.getJsonMetadata());
-            builder.name(document.getExplicitName());
+            metadata.setName(document.getExplicitName());
+            metadata.setDescription(document.getDescription());
         }
 
-        ModelInfo info = builder.build();
-        validationDB.addProperties(r.getModelId(), info, modelStats);
+        Map<String, List<String>> metamodel = r.getMetamodel();
 
-//        if (processCounter.incrementAndGet() % 100 == 0) {
-//            validationDB.commit();
-//        }
+        validationDB.addProperties(r.getModelId(), stats, metadata, metamodel);
+
+        // if (processCounter.incrementAndGet() % 100 == 0) {
+           // validationDB.commit();
+        // }
     }
 
     protected boolean ignore(IFileInfo f) {

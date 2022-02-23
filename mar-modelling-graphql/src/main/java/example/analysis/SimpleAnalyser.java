@@ -2,7 +2,6 @@ package example.analysis;
 
 import com.mongodb.client.MongoClients;
 import mar.analysis.ecore.SingleEcoreFileAnalyser;
-import mar.bean.*;
 import mar.modelling.loader.ILoader;
 import mar.validation.AnalyserRegistry;
 import mar.validation.ResourceAnalyser.Factory;
@@ -19,7 +18,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class SimpleAnalyser {
     public static void main(String[] args) {
@@ -36,7 +34,7 @@ public class SimpleAnalyser {
             Resource r = loader.toEMF(new File("mar-modelling-graphql/src/main/resources/models/DC.ecore"));
 
             SingleEcoreFileAnalyser singleEcoreFileAnalyser = new SingleEcoreFileAnalyser();
-            SingleEMFFileAnalyser.AnalysisData analysisData = singleEcoreFileAnalyser.getAdditionalAnalysis(r);
+//            SingleEMFFileAnalyser.AnalysisData analysisData = singleEcoreFileAnalyser.getAdditionalAnalysis(r);
 
             EList<EObject> l = r.getContents();
             List<String> packages = new ArrayList<String>();
@@ -45,7 +43,7 @@ public class SimpleAnalyser {
             EPackage pkg = (EPackage) l.get(0);
             packages.add(pkg.getName());
 
-            analysisToMongo(analysisData, packages);
+//            analysisToMongo(analysisData, packages);
 //            System.out.println("Package name: " + pkg.getName());
 //
 //            for (EClassifier classifier : pkg.getEClassifiers()) {
@@ -68,25 +66,25 @@ public class SimpleAnalyser {
     private static void analysisToMongo(SingleEMFFileAnalyser.AnalysisData analysisData, List<String> packages) {
         MongoOperations mongoOps = new MongoTemplate(new SimpleMongoClientDatabaseFactory(MongoClients.create(), "mar"));
 
-        Model model = new Model();
-        model.setType(ModelType.ECORE);
-        model.setStatus(Status.VALID);
+//        Model model = new Model();
+//        model.setType(Type.ECORE);
+//        model.setStatus(Status.VALID);
+//
+//        ModelInfo info = new ModelInfo();
+//        info.setName("dc");
+//        info.setPackages(packages);
+//
+//        List<ModelStat> stats = new ArrayList<ModelStat>();
+//        for (Map.Entry<String, Integer> entry : analysisData.stats.entrySet()) {
+//            ModelStat stat = new ModelStat();
+//            stat.setType(entry.getKey());
+//            stat.setCount(entry.getValue());
+//            stats.add(stat);
+//        }
 
-        ModelInfo info = new ModelInfo();
-        info.setName("dc");
-        info.setPackages(packages);
-
-        List<ModelStat> stats = new ArrayList<ModelStat>();
-        for (Map.Entry<String, Integer> entry : analysisData.stats.entrySet()) {
-            ModelStat stat = new ModelStat();
-            stat.setType(entry.getKey());
-            stat.setCount(entry.getValue());
-            stats.add(stat);
-        }
-
-        model.setInfo(info);
-        model.setStats(stats);
-
-        mongoOps.insert(model, "models");
+//        model.setInfo(info);
+//        model.setStats(stats);
+//
+//        mongoOps.insert(model, "models");
     }
 }

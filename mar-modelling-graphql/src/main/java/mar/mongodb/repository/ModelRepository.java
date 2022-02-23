@@ -1,7 +1,7 @@
 package mar.mongodb.repository;
 
-import mar.bean.Model;
-import mar.bean.Status;
+import mar.beans.Model;
+import mar.beans.Status;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;

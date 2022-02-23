@@ -13,14 +13,13 @@ import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
 
+import mar.analysis.thrift.InvalidOperation;
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.transport.TSocket;
 import org.apache.thrift.transport.TTransportException;
 
-import mar.analysis.thrift.InvalidOperation;
-import mar.analysis.thrift.ValidateService;
 import mar.validation.server.AnalysisServer;
 
 public abstract class SandboxClient implements AutoCloseable {
@@ -47,15 +46,12 @@ public abstract class SandboxClient implements AutoCloseable {
 		ServerProcess process = checkOrRestartServer();
 		
 		try {
-			System.out.println("primer try");
 			TSocket transport = newSocket(process);
 			transport.setSocketTimeout(TIMEOUT_MS);
 			transport.open();
 			TProtocol protocol = new TBinaryProtocol(transport);
-			System.out.println("transport: " + transport);
 
 			try {
-				System.out.println("segundo try");
 				return invoker.invoke(protocol);
 			} finally {
 				transport.close();

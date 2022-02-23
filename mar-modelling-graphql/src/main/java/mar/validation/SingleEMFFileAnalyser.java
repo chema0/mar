@@ -7,7 +7,9 @@ import java.util.Map;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 
-import mar.bean.Status;
+import com.google.common.collect.Multimap;
+import mar.beans.Metamodel;
+import mar.beans.Status;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -16,75 +18,79 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
 public class SingleEMFFileAnalyser implements ISingleFileAnalyser {
 
-	@Override
-	public AnalysisResult analyse(@Nonnull IFileInfo f) {
-		String modelId = f.getModelId();
-		try {
-			if (! isProperFormat(f)) {
-				return new AnalysisResult(modelId, Status.NOT_HANDLED);
-			}
-			
-			Resource r = loadModel(f);
+    @Override
+    public AnalysisResult analyse(@Nonnull IFileInfo f) {
+        String modelId = f.getModelId();
+        try {
+            if (!isProperFormat(f)) {
+                return new AnalysisResult(modelId, Status.NOT_HANDLED);
+            }
 
-			Status status;
-			if (! checkResource(modelId, r)) {
-				status = Status.NO_VALIDATE;				
-			} else {
-				status = Status.VALID;
-			}
-						
-			AnalysisData d = getAdditionalAnalysis(r);			
-			return new AnalysisResult(modelId, status).
-					withStats(d.stats).
-					withMetadata(d.metadata).
-					withMetadataJSON(d.document);
-		} catch (Exception e) {
-			// LOG.error("Crashed " + relativeName, e);
-			// db.updateStatus(relativeName, Status.CRASHED);
-			return new AnalysisResult(modelId, Status.CRASHED);
-		}
-	
-	}
-		
-	@Nonnull
-	protected AnalysisData getAdditionalAnalysis(@Nonnull Resource r) {
-		return AnalysisData.EMPTY;
-	}
+            Resource r = loadModel(f);
 
-	/**
-	 * Analysis data provided by subclasses.
-	 */
-	// TODO: manually changed protcted -> public
-	public static class AnalysisData {
-		public static AnalysisData EMPTY = new AnalysisData(null, null, null);
-		
-		public final Map<String, Integer> stats;
-		public final Map<String, List<String>> metadata;
-		private AnalysisMetadataDocument document;
-		
-		public AnalysisData(@CheckForNull Map<String, Integer> stats, @CheckForNull Map<String, List<String>> metadata, @CheckForNull AnalysisMetadataDocument document) {
-			this.stats = stats;
-			this.metadata = metadata;
-			this.document = document;
-		}
+            Status status;
+            if (!checkResource(modelId, r)) {
+                status = Status.NO_VALIDATE;
+            } else {
+                status = Status.VALID;
+            }
 
-	}
-	
-	protected boolean isProperFormat(IFileInfo f) {
-		return true;
-	}
+            AnalysisData d = getAdditionalAnalysis(r);
+            return new AnalysisResult(modelId, status).
+                    withStats(d.stats).
+                    withMetadata(d.metadata).
+                    withMetadataJSON(d.document).
+                    withMetamodel(d.metamodel);
+        } catch (Exception e) {
+            // LOG.error("Crashed " + relativeName, e);
+            // db.updateStatus(relativeName, Status.CRASHED);
+            return new AnalysisResult(modelId, Status.CRASHED);
+        }
 
-	/** 
-	 * By default, the resource is ok. Override to enable specific diagnostics.
-	 */
-	protected boolean checkResource(@Nonnull String modelId, @Nonnull Resource r) {
-		return true;
-	}
+    }
 
-	@Nonnull
-	protected Resource loadModel(@Nonnull IFileInfo f) throws IOException {
-		ResourceSet rs = new ResourceSetImpl();
-		Resource r = rs.getResource(URI.createFileURI(f.getAbsolutePath()), true);
-		return r;
-	}
+    @Nonnull
+    protected AnalysisData getAdditionalAnalysis(@Nonnull Resource r) {
+        return AnalysisData.EMPTY;
+    }
+
+    /**
+     * Analysis data provided by subclasses.
+     */
+    // TODO: manually changed protcted -> public
+    public static class AnalysisData {
+        public static AnalysisData EMPTY = new AnalysisData(null, null, null, null);
+
+        public final Map<String, Integer> stats;
+        public final Map<String, List<String>> metadata;
+        public final Map<String, List<String>> metamodel;
+        private AnalysisMetadataDocument document;
+
+        public AnalysisData(@CheckForNull Map<String, Integer> stats, @CheckForNull Map<String, List<String>> metadata,
+                            @CheckForNull Map<String, List<String>> metamodel, @CheckForNull AnalysisMetadataDocument document) {
+            this.stats = stats;
+            this.metadata = metadata;
+            this.metamodel = metamodel;
+            this.document = document;
+        }
+
+    }
+
+    protected boolean isProperFormat(IFileInfo f) {
+        return true;
+    }
+
+    /**
+     * By default, the resource is ok. Override to enable specific diagnostics.
+     */
+    protected boolean checkResource(@Nonnull String modelId, @Nonnull Resource r) {
+        return true;
+    }
+
+    @Nonnull
+    protected Resource loadModel(@Nonnull IFileInfo f) throws IOException {
+        ResourceSet rs = new ResourceSetImpl();
+        Resource r = rs.getResource(URI.createFileURI(f.getAbsolutePath()), true);
+        return r;
+    }
 }

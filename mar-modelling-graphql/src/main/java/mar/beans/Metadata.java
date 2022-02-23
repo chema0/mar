@@ -1,4 +1,4 @@
-package mar.bean;
+package mar.beans;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ModelStat {
+public class Metadata {
 
-    private String type;
-    private int count;
+    private String name;
+    private String description;
 }

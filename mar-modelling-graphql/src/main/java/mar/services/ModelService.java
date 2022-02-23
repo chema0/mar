@@ -1,15 +1,14 @@
 package mar.services;
 
+import com.google.common.collect.Multimap;
 import com.mongodb.lang.Nullable;
-import mar.bean.Model;
-import mar.bean.ModelInfo;
-import mar.bean.ModelStat;
-import mar.bean.Status;
+import mar.beans.*;
 import mar.mongodb.repository.ModelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ModelService {
@@ -27,7 +26,9 @@ public class ModelService {
 
     public List<Model> findModelsExcludingByStatus(Status status) {
         return modelRepository.findExcludingByStatus(status);
-    };
+    }
+
+    ;
 
     public List<Model> findModelsByStatus(Status status) {
         return modelRepository.findByStatus(status);
@@ -52,12 +53,14 @@ public class ModelService {
     }
 
     @Nullable
-    public Model updateModelProperties(String modelId, ModelInfo modelInfo, List<ModelStat> modelStats) {
+    public Model updateModelProperties(String modelId, Map<String, Integer> stats, Metadata metadata,
+                                       Map<String, List<String>> metamodel) {
         Model model = modelRepository.findByModelId(modelId);
 
         if (model != null) {
-            model.setInfo(modelInfo);
-            model.setStats(modelStats);
+            model.setStats(stats);
+            model.setMetadata(metadata);
+            model.setMetamodel(metamodel);
             return modelRepository.save(model);
         }
 
