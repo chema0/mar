@@ -2,7 +2,6 @@ package mar.analysis.ecore;
 
 import mar.analysis.smells.Smell;
 import mar.analysis.smells.ecore.EcoreSmellCatalog;
-import mar.beans.EcoreMetamodel;
 import mar.modelling.loader.ILoader;
 import mar.validation.AnalysisMetadataDocument;
 import mar.validation.ResourceAnalyser;

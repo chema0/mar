@@ -9,8 +9,8 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>mar-modelling-graphql</artifactId>
-    <name>mar-modelling-graphql</name>
+    <artifactId>mar-modelling-mongo</artifactId>
+    <name>mar-modelling-mongo</name>
     <packaging>jar</packaging>
 
     <properties>
@@ -38,27 +38,11 @@
             <version>2.6.3</version>
         </dependency>
 
-        <!-- MongoDB dependencies -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-mongodb</artifactId>
-            <version>2.6.3</version>
-        </dependency>
-
-        <!-- GraphQL dependencies -->
-
         <!-- Other tools -->
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>30.0-jre</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.22</version>
-            <scope>provided</scope>
         </dependency>
 
         <dependency>

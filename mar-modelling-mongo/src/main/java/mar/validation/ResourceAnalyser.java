@@ -1,9 +1,10 @@
 package mar.validation;
 
-import com.google.common.collect.Multimap;
 import com.google.common.io.BaseEncoding;
-import mar.beans.*;
 import mar.modelling.loader.ILoader;
+import mar.mongodb.beans.Metadata;
+import mar.mongodb.beans.Status;
+import mar.mongodb.beans.Type;
 import mar.validation.server.RemoteModelAnalyser;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

@@ -2,9 +2,11 @@ package mar.validation;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Multimap;
-import mar.beans.*;
-import mar.services.ModelService;
+import mar.mongodb.beans.Metadata;
+import mar.mongodb.beans.Model;
+import mar.mongodb.beans.Status;
+import mar.mongodb.beans.Type;
+import mar.mongodb.services.ModelService;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;

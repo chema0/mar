@@ -18,7 +18,6 @@
     </properties>
 
     <dependencies>
-        <!-- MongoDB dependencies -->
         <!-- GraphQL dependencies -->
         <dependency>
             <groupId>com.graphql-java-kickstart</groupId>
@@ -39,7 +38,6 @@
         </dependency>
 
         <!-- Other tools -->
-
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -47,7 +45,19 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.22</version>
+            <scope>provided</scope>
+        </dependency>
+
         <!-- Project dependencies -->
+        <dependency>
+            <groupId>ml2.mar</groupId>
+            <artifactId>mar-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <build>

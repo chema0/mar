@@ -9,9 +9,7 @@ import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.collect.Multimap;
-import mar.beans.Metamodel;
-import mar.beans.Status;
+import mar.mongodb.beans.Status;
 
 /**
  * Represents the results of the analysis of a model. The main result of an analysis

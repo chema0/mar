@@ -49,6 +49,5 @@
     <module>mar-indexer-spark</module>
     <module>mar-modelling-mongo</module>
     <module>mar-api-graphql</module>
-    <module>mar-mongodb</module>
   </modules>
 </project>

@@ -11,6 +11,7 @@
     <option name="ignoredFiles">
       <set>
         <option value="$PROJECT_DIR$/mar-graphql/pom.xml" />
+        <option value="$PROJECT_DIR$/mar-mongodb/pom.xml" />
       </set>
     </option>
   </component>

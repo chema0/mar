@@ -17,7 +17,6 @@
         <module name="mar-graphql" />
         <module name="mar-indexer-spark" />
         <module name="mar-modelling-eclipse" />
-        <module name="mar-mongodb" />
         <module name="mar-modelling-xtext" />
         <module name="mar-spark-merge" />
         <module name="mar-modelling" />
@@ -26,6 +25,7 @@
     <bytecodeTargetLevel>
       <module name="mar-graphql" target="11" />
       <module name="mar-modelling-mongo" target="11" />
+      <module name="mar-mongodb" target="11" />
     </bytecodeTargetLevel>
   </component>
 </project>

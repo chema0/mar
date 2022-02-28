@@ -1,6 +1,6 @@
 package mar;
 
-import mar.services.ModelService;
+import mar.mongodb.services.ModelService;
 import mar.validation.AnalyserMain;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;

@@ -1,8 +1,9 @@
-package mar.services;
+package mar.mongodb.services;
 
-import com.google.common.collect.Multimap;
 import com.mongodb.lang.Nullable;
-import mar.beans.*;
+import mar.mongodb.beans.Metadata;
+import mar.mongodb.beans.Model;
+import mar.mongodb.beans.Status;
 import mar.mongodb.repository.ModelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

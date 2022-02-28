@@ -3,7 +3,7 @@ package mar.validation.server;
 import mar.analysis.thrift.Result;
 import mar.analysis.thrift.ValidateService;
 import mar.analysis.thrift.ValidationJob;
-import mar.beans.Status;
+import mar.mongodb.beans.Status;
 import mar.ingestion.IngestedMetadata;
 import mar.sandbox.SandboxClient;
 import mar.validation.AnalysisMetadataDocument;
