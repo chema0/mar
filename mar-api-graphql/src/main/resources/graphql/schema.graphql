@@ -10,8 +10,9 @@ type Query {
 type Model {
   id: ID!
   type: ModelType!
-  info: Info!
-  stats: [Stat]!
+  stats: Stats!
+  metadata: Metadata!
+  metamodel: Metamodel!
 }
 
 type EcoreInfo {
@@ -32,13 +33,29 @@ enum ModelType {
   ARCHIMATE
 }
 
-# Interface for analysisModel information
-interface Info {
+# Interface for model stats elements
+type Stats {
+  type: String!
+  count: Int!
+}
+
+# Interface for model information
+interface Metadata {
   name: String!
 }
 
-# Interface for analysisModel stat element
-interface Stat {
-  type: String!
-  count: Int!
+ interface Metamodel {
+   common: [String]
+ }
+
+# Metamodels
+
+type EcoreMetamodel implements Metamodel{
+  common: [String]
+  enums: [String]
+  references: [String]
+  classes: [String]
+  attributes: [String]
+  packages: [String]
+  datatypes: [String]
 }
