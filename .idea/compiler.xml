@@ -27,4 +27,9 @@
       <module name="mar-mongodb" target="11" />
     </bytecodeTargetLevel>
   </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="mar-api-graphql" options="" />
+    </option>
+  </component>
 </project>

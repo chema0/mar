@@ -5,15 +5,15 @@ schema {
 # The query type, represents all of the entry points into our object graph
 type Query {
     model(id: String!): Model
-    models(first: Int, type: ModelType): [Model]!
+    models(first: Int = 50, type: ModelType = ECORE): [Model]!
 }
 
 type Model {
     id: ID!
     type: ModelType!
-    stats: EcoreStats
-    metadata: Metadata
-    metamodel: EcoreMetamodel
+    # stats: EcoreStats
+    # metadata: Metadata
+    # metamodel: EcoreMetamodel
 }
 
 #type EcoreInfo {
@@ -40,9 +40,9 @@ enum ModelType {
 #}
 
 # Interface for model information
-type Metadata {
-    name: String
-}
+#type Metadata {
+#    name: String
+#}
 
 # Interface for metamodel structure/elements
 #interface Metamodel {
@@ -50,24 +50,24 @@ type Metadata {
 
 # Ecore types
 #type EcoreStats implements Stats {
-type EcoreStats {
+#type EcoreStats {
     # totalElements: Int!
-    enums: Int!
-    references: Int!
-    elements: Int!
-    classes: Int!
-    attributes: Int!
-    packages: Int!
-    datatypes: Int!
-}
+#    enums: Int!
+#    references: Int!
+#    elements: Int!
+#    classes: Int!
+#    attributes: Int!
+#    packages: Int!
+#    datatypes: Int!
+#}
 
 #type EcoreMetamodel implements Metamodel {
-type EcoreMetamodel {
+#type EcoreMetamodel {
     # common: [String]
-    enums: String
-    references: String
-    classes: String
-    attributes: String
-    packages: String
-    datatypes: String
-}
+#    enums: String
+#    references: String
+#    classes: String
+#    attributes: String
+#    packages: String
+#    datatypes: String
+#}
