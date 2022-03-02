@@ -13,7 +13,7 @@ type Model {
     type: ModelType!
     stats: EcoreStats
     metadata: Metadata
-    # metamodel: EcoreMetamodel!
+    metamodel: EcoreMetamodel
 }
 
 #type EcoreInfo {
@@ -46,7 +46,6 @@ type Metadata {
 
 # Interface for metamodel structure/elements
 #interface Metamodel {
-#    common: [String]
 #}
 
 # Ecore types
@@ -63,12 +62,12 @@ type EcoreStats {
 }
 
 #type EcoreMetamodel implements Metamodel {
-#type EcoreMetamodel {
-#    # common: [String]
-#    enums: [String]
-#    references: [String]
-#    classes: [String]
-#    attributes: [String]
-#    packages: [String]
-#    datatypes: [String]
-#}
+type EcoreMetamodel {
+    # common: [String]
+    enums: String
+    references: String
+    classes: String
+    attributes: String
+    packages: String
+    datatypes: String
+}
