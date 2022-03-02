@@ -121,8 +121,7 @@ public class AnalysisDB implements Closeable {
         List<Model> duplicatedModels = modelService.findModelsByHashNotDuplicated(hash);
 
         if (duplicatedModels.size() > 0) {
-            originalModelId = Iterables.getLast(duplicatedModels).getModelId();
-            status.set(Status.DUPLICATED);
+            return Status.DUPLICATED;
         }
 
         // We can insert

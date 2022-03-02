@@ -13,18 +13,17 @@
         <module name="mar-modelling-pnml" />
         <module name="mar-common" />
         <module name="mar-api-graphql" />
-        <module name="mar-modelling-graphql" />
         <module name="mar-graphql" />
         <module name="mar-indexer-spark" />
         <module name="mar-modelling-eclipse" />
         <module name="mar-modelling-xtext" />
         <module name="mar-spark-merge" />
+        <module name="mar-modelling-mongo" />
         <module name="mar-modelling" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="mar-graphql" target="11" />
-      <module name="mar-modelling-mongo" target="11" />
       <module name="mar-mongodb" target="11" />
     </bytecodeTargetLevel>
   </component>

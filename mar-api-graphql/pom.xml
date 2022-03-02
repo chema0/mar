@@ -15,20 +15,41 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.version>11</java.version>
     </properties>
 
     <dependencies>
+        <!-- Spring dependecies -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <version>2.6.3</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <version>2.6.3</version>
+        </dependency>
+
         <!-- GraphQL dependencies -->
         <dependency>
             <groupId>com.graphql-java-kickstart</groupId>
             <artifactId>graphql-spring-boot-starter</artifactId>
             <version>12.0.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.validation</groupId>
+                    <artifactId>validation-api</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
             <groupId>com.graphql-java-kickstart</groupId>
             <artifactId>graphiql-spring-boot-starter</artifactId>
-            <version>5.5.0</version>
+            <version>11.1.0</version>
         </dependency>
 
         <dependency>
@@ -52,6 +73,14 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- testing facilities -->
+        <dependency>
+            <groupId>com.graphql-java-kickstart</groupId>
+            <artifactId>graphql-spring-boot-starter-test</artifactId>
+            <version>12.0.0</version>
+            <scope>test</scope>
+        </dependency>
+
         <!-- Project dependencies -->
         <dependency>
             <groupId>ml2.mar</groupId>
@@ -62,7 +91,6 @@
 
     <build>
         <plugins>
-
             <!-- Java 11 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -71,6 +99,11 @@
                 <configuration>
                     <release>11</release>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>
