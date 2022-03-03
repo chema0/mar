@@ -11,9 +11,9 @@ type Query {
 type Model {
     id: ID!
     type: ModelType!
-    # stats: EcoreStats
+    stats: EcoreStats
     # metadata: Metadata
-    # metamodel: EcoreMetamodel
+    metamodel: EcoreMetamodel
 }
 
 #type EcoreInfo {
@@ -50,24 +50,24 @@ enum ModelType {
 
 # Ecore types
 #type EcoreStats implements Stats {
-#type EcoreStats {
+type EcoreStats {
     # totalElements: Int!
-#    enums: Int!
-#    references: Int!
-#    elements: Int!
-#    classes: Int!
-#    attributes: Int!
-#    packages: Int!
-#    datatypes: Int!
-#}
+    enums: Int!
+    references: Int!
+    elements: Int!
+    classes: Int!
+    attributes: Int!
+    packages: Int!
+    datatypes: Int!
+}
 
 #type EcoreMetamodel implements Metamodel {
-#type EcoreMetamodel {
+type EcoreMetamodel {
     # common: [String]
-#    enums: String
-#    references: String
-#    classes: String
-#    attributes: String
-#    packages: String
-#    datatypes: String
-#}
+    enums: [String]
+    references: [String]
+    classes: [String]
+    attributes: [String]
+    packages(keyword: String): [String]
+    datatypes: [String]
+}
