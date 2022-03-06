@@ -1,7 +1,8 @@
 package mar;
 
-import graphql.GraphQLContext;
 import graphql.schema.DataFetchingEnvironment;
+import graphql.schema.DataFetchingFieldSelectionSet;
+import graphql.schema.SelectedField;
 import mar.mongodb.beans.Model;
 import mar.mongodb.beans.Type;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +24,17 @@ public class GraphQlController {
         return dataFetchers.getModel(id);
     }
 
-     @QueryMapping
-//    public Iterable<Model> models(@Argument Integer first, @Argument Type type) {
-     public Iterable<Model> models(DataFetchingEnvironment environment) {
-        int first = environment.getArgument("first");
-        Type type = Type.valueOf(environment.getArgument("type"));
-         return dataFetchers.getModels(first, type);
+    @QueryMapping
+     public Iterable<Model> models(@Argument Integer first, @Argument Type type, DataFetchingEnvironment env, DataFetchingFieldSelectionSet selectionSet) {
+        List<SelectedField> fields = selectionSet.getFields("metamodel/packages");
+
+        if (fields.size() > 0) {
+            SelectedField packages = fields.get(0);
+            Map<String, Object> arguments = packages.getArguments();
+            System.out.println("Packages keyword: " + arguments.get("keyword"));
+        }
+
+        return dataFetchers.getModels(first, type);
     }
-    
+
 }
