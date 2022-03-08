@@ -1,0 +1,18 @@
+version: "3.8"
+services:
+  graphql-api:
+    build:
+      context: "${REPO_MAR}/mar-api-graphql"
+      dockerfile: "${REPO_MAR}/docker/Dockerfile"
+    ports:
+      - 8080:8080
+  mongo_db:
+    restart: always
+    image: mongo:5.0.6
+    ports:
+      - 27017:27017
+    volumes:
+      - "dbdata:/var/lib/mongodb.data"
+
+volumes:
+  dbdata:
