@@ -9,6 +9,9 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoClientDatabaseFactory;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 @Configuration
 @EnableMongoRepositories
 public class MongoConfiguration {
@@ -16,6 +19,11 @@ public class MongoConfiguration {
     public @Bean
     MongoClient mongoClient() {
         // String connectionString = "mongodb://172.24.0.2:27017";
+        try {
+            System.out.println(InetAddress.getLocalHost().getHostAddress());
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
         String connectionString = "mongodb://localhost:27017";
         System.out.println(connectionString);
         return MongoClients.create(connectionString);
