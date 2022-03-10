@@ -1,11 +1,5 @@
 version: "3.8"
 services:
-  graphql-api:
-    build:
-      context: "${REPO_MAR}/mar-api-graphql"
-      dockerfile: "${REPO_MAR}/docker/Dockerfile"
-    ports:
-      - 8080:8080
   mongo_db:
     restart: always
     image: mongo:5.0.6
@@ -13,6 +7,30 @@ services:
       - 27017:27017
     volumes:
       - "dbdata:/var/lib/mongodb.data"
+    networks:
+      services-network:
+        aliases:
+          - mongo_db
+
+  api:
+    depends_on:
+      - mongo_db
+    build:
+      context: "${REPO_MAR}/mar-api-graphql"
+      dockerfile: "${REPO_MAR}/docker/Dockerfile"
+    ports:
+      - 8080:8080
+    links:
+      - mongo_db
+    networks:
+      services-network:
+        aliases:
+          - graphql-api
 
 volumes:
   dbdata:
+
+networks:
+  services-network:
+    name: services-network
+    driver: bridge
