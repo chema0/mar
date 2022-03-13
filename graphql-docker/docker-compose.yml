@@ -6,7 +6,7 @@ services:
     ports:
       - 27017:27017
     volumes:
-      - mar_data
+      - "mar_data:${REPO_MAR}"
     networks:
       services-network:
         aliases:
