@@ -187,4 +187,4 @@ dmypy.json
 cython_debug/
 
 # IntelliJ IDEA
-.idea
+.idea/
