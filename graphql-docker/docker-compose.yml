@@ -6,7 +6,7 @@ services:
     ports:
       - 27017:27017
     volumes:
-      - "dbdata:/var/lib/mongodb.data"
+      - mar_data
     networks:
       services-network:
         aliases:
@@ -28,7 +28,8 @@ services:
           - graphql-api
 
 volumes:
-  dbdata:
+  mar_data:
+    external: true
 
 networks:
   services-network:

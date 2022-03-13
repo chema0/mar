@@ -18,14 +18,21 @@ public class MongoConfiguration {
 
     public @Bean
     MongoClient mongoClient() {
-        // String connectionString = "mongodb://172.24.0.2:27017";
+        InetAddress address = null;
         try {
-            System.out.println(InetAddress.getLocalHost().getHostAddress());
+            address = InetAddress.getByName("mongo_db");
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
-        String connectionString = "mongodb://localhost:27017";
-        System.out.println(connectionString);
+
+        String connectionString;
+        if (address != null) {
+            connectionString = "mongodb://mongo_db:27017";
+        } else {
+            connectionString = "mongodb://localhost:27017";
+        }
+
+        System.out.println("Connection string: " + connectionString);
         return MongoClients.create(connectionString);
     }
 
