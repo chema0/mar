@@ -178,7 +178,6 @@ public class ResourceAnalyser implements AutoCloseable {
 
         Map<String, Integer> stats = r.getStats();
 
-        // TODO: check
         /* Map<String, List<String>> metadata = r.getMetadata();
         if (metadata != null) {
             metadata.forEach((type, values) -> {
@@ -200,6 +199,7 @@ public class ResourceAnalyser implements AutoCloseable {
 
         validationDB.addProperties(r.getModelId(), stats, metadata, metamodel);
 
+        // TODO: check this
         // if (processCounter.incrementAndGet() % 100 == 0) {
            // validationDB.commit();
         // }

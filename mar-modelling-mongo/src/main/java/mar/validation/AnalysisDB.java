@@ -32,22 +32,13 @@ public class AnalysisDB implements Closeable {
     private Map<String, Status> alreadyChecked = new HashMap<>();
 
     public AnalysisDB() {
-
-        // TODO: handle errors in database connection
+        // FIXME: change this
         modelService = AnalyserMain.modelService;
 
         List<Model> allModels = modelService.findModelsExcludingByStatus(Status.NOT_PROCESSED);
         allModels.forEach(m -> alreadyChecked.put(m.getModelId(), m.getStatus()));
 
         modelService.deleteAllModelsByStatus(Status.NOT_PROCESSED);
-    }
-
-    public void setAutocommit(boolean autocommit) {
-        try {
-            this.connection.setAutoCommit(autocommit);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @Override
@@ -62,55 +53,6 @@ public class AnalysisDB implements Closeable {
             }
         }
     }
-
-    public void commit() {
-        try {
-            if (!connection.getAutoCommit())
-                connection.commit();
-        } catch (SQLException e) {
-            // throw new IllegalStateException(e);
-        }
-    }
-
-    @Nonnull
-    public static String getConnectionString(File file) {
-        return "jdbc:sqlite:" + file.getAbsolutePath();
-    }
-
-    @Nonnull
-    public static String getValidModelsQuery() {
-        return "select relative_file, id, metadata_document from models where status = '" + Status.VALID.name() + "' or status = '" + Status.NO_VALIDATE.name() + "'";
-    }
-
-    @Nonnull
-    public List<String> getValidModels() throws SQLException {
-        PreparedStatement statement = connection.prepareStatement(getValidModelsQuery());
-        statement.execute();
-
-        List<String> result = new ArrayList<>();
-        ResultSet rs = statement.getResultSet();
-        while (rs.next()) {
-            result.add(rs.getString(1));
-        }
-
-        return result;
-    }
-
-//    public List<Model> getValidModels(@Nonnull Function<String, String> relativePathTransformer) throws SQLException {
-//        List<Model> models = new ArrayList<>(1024);
-//        PreparedStatement statement = connection.prepareStatement(getValidModelsQuery());
-//        statement.execute();
-//
-//        ResultSet rs = statement.getResultSet();
-//        while (rs.next()) {
-//            String id = rs.getString(2);
-//            File file = new File(relativePathTransformer.apply(rs.getString(1)));
-//            String metadata = rs.getString(3);
-//            models.add(new Model(id, file, metadata));
-//        }
-//
-//        return models;
-//    }
 
     @CheckForNull
     public Status addFile(@Nonnull String modelId, @Nonnull Type type, @Nonnull String relativeName, @Nonnull String hash) {
@@ -139,84 +81,19 @@ public class AnalysisDB implements Closeable {
         return status.get();
     }
 
-
     @CheckForNull
     public Status hasFile(@Nonnull String modelId) {
         return alreadyChecked.get(modelId);
-    }
-
-    @CheckForNull
-    private Status getStatus(@Nonnull String modelId) {
-        try {
-            PreparedStatement stm = connection.prepareStatement("SELECT status FROM models WHERE id = ?");
-            stm.setString(1, modelId);
-            stm.execute();
-            ResultSet rs = stm.getResultSet();
-            if (!rs.next())
-                return null;
-            return Status.valueOf(rs.getString(1));
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @CheckForNull
-    public String getRelativeFile(@Nonnull String modelId) {
-        try {
-            PreparedStatement stm = connection.prepareStatement("SELECT relative_file FROM models WHERE id = ?");
-            stm.setString(1, modelId);
-            stm.execute();
-            ResultSet rs = stm.getResultSet();
-            if (!rs.next())
-                return null;
-            return rs.getString(1);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     public void updateStatus(@Nonnull String modelId, @Nonnull Status status) {
         modelService.updateModelStatus(modelId, status);
     }
 
-    public void updateMetadata(@Nonnull String modelId, @CheckForNull String jsonDocument) {
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE models SET metadata_document = ? WHERE id = ?");
-            preparedStatement.setString(1, jsonDocument);
-            preparedStatement.setString(2, modelId);
-            int count = preparedStatement.executeUpdate();
-            Preconditions.checkState(count == 1);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     public void addProperties(@Nonnull String modelId, @Nonnull Map<String, Integer> stats, @Nonnull Metadata metadata,
                               @Nonnull Map<String, List<String>> metamodel) {
         modelService.updateModelProperties(modelId, stats, metadata, metamodel);
     }
-
-//    @Nonnull
-//    public List<Model> findByMetadata(@Nonnull String key, @Nonnull String
-//            value, @Nonnull Function<String, String> relativePathTransformer) {
-//        try (PreparedStatement stm = connection.prepareStatement("SELECT m.id, relative_file, metadata_document FROM models m, metadata mm WHERE m.id = mm.id AND m.status IN ('VALID', 'INVALID') AND mm.type = ? AND mm.value = ?")) {
-//            stm.setString(1, key);
-//            stm.setString(2, value);
-//            stm.execute();
-//
-//            List<Model> result = new ArrayList<>();
-//            ResultSet rs = stm.getResultSet();
-//            while (rs.next()) {
-//                String id = rs.getString(1);
-//                File relativeFile = new File(relativePathTransformer.apply(rs.getString(2)));
-//                String metadataDocument = rs.getString(3);
-//                result.add(new Model(id, relativeFile, metadataDocument));
-//            }
-//            return result;
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
 
     public static class AnalysisModel {
         @Nonnull

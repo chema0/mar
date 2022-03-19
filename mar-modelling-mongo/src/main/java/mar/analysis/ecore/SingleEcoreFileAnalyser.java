@@ -112,6 +112,7 @@ public class SingleEcoreFileAnalyser extends SingleEMFFileAnalyser {
         stats.put("attributes", attributes.size());
         stats.put("references", references.size());
 
+        // TODO: check this
         // int numValidationErrors = validate(r);
         // stats.put("errors", numValidationErrors);
 
@@ -131,6 +132,7 @@ public class SingleEcoreFileAnalyser extends SingleEMFFileAnalyser {
         metamodel.put("attributes", attributes);
         metamodel.put("references", references);
 
+        // TODO: check this
         // Metadata as a document
         //Map<Object, Object> document = new HashMap<>();
         //Map<String, Integer> smellDocument = new HashMap<>();
