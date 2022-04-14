@@ -111,7 +111,6 @@
             <version>2.8.6</version>
         </dependency>
 
-
         <dependency>
             <groupId>org.eclipse.uml2</groupId>
             <artifactId>org.eclipse.uml2.common</artifactId>

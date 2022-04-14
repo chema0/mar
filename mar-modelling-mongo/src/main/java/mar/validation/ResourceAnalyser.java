@@ -2,9 +2,9 @@ package mar.validation;
 
 import com.google.common.io.BaseEncoding;
 import mar.modelling.loader.ILoader;
-import mar.mongodb.beans.Metadata;
-import mar.mongodb.beans.Status;
-import mar.mongodb.beans.Type;
+import mar.models.model.Metadata;
+import mar.models.model.Status;
+import mar.models.model.Type;
 import mar.validation.server.RemoteModelAnalyser;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -85,10 +85,10 @@ public class ResourceAnalyser implements AutoCloseable {
         }
     }
 
-    public ResourceAnalyser(@Nonnull ISingleFileAnalyser analyser, @Nonnull IFileProvider fileProvider, @Nonnull String type, @Nonnull File resultDB) {
+    public ResourceAnalyser(@Nonnull ISingleFileAnalyser analyser, @Nonnull IFileProvider fileProvider, @Nonnull String type, @Nonnull AnalysisDB validationDB) {
         this.fileProvider = fileProvider;
         this.analyser = analyser;
-        this.validationDB = new AnalysisDB();
+        this.validationDB = validationDB;
         this.type = Type.valueOf(type.toUpperCase());
     }
 
@@ -105,8 +105,9 @@ public class ResourceAnalyser implements AutoCloseable {
     }
 
     @Override
+    // FIXME: check
     public void close() throws Exception {
-        this.validationDB.close();
+        // this.validationDB.close();
     }
 
 
@@ -195,9 +196,9 @@ public class ResourceAnalyser implements AutoCloseable {
             metadata.setDescription(document.getDescription());
         }
 
-        Map<String, List<String>> metamodel = r.getMetamodel();
+        Map<String, List<String>> elements = r.getElements();
 
-        validationDB.addProperties(r.getModelId(), stats, metadata, metamodel);
+        validationDB.addProperties(r.getModelId(), stats, metadata, elements);
 
         // TODO: check this
         // if (processCounter.incrementAndGet() % 100 == 0) {

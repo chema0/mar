@@ -9,12 +9,16 @@ import java.util.stream.Collectors;
 
 import mar.modelling.xmi.XMIAnalyser;
 import mar.modelling.xmi.XMIAnalyser.Factory;
+import mar.models.service.ModelsService;
 import mar.validation.ISingleFileAnalyser.Remote;
 import mar.validation.ResourceAnalyser.OptionMap;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Parameters;
 
+@ComponentScan("mar")
 @Command(name = "analyser-xmi", mixinStandardHelpOptions = true,
 	description = "Analyses XMI files")
 public class AnalyserMainXMI implements Callable<Integer> {
@@ -30,6 +34,9 @@ public class AnalyserMainXMI implements Callable<Integer> {
 
     @Parameters(index = "3", description = "Ecore root folder")
     private File ecoreRootFolder;
+
+	@Autowired
+	ModelsService modelsService;
 
     @Override
     public Integer call() throws Exception {    	    	
@@ -56,6 +63,8 @@ public class AnalyserMainXMI implements Callable<Integer> {
 				}
 	    	}
 		};
+
+		AnalysisDB outputDatabase = new AnalysisDB(modelsService);
 		
 		//ISingleFileAnalyser singleAnalyser = factory.newAnalyser()) {
 		try(ISingleFileAnalyser.Remote singleAnalyser = (Remote) factory.newRemoteAnalyser(options)) {			

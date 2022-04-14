@@ -1,12 +1,13 @@
 package mar.validation;
 
-import com.google.common.base.Preconditions;
-import com.google.common.collect.Iterables;
-import mar.mongodb.beans.Metadata;
-import mar.mongodb.beans.Model;
-import mar.mongodb.beans.Status;
-import mar.mongodb.beans.Type;
-import mar.mongodb.services.ModelService;
+import mar.models.model.Metadata;
+import mar.models.model.Model;
+import mar.models.model.Status;
+import mar.models.model.Type;
+import mar.models.service.ModelsService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
@@ -14,10 +15,6 @@ import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,23 +24,25 @@ public class AnalysisDB implements Closeable {
 
     @Nonnull
     private Connection connection;
-    private ModelService modelService;
+
+    ModelsService modelsService;
+
     @Nonnull
     private Map<String, Status> alreadyChecked = new HashMap<>();
 
-    public AnalysisDB() {
-        // FIXME: change this
-        modelService = AnalyserMain.modelService;
+    public AnalysisDB(ModelsService modelsService) {
+        this.modelsService = modelsService;
 
-        List<Model> allModels = modelService.findModelsExcludingByStatus(Status.NOT_PROCESSED);
+        List<Model> allModels = modelsService.findModelsExcludingByStatus(Status.NOT_PROCESSED);
         allModels.forEach(m -> alreadyChecked.put(m.getModelId(), m.getStatus()));
 
-        modelService.deleteAllModelsByStatus(Status.NOT_PROCESSED);
+        modelsService.deleteAllModelsByStatus(Status.NOT_PROCESSED);
     }
 
     @Override
+    // TODO: check
     public void close() throws IOException {
-        if (connection != null) {
+        /* if (connection != null) {
             try {
                 if (!connection.getAutoCommit())
                     connection.commit();
@@ -51,7 +50,7 @@ public class AnalysisDB implements Closeable {
             } catch (SQLException e) {
                 throw new IOException(e);
             }
-        }
+        } */
     }
 
     @CheckForNull
@@ -60,7 +59,7 @@ public class AnalysisDB implements Closeable {
 
         // We check that the hash is not repeated
         String originalModelId = null;
-        List<Model> duplicatedModels = modelService.findModelsByHashNotDuplicated(hash);
+        List<Model> duplicatedModels = modelsService.findModelsByHashNotDuplicated(hash);
 
         if (duplicatedModels.size() > 0) {
             return Status.DUPLICATED;
@@ -76,7 +75,7 @@ public class AnalysisDB implements Closeable {
                 .duplicateOf(originalModelId)
                 .build();
 
-        modelService.insertModel(model);
+        modelsService.insertModel(model);
 
         return status.get();
     }
@@ -87,14 +86,15 @@ public class AnalysisDB implements Closeable {
     }
 
     public void updateStatus(@Nonnull String modelId, @Nonnull Status status) {
-        modelService.updateModelStatus(modelId, status);
+        modelsService.updateModelStatus(modelId, status);
     }
 
-    public void addProperties(@Nonnull String modelId, @Nonnull Map<String, Integer> stats, @Nonnull Metadata metadata,
+    public void addProperties(@Nonnull String modelId, @Nonnull Map<String, Integer> stats, @Nonnull Metadata elements,
                               @Nonnull Map<String, List<String>> metamodel) {
-        modelService.updateModelProperties(modelId, stats, metadata, metamodel);
+        modelsService.updateModelProperties(modelId, stats, elements, metamodel);
     }
 
+    // TODO: check to use instead of mongo
     public static class AnalysisModel {
         @Nonnull
         private String id;

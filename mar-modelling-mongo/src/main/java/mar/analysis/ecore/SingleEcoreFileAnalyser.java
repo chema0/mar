@@ -73,62 +73,29 @@ public class SingleEcoreFileAnalyser extends SingleEMFFileAnalyser {
 
     @Override
     protected AnalysisData getAdditionalAnalysis(Resource r) {
-        List<String> uris = new ArrayList<String>();
+        List<String> uris = new ArrayList<>();
 
-        List<String> packages = new ArrayList<String>();
-        List<String> classes = new ArrayList<String>();
-        List<String> enums = new ArrayList<String>();
-        List<String> datatypes = new ArrayList<String>();
-        List<String> attributes = new ArrayList<String>();
-        List<String> references = new ArrayList<String>();
-
-        Map<String, List<String>> metamodel = new HashMap<>();
+        Map<String, List<String>> elements = new HashMap<>();
 
         TreeIterator<EObject> it = r.getAllContents();
         while (it.hasNext()) {
             EObject obj = it.next();
-//            if (obj instanceof EPackage) {
-//                packages.add(((EPackage) obj).getName());
-//                String nsURI = ((EPackage) obj).getNsURI();
-//                if (nsURI != null)
-//                    uris.add(nsURI);
-//            } else if (obj instanceof EClass) {
-//                classes.add(((EClass) obj).getName());
-//            } else if (obj instanceof EAttribute) {
-//                attributes.add(((EAttribute) obj).getEAttributeType().getName());
-//            } else if (obj instanceof EReference) {
-//                references.add(((EReference) obj).getName());
-//            } else if (obj instanceof EEnum) {
-//                enums.add(((EEnum) obj).getName());
-//            } else if (obj instanceof EDataType) {
-//                datatypes.add(((EDataType) obj).getName());
-//            }
 
-//            if (eClassName != null) {
-//                // String key = "diagram_" + type;
-//                List<String> elements = metamodel.get(eClassName);
-//
-//                if (elements == null) {
-                    // elements.add(objName);
-//                    elements = new ArrayList<>();
-//                }
-//
-//                metamodel.put(eClassName, elements);
-//            }
             String eClassName = obj.eClass().getName();
 
             try {
                 String objName = ((ENamedElement) obj).getName();
                 System.out.println("eClassName: " + eClassName + ", objName: " + objName);
-                List<String> elements = metamodel.get(eClassName);
+                List<String> classElements = elements.get(eClassName);
 
-                if (elements == null) {
-                    elements = new ArrayList<>();
+                if (classElements == null) {
+                    classElements = new ArrayList<>();
                 }
 
-                elements.add(objName);
-                metamodel.put(eClassName, elements);
+                classElements.add(objName);
+                elements.put(eClassName, classElements);
             } catch (Exception e) {
+                // Not printing trace to improve logs readability
                 // e.printStackTrace();
             }
         }
@@ -136,21 +103,12 @@ public class SingleEcoreFileAnalyser extends SingleEMFFileAnalyser {
         Map<String, Integer> stats = new HashMap<>();
         AtomicInteger numElements = new AtomicInteger();
 
-        metamodel.forEach((k, v) -> {
+        elements.forEach((k, v) -> {
             stats.put(k, v.size());
             numElements.addAndGet(v.size());
         });
 
-        stats.put("elements", numElements.get());
-
-//        int numElements = packages.size() + classes.size() + enums.size() + attributes.size() + references.size();
-//        stats.put("elements", numElements);
-//        stats.put("packages", packages.size());
-//        stats.put("classes", classes.size());
-//        stats.put("enums", enums.size());
-//        stats.put("datatypes", datatypes.size());
-//        stats.put("attributes", attributes.size());
-//        stats.put("references", references.size());
+        stats.put("total", numElements.get());
 
         // TODO: check this
         // int numValidationErrors = validate(r);
@@ -158,19 +116,9 @@ public class SingleEcoreFileAnalyser extends SingleEMFFileAnalyser {
 
         Map<String, List<String>> metadata = null;
         if (!uris.isEmpty()) {
-            metadata = new HashMap<String, List<String>>();
+            metadata = new HashMap<>();
             metadata.put("nsURI", uris);
         }
-
-        /* Metamodel */
-
-//        Map<String, List<String>> metamodel = new HashMap<>();
-//        metamodel.put("packages", packages);
-//        metamodel.put("classes", classes);
-//        metamodel.put("enums", enums);
-//        metamodel.put("datatypes", datatypes);
-//        metamodel.put("attributes", attributes);
-//        metamodel.put("references", references);
 
         // TODO: check this
         // Metadata as a document
@@ -180,6 +128,7 @@ public class SingleEcoreFileAnalyser extends SingleEMFFileAnalyser {
 
         AnalysisMetadataDocument document = new AnalysisMetadataDocument();
         document.setNumElements(numElements.get());
+
         Map<String, List<Smell>> smells = EcoreSmellCatalog.INSTANCE.detectSmells(r);
         if (!smells.isEmpty()) {
             smells.forEach((k, v) -> {
@@ -187,7 +136,7 @@ public class SingleEcoreFileAnalyser extends SingleEMFFileAnalyser {
             });
         }
 
-        return new AnalysisData(stats, metadata, metamodel, document);
+        return new AnalysisData(stats, metadata, elements, document);
     }
 
 }

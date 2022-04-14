@@ -11,17 +11,12 @@ type Query {
 type Model {
     id: ID!
     type: ModelType!
-    stats: EcoreStats
-    # metadata: Metadata
-    metamodel: EcoreMetamodel
+    stats: Stats
+    metadata: Metadata
+    elements: Elements
 }
 
-#type EcoreInfo {
-#    name: String!
-#    packages: [String]
-#}
-
-# Types of analysisModels
+# Types of analysis models
 enum ModelType {
     ECORE
     XTEXT
@@ -34,40 +29,81 @@ enum ModelType {
     ARCHIMATE
 }
 
-# Interface for model stats elements
-#interface Stats {
-#    totalElements: Int!
-#}
+type Metadata {
+    name: String!
+    description: String
+}
 
-# Interface for model information
-#type Metadata {
-#    name: String
-#}
+interface Stats {
+    total: Int!
+}
 
-# Interface for metamodel structure/elements
-#interface Metamodel {
-#}
+type EcoreStats implements Stats {
+    total: Int!
+    EAttribute: Int
+    EClass: Int
+    EClassifier: Int
+    EDataType: Int
+    EPackage: Int
+    EReference: Int
+    EParameter: Int
+    ETypedElement: Int
+}
 
-# Ecore types
-#type EcoreStats implements Stats {
-type EcoreStats {
-    # totalElements: Int!
-    enums: Int!
-    references: Int!
-    elements: Int!
-    classes: Int!
-    attributes: Int!
-    packages: Int!
-    datatypes: Int!
+# Exclusive UML stats
+type UMLStats implements Stats {
+    total: Int!
+    Action: Int
+    Activity: Int
+    Actor: Int
+    Association: Int
+    Class: Int
+    Classifier: Int
+    Component: Int
+    Enumeration: Int
+    Interaction: Int
+    Interface: Int
+    Package: Int
+    State: Int
+    StateMachine: Int
+    UseCase: Int
+}
+
+interface Elements {
+    EAttribute: [String]
+    EClass: [String]
+    EClassifier: [String]
+    EDataType: [String]
+    EPackage: [String]
+    EReference: [String]
+    EParameter: [String]
+    ETypedElement: [String]
+}
+
+type UMLElements implements Elements {
+    Action: [String]
+    Activity: [String]
+    Actor: [String]
+    Association: [String]
+    Class: [String]
+    Classifier: [String]
+    Component: [String]
+    Enumeration: [String]
+    Interaction: [String]
+    Interface: [String]
+    Package: [String]
+    State: [String]
+    StateMachine: [String]
+    UseCase: [String]
 }
 
 #type EcoreMetamodel implements Metamodel {
-type EcoreMetamodel {
-    # common: [String]
-    enums: [String]
-    references: [String]
-    classes: [String]
-    attributes: [String]
-    packages(keyword: String): [String]
-    datatypes: [String]
-}
+#type EcoreMetamodel {
+#    # common: [String]
+#    enums: [String]
+#    references: [String]
+#    classes: [String]
+#    attributes: [String]
+#    packages(keyword: String): [String]
+#    datatypes: [String]
+#}

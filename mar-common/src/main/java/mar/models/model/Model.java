@@ -1,4 +1,4 @@
-package mar.mongodb.beans;
+package mar.models.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,5 +34,5 @@ public class Model {
     private String duplicateOf;
     private Map<String, Integer> stats;
     private Metadata metadata;
-    private Map<String, List<String>> metamodel;
+    private Map<String, List<String>> elements;
 }

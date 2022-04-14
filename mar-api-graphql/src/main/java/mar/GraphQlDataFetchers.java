@@ -1,9 +1,8 @@
 package mar;
 
-import graphql.schema.DataFetcher;
-import mar.mongodb.beans.Model;
-import mar.mongodb.beans.Type;
-import mar.mongodb.services.ModelService;
+import mar.models.model.Model;
+import mar.models.model.Type;
+import mar.models.service.ModelsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -11,13 +10,13 @@ import org.springframework.stereotype.Component;
 public class GraphQlDataFetchers {
 
     @Autowired
-    private ModelService modelService;
+    private ModelsService modelsService;
 
     public Model getModel(String id) {
-        return modelService.findModelByModelId(id);
+        return modelsService.findModelByModelId(id);
     }
 
     public Iterable<Model> getModels(int first, Type type) {
-        return modelService.findModelsByType(first, type);
+        return modelsService.findModelsByType(first, type);
     }
 }

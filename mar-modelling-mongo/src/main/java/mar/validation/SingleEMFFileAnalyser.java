@@ -7,7 +7,7 @@ import java.util.Map;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 
-import mar.mongodb.beans.Status;
+import mar.models.model.Status;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -38,7 +38,7 @@ public class SingleEMFFileAnalyser implements ISingleFileAnalyser {
                     withStats(d.stats).
                     withMetadata(d.metadata).
                     withMetadataJSON(d.document).
-                    withMetamodel(d.metamodel);
+                    withElements(d.elements);
         } catch (Exception e) {
             // LOG.error("Crashed " + relativeName, e);
             // db.updateStatus(relativeName, Status.CRASHED);
@@ -55,20 +55,19 @@ public class SingleEMFFileAnalyser implements ISingleFileAnalyser {
     /**
      * Analysis data provided by subclasses.
      */
-    // TODO: manually changed protcted -> public
-    public static class AnalysisData {
+    protected static class AnalysisData {
         public static AnalysisData EMPTY = new AnalysisData(null, null, null, null);
 
         public final Map<String, Integer> stats;
         public final Map<String, List<String>> metadata;
-        public final Map<String, List<String>> metamodel;
+        public final Map<String, List<String>> elements;
         private AnalysisMetadataDocument document;
 
         public AnalysisData(@CheckForNull Map<String, Integer> stats, @CheckForNull Map<String, List<String>> metadata,
-                            @CheckForNull Map<String, List<String>> metamodel, @CheckForNull AnalysisMetadataDocument document) {
+                            @CheckForNull Map<String, List<String>> elements, @CheckForNull AnalysisMetadataDocument document) {
             this.stats = stats;
             this.metadata = metadata;
-            this.metamodel = metamodel;
+            this.elements = elements;
             this.document = document;
         }
 

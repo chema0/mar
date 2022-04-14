@@ -6,7 +6,8 @@ import java.io.IOException;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 
-import mar.mongodb.beans.Status;
+import mar.models.model.Status;
+import mar.models.service.ModelsService;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
@@ -20,6 +21,7 @@ import mar.validation.IFileInfo;
 import mar.validation.ISingleFileAnalyser;
 import mar.validation.ResourceAnalyser;
 import mar.validation.ResourceAnalyser.OptionMap;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class XMIAnalyser implements ISingleFileAnalyser {
 
@@ -27,6 +29,9 @@ public class XMIAnalyser implements ISingleFileAnalyser {
 	
 	public static final String ECORE_DATABASE_FILE = "ECORE_DATABASE_FILE";
 	public static final String ECORE_ROOT_FOLDER   = "ECORE_ROOT_FOLDER";
+
+	@Autowired
+	ModelsService modelsService;
 	
 	public static class Factory implements ResourceAnalyser.Factory {
 
@@ -58,7 +63,7 @@ public class XMIAnalyser implements ISingleFileAnalyser {
 
 	public XMIAnalyser(@Nonnull File ecoreDatabaseFile, File ecoreRootFolder) {
 //		this.repo = new EcoreRepository(new AnalysisDB(ecoreDatabaseFile), ecoreRootFolder);
-		this.repo = new EcoreRepository(new AnalysisDB(), ecoreRootFolder);
+		this.repo = new EcoreRepository(new AnalysisDB(modelsService), ecoreRootFolder);
 	}
 	
 	@Override
