@@ -1,33 +1,34 @@
 package mar.analysis.uml;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import javax.annotation.CheckForNull;
-
-import org.eclipse.emf.common.util.Diagnostic;
-import org.eclipse.emf.common.util.TreeIterator;
-import org.eclipse.emf.ecore.*;
-import org.eclipse.emf.ecore.impl.EClassImpl;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.util.Diagnostician;
-import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
-import org.eclipse.uml2.uml.*;
-import org.eclipse.uml2.uml.Class;
-import org.eclipse.uml2.uml.internal.impl.NamedElementImpl;
-import org.eclipse.uml2.uml.internal.resource.UMLResourceFactoryImpl;
-
-import mar.analysis.ecore.SingleEcoreFileAnalyser;
 import mar.indexer.common.configuration.ModelLoader;
 import mar.modelling.loader.ILoader;
 import mar.validation.IFileInfo;
 import mar.validation.ResourceAnalyser;
 import mar.validation.ResourceAnalyser.OptionMap;
 import mar.validation.SingleEMFFileAnalyser;
+import org.eclipse.emf.common.util.Diagnostic;
+import org.eclipse.emf.common.util.TreeIterator;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.util.Diagnostician;
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
+import org.eclipse.uml2.uml.Model;
+import org.eclipse.uml2.uml.UMLPackage;
+import org.eclipse.uml2.uml.internal.resource.UMLResourceFactoryImpl;
+
+import javax.annotation.CheckForNull;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class UMLAnalyser extends SingleEMFFileAnalyser {
 
@@ -99,28 +100,34 @@ public class UMLAnalyser extends SingleEMFFileAnalyser {
 
     @Override
     protected AnalysisData getAdditionalAnalysis(Resource r) {
+        // TODO: ¿tiene sentido almacenar esto como una lista de Strings, o más bien
+        // como un conjunto para evitar duplicados?
         Map<String, List<String>> elements = new HashMap<>();
 
         TreeIterator<EObject> it = r.getAllContents();
         while (it.hasNext()) {
             EObject obj = it.next();
 
-            String eClassName = obj.eClass().getName();
+            EClass element = obj.eClass();
+            String elementName = element.getName();
 
-            System.out.println("eClassName: " + eClassName);
+            EStructuralFeature name = element.getEStructuralFeature("name");
 
             try {
-                // String objName = ((NamedElement) obj).getName();
-                String objName = "";
-                System.out.println("eClassName: " + eClassName + ", objName: " + objName);
-                List<String> classElements = elements.get(eClassName);
+                if (name != null) {
+                    Object value = obj.eGet(name);
+                    System.out.println(elementName + " - " + value);
 
-                if (classElements == null) {
-                    classElements = new ArrayList<>();
+                    // TODO: ¿tiene sentido almacenar las stats de los elementos nulos?
+                    if (value != null) {
+                        elements.putIfAbsent(elementName, new ArrayList<String>());
+
+                        List<String> values = elements.get(elementName);
+                        values.add((String) value);
+
+                        elements.put(elementName, values);
+                    }
                 }
-
-                classElements.add(objName);
-                elements.put(eClassName, classElements);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -129,7 +136,9 @@ public class UMLAnalyser extends SingleEMFFileAnalyser {
         Map<String, Integer> stats = new HashMap<>();
         AtomicInteger numElements = new AtomicInteger();
 
-        elements.forEach((k, v) -> {
+        elements.forEach((k, v) ->
+
+        {
             stats.put(k, v.size());
             numElements.addAndGet(v.size());
         });

@@ -75,28 +75,36 @@ public class SingleEcoreFileAnalyser extends SingleEMFFileAnalyser {
     protected AnalysisData getAdditionalAnalysis(Resource r) {
         List<String> uris = new ArrayList<>();
 
+        // TODO: ¿tiene sentido almacenar esto como una lista de Strings, o más bien
+        // como un conjunto para evitar duplicados?
         Map<String, List<String>> elements = new HashMap<>();
 
         TreeIterator<EObject> it = r.getAllContents();
         while (it.hasNext()) {
             EObject obj = it.next();
 
-            String eClassName = obj.eClass().getName();
+            EClass element = obj.eClass();
+            String elementName = element.getName();
+
+            EStructuralFeature name = element.getEStructuralFeature("name");
 
             try {
-                String objName = ((ENamedElement) obj).getName();
-                System.out.println("eClassName: " + eClassName + ", objName: " + objName);
-                List<String> classElements = elements.get(eClassName);
+                if (name != null) {
+                    Object value = obj.eGet(name);
+                    System.out.println(elementName + " - " + value);
 
-                if (classElements == null) {
-                    classElements = new ArrayList<>();
+                    // TODO: ¿tiene sentido almacenar las stats de los elementos nulos?
+                    if (value != null) {
+                        elements.putIfAbsent(elementName, new ArrayList<String>());
+
+                        List<String> values = elements.get(elementName);
+                        values.add((String) value);
+
+                        elements.put(elementName, values);
+                    }
                 }
-
-                classElements.add(objName);
-                elements.put(eClassName, classElements);
             } catch (Exception e) {
-                // Not printing trace to improve logs readability
-                // e.printStackTrace();
+                e.printStackTrace();
             }
         }
 
