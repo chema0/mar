@@ -1,17 +1,14 @@
 package mar.validation;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.CheckForNull;
-import javax.annotation.Nonnull;
-
+import mar.analysis.generic.AnalysisData;
 import mar.models.model.Status;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+
+import javax.annotation.Nonnull;
+import java.io.IOException;
 
 
 public class SingleEMFFileAnalyser implements ISingleFileAnalyser {
@@ -35,10 +32,10 @@ public class SingleEMFFileAnalyser implements ISingleFileAnalyser {
 
             AnalysisData d = getAdditionalAnalysis(r);
             return new AnalysisResult(modelId, status).
-                    withStats(d.stats).
-                    withMetadata(d.metadata).
-                    withMetadataJSON(d.document).
-                    withElements(d.elements);
+                    withStats(d.getStats()).
+                    withMetadata(d.getMetadata()).
+                    withMetadataJSON(d.getDocument()).
+                    withElements(d.getElements());
         } catch (Exception e) {
             // LOG.error("Crashed " + relativeName, e);
             // db.updateStatus(relativeName, Status.CRASHED);
@@ -54,8 +51,9 @@ public class SingleEMFFileAnalyser implements ISingleFileAnalyser {
 
     /**
      * Analysis data provided by subclasses.
+     * Moved to its own class
      */
-    protected static class AnalysisData {
+    /* protected static class AnalysisData {
         public static AnalysisData EMPTY = new AnalysisData(null, null, null, null);
 
         public final Map<String, Integer> stats;
@@ -71,7 +69,7 @@ public class SingleEMFFileAnalyser implements ISingleFileAnalyser {
             this.document = document;
         }
 
-    }
+    } */
 
     protected boolean isProperFormat(IFileInfo f) {
         return true;

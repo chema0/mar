@@ -1,5 +1,7 @@
 package mar.analysis.ecore;
 
+import mar.analysis.generic.AnalysisData;
+import mar.analysis.generic.GenericAnalyser;
 import mar.analysis.smells.Smell;
 import mar.analysis.smells.ecore.EcoreSmellCatalog;
 import mar.modelling.loader.ILoader;
@@ -9,7 +11,10 @@ import mar.validation.ResourceAnalyser.OptionMap;
 import mar.validation.SingleEMFFileAnalyser;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.TreeIterator;
-import org.eclipse.emf.ecore.*;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EValidatorRegistryImpl;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.Diagnostician;
@@ -26,6 +31,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class SingleEcoreFileAnalyser extends SingleEMFFileAnalyser {
 
     public static final String ID = "ecore";
+
+    public static final GenericAnalyser genericAnalyser = GenericAnalyser.getInstance();
 
     public static class Factory implements ResourceAnalyser.Factory {
 
@@ -73,78 +80,80 @@ public class SingleEcoreFileAnalyser extends SingleEMFFileAnalyser {
 
     @Override
     protected AnalysisData getAdditionalAnalysis(Resource r) {
-        List<String> uris = new ArrayList<>();
+        return genericAnalyser.getAdditionalAnalysis(r, this::validate);
+
+        // List<String> uris = new ArrayList<>();
 
         // TODO: ¿tiene sentido almacenar esto como una lista de Strings, o más bien
         // como un conjunto para evitar duplicados?
-        Map<String, List<String>> elements = new HashMap<>();
+        // Map<String, List<String>> elements = new HashMap<>();
 
-        TreeIterator<EObject> it = r.getAllContents();
-        while (it.hasNext()) {
-            EObject obj = it.next();
+        // TreeIterator<EObject> it = r.getAllContents();
+        // while (it.hasNext()) {
+            // EObject obj = it.next();
 
-            EClass element = obj.eClass();
-            String elementName = element.getName();
+            // EClass element = obj.eClass();
+            // String elementName = element.getName();
 
-            EStructuralFeature name = element.getEStructuralFeature("name");
+            // EStructuralFeature name = element.getEStructuralFeature("name");
 
-            try {
-                if (name != null) {
-                    Object value = obj.eGet(name);
-                    System.out.println(elementName + " - " + value);
+            // try {
+                // if (name != null) {
+                    // Object value = obj.eGet(name);
+                    // System.out.println(elementName + " - " + value);
 
                     // TODO: ¿tiene sentido almacenar las stats de los elementos nulos?
-                    if (value != null) {
-                        elements.putIfAbsent(elementName, new ArrayList<String>());
+                    // if (value != null) {
+                        // elements.putIfAbsent(elementName, new ArrayList<String>());
 
-                        List<String> values = elements.get(elementName);
-                        values.add((String) value);
+                        // List<String> values = elements.get(elementName);
+                        // values.add((String) value);
 
-                        elements.put(elementName, values);
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+                        // elements.put(elementName, values);
+                    // }
+                // }
+            // } catch (Exception e) {
+               // e.printStackTrace();
+            // }
+        // }
 
-        Map<String, Integer> stats = new HashMap<>();
-        AtomicInteger numElements = new AtomicInteger();
+        // Map<String, Integer> stats = new HashMap<>();
+        // AtomicInteger numElements = new AtomicInteger();
 
-        elements.forEach((k, v) -> {
-            stats.put(k, v.size());
-            numElements.addAndGet(v.size());
-        });
+        // elements.forEach((k, v) -> {
+            // stats.put(k, v.size());
+            // numElements.addAndGet(v.size());
+        // });
 
-        stats.put("total", numElements.get());
+        //stats.put("total", numElements.get());
 
         // TODO: check this
         // int numValidationErrors = validate(r);
         // stats.put("errors", numValidationErrors);
 
-        Map<String, List<String>> metadata = null;
-        if (!uris.isEmpty()) {
-            metadata = new HashMap<>();
-            metadata.put("nsURI", uris);
-        }
+        // Map<String, List<String>> metadata = new HashMap<>();
+        // if (!uris.isEmpty()) {
+            // metadata = new HashMap<>();
+            // metadata.put("nsURI", uris);
+        // }
 
         // TODO: check this
         // Metadata as a document
-        //Map<Object, Object> document = new HashMap<>();
-        //Map<String, Integer> smellDocument = new HashMap<>();
-        //document.put("smells", smellDocument);
+        // Map<Object, Object> document = new HashMap<>();
+        // Map<String, Integer> smellDocument = new HashMap<>();
+        // document.put("smells", smellDocument);
 
-        AnalysisMetadataDocument document = new AnalysisMetadataDocument();
-        document.setNumElements(numElements.get());
+        // AnalysisMetadataDocument document = new AnalysisMetadataDocument();
+        // document.setNumElements(numElements.get());
 
-        Map<String, List<Smell>> smells = EcoreSmellCatalog.INSTANCE.detectSmells(r);
-        if (!smells.isEmpty()) {
-            smells.forEach((k, v) -> {
-                document.addSmell(k, v);
-            });
-        }
+        // Map<String, List<Smell>> smells = EcoreSmellCatalog.INSTANCE.detectSmells(r);
+        // if (!smells.isEmpty()) {
+            // smells.forEach((k, v) -> {
+                // document.addSmell(k, v);
+            // });
+        // }
 
-        return new AnalysisData(stats, metadata, elements, document);
+        // return new AnalysisData(stats, metadata, elements, document);
     }
 
 }

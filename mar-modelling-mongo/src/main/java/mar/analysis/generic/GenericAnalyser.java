@@ -1,45 +1,86 @@
 package mar.analysis.generic;
 
-import mar.analysis.uml.UMLAnalyser;
-import mar.analysis.uml.UMLLoader;
-import mar.modelling.loader.ILoader;
-import mar.validation.ResourceAnalyser;
-import mar.validation.SingleEMFFileAnalyser;
-import org.eclipse.emf.ecore.EPackage;
+import mar.validation.AnalysisMetadataDocument;
+import org.eclipse.emf.common.util.TreeIterator;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
-import org.eclipse.uml2.uml.UMLPackage;
-import org.eclipse.uml2.uml.internal.resource.UMLResourceFactoryImpl;
 
-import javax.annotation.CheckForNull;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
 
-public class GenericAnalyser extends SingleEMFFileAnalyser {
+public class GenericAnalyser {
 
-    // FIXME: change for proper type initz
-    public static final String ID = "generic";
+    private static GenericAnalyser instance;
 
-    public static class Factory implements ResourceAnalyser.Factory {
-
-        @Override
-        public void configureEnvironment() {
-            // TODO: complete me
+    public static GenericAnalyser getInstance() {
+        if (instance == null) {
+            instance = new GenericAnalyser();
         }
 
-        @Override
-        public GenericAnalyser newAnalyser(@CheckForNull ResourceAnalyser.OptionMap options) {
-            return new GenericAnalyser();
+        return instance;
+    }
+
+    public AnalysisData getAdditionalAnalysis(Resource r, Consumer<Resource> validate) {
+
+        // TODO: ¿tiene sentido almacenar esto como una lista de Strings, o más bien
+        // como un conjunto para evitar duplicados?
+        Map<String, List<String>> elements = new HashMap<>();
+
+        TreeIterator<EObject> it = r.getAllContents();
+        while (it.hasNext()) {
+            EObject obj = it.next();
+
+            EClass element = obj.eClass();
+            String elementName = element.getName();
+
+            EStructuralFeature name = element.getEStructuralFeature("name");
+
+            try {
+                if (name != null) {
+                    Object value = obj.eGet(name);
+                    System.out.println(elementName + " - " + value);
+
+                    // TODO: ¿tiene sentido almacenar las stats de los elementos nulos?
+                    if (value != null) {
+                        elements.putIfAbsent(elementName, new ArrayList<String>());
+
+                        List<String> values = elements.get(elementName);
+                        values.add((String) value);
+
+                        elements.put(elementName, values);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
-        @Override
-        public String getId() {
-            return ID;
-        }
+        Map<String, Integer> stats = new HashMap<>();
+        AtomicInteger numElements = new AtomicInteger();
 
-        @Override
-        public ILoader newLoader() {
-            // TODO: complete me
-            // return new UMLLoader();
-        }
+        elements.forEach((k, v) ->
 
+        {
+            stats.put(k, v.size());
+            numElements.addAndGet(v.size());
+        });
+
+        stats.put("total", numElements.get());
+
+        /* TODO: Metadata */
+
+        Map<String, List<String>> metadata = new HashMap<>();
+
+        /* TODO: Document */
+
+        AnalysisMetadataDocument document = new AnalysisMetadataDocument();
+
+        return new AnalysisData(stats, metadata, elements, document);
     }
 }
