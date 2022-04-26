@@ -73,7 +73,7 @@
                     "error": {}
                 },
                 {
-                    "name": "info",
+                    "name": "metadata",
                     "hackoladeMeta": {},
                     "isActivated": true,
                     "type": "document",
@@ -88,30 +88,15 @@
                             "error": {}
                         },
                         {
-                            "name": "packages",
-                            "hackoladeMeta": {
-                                "styles": {
-                                    "color": "#a73939",
-                                    "fontStyle": []
-                                }
-                            },
+                            "name": "description",
+                            "hackoladeMeta": {},
                             "isActivated": true,
-                            "type": "array",
-                            "properties": [
-                                {
-                                    "hackoladeMeta": {},
-                                    "isActivated": true,
-                                    "type": "string",
-                                    "GUID": "9a20ea10-8ccf-11ec-ac9e-ef37a119d8ad",
-                                    "arrayItem": true,
-                                    "arrayParentType": "array"
-                                }
-                            ],
-                            "additionalItems": true,
-                            "GUID": "9a15ed90-8ccf-11ec-ac9e-ef37a119d8ad",
-                            "required": false,
-                            "uniqueItems": false,
-                            "error": {}
+                            "type": "string",
+                            "GUID": "644da760-a373-11ec-9710-77e5e23256d2",
+                            "error": {
+                                "name": false,
+                                "code": false
+                            }
                         }
                     ],
                     "additionalProperties": false,
@@ -166,6 +151,94 @@
                     "GUID": "59ee14a0-8cbf-11ec-a793-35f0507997be",
                     "required": true,
                     "error": {}
+                },
+                {
+                    "name": "metamodel",
+                    "hackoladeMeta": {},
+                    "isActivated": true,
+                    "type": "document",
+                    "properties": [
+                        {
+                            "name": "packages",
+                            "hackoladeMeta": {
+                                "styles": {
+                                    "fontStyle": []
+                                }
+                            },
+                            "isActivated": true,
+                            "type": "array",
+                            "properties": [
+                                {
+                                    "hackoladeMeta": {},
+                                    "isActivated": true,
+                                    "type": "string",
+                                    "GUID": "5bd6c0d0-a373-11ec-9710-77e5e23256d2",
+                                    "arrayItem": true,
+                                    "arrayParentType": "array"
+                                }
+                            ],
+                            "additionalItems": true,
+                            "GUID": "5bd699c0-a373-11ec-9710-77e5e23256d2",
+                            "required": false,
+                            "uniqueItems": false,
+                            "error": {
+                                "name": false,
+                                "code": false
+                            },
+                            "foreignCollection": "",
+                            "foreignField": []
+                        },
+                        {
+                            "name": "classes",
+                            "hackoladeMeta": {},
+                            "isActivated": true,
+                            "type": "array",
+                            "properties": [
+                                {
+                                    "hackoladeMeta": {},
+                                    "isActivated": true,
+                                    "type": "string",
+                                    "GUID": "6e1996a0-a373-11ec-9710-77e5e23256d2",
+                                    "arrayItem": true,
+                                    "arrayParentType": "array"
+                                }
+                            ],
+                            "additionalItems": true,
+                            "GUID": "6e0cc560-a373-11ec-9710-77e5e23256d2",
+                            "error": {
+                                "name": false,
+                                "code": false
+                            }
+                        },
+                        {
+                            "name": "attributes",
+                            "hackoladeMeta": {},
+                            "isActivated": true,
+                            "type": "array",
+                            "properties": [
+                                {
+                                    "hackoladeMeta": {},
+                                    "isActivated": true,
+                                    "type": "string",
+                                    "GUID": "7d4c9460-a373-11ec-9710-77e5e23256d2",
+                                    "arrayItem": true,
+                                    "arrayParentType": "array"
+                                }
+                            ],
+                            "additionalItems": true,
+                            "GUID": "7d4604b0-a373-11ec-9710-77e5e23256d2",
+                            "error": {
+                                "name": false,
+                                "code": false
+                            }
+                        }
+                    ],
+                    "additionalProperties": false,
+                    "GUID": "4f5882d0-a373-11ec-9710-77e5e23256d2",
+                    "error": {
+                        "name": false,
+                        "code": false
+                    }
                 }
             ],
             "definitions": {
@@ -224,9 +297,13 @@
         "59ee14a0-8cbf-11ec-a793-35f0507997be": "stats",
         "3b5e5490-8cc0-11ec-a793-35f0507997be": "type",
         "3f5f9180-8cc0-11ec-a793-35f0507997be": "count",
-        "80bd20c0-8ccf-11ec-ac9e-ef37a119d8ad": "info",
+        "80bd20c0-8ccf-11ec-ac9e-ef37a119d8ad": "metadata",
         "912dcea0-8ccf-11ec-ac9e-ef37a119d8ad": "name",
-        "9a15ed90-8ccf-11ec-ac9e-ef37a119d8ad": "packages"
+        "4f5882d0-a373-11ec-9710-77e5e23256d2": "metamodel",
+        "5bd699c0-a373-11ec-9710-77e5e23256d2": "packages",
+        "644da760-a373-11ec-9710-77e5e23256d2": "description",
+        "6e0cc560-a373-11ec-9710-77e5e23256d2": "classes",
+        "7d4604b0-a373-11ec-9710-77e5e23256d2": "attributes"
     },
     "definitions": {
         "type": "definitions",
@@ -249,9 +326,9 @@
     "dbVendor": "MongoDB",
     "appTarget": "MONGODB",
     "creationTS": "2022-02-13T11:10:08.981Z",
-    "GUID": "816dff60-8cbd-11ec-9d45-5dccf7435550",
+    "GUID": "b83e7b90-a370-11ec-9710-77e5e23256d2",
     "isLineageEnabled": false,
-    "lastModifTS": "2022-02-13T14:39:26.982Z",
+    "lastModifTS": "2022-03-14T08:48:26.181Z",
     "persistenceSchemaVersion": "5",
     "isCreatedByPlugin": true,
     "pluginInformation": {
@@ -269,8 +346,8 @@
                         "GUID": "8de07d90-8cbd-11ec-9d45-5dccf7435550",
                         "x": 313.8,
                         "y": 230.6,
-                        "width": 508,
-                        "height": 285,
+                        "width": 517,
+                        "height": 339,
                         "color": {}
                     }
                 ],
@@ -281,7 +358,11 @@
                         "GUID": "850d4630-8cbd-11ec-9d45-5dccf7435550"
                     }
                 ],
-                "collapsedNodes": [],
+                "collapsedNodes": [
+                    "8de07d90-8cbd-11ec-9d45-5dccf74355504f5882d0-a373-11ec-9710-77e5e23256d25bd699c0-a373-11ec-9710-77e5e23256d2",
+                    "8de07d90-8cbd-11ec-9d45-5dccf74355504f5882d0-a373-11ec-9710-77e5e23256d26e0cc560-a373-11ec-9710-77e5e23256d2",
+                    "8de07d90-8cbd-11ec-9d45-5dccf74355504f5882d0-a373-11ec-9710-77e5e23256d27d4604b0-a373-11ec-9710-77e5e23256d2"
+                ],
                 "activeRelationship": "",
                 "activeRelationshipFields": {
                     "childField": [],
