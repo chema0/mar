@@ -23,8 +23,10 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
+import java.util.function.ToIntFunction;
 
 public class UMLAnalyser extends SingleEMFFileAnalyser {
 
@@ -98,10 +100,9 @@ public class UMLAnalyser extends SingleEMFFileAnalyser {
 
     @Override
     protected AnalysisData getAdditionalAnalysis(Resource r) {
-        AtomicReference<Integer> result = new AtomicReference<>(0);
+        ToIntFunction<Resource> validate = (resource) -> 0;
 
-        Consumer<Resource> validate = (resource -> result.set(0));
-
-        return genericAnalyser.getAdditionalAnalysis(r, validate);
+        return genericAnalyser.getAdditionalAnalysis(r, validate,
+                (smells) -> smells = new HashMap<>());
     }
 }

@@ -5,19 +5,88 @@ schema {
 # The query type, represents all of the entry points into our object graph
 type Query {
     model(id: String!): Model
-    models(first: Int = 50, type: ModelType = ECORE): [Model]!
+    models(first: Int = 50, type: Type = ECORE): [Model]!
+}
+
+type Metadata {
+    name(keyword: String): String!
+    description: String
 }
 
 type Model {
     id: ID!
-    type: ModelType!
+    type: Type!
     stats: Stats
     metadata: Metadata
     elements: Elements
 }
 
-# Types of analysis models
-enum ModelType {
+interface Stats {
+    total: Int!
+}
+
+type EcoreStats implements Stats {
+    total(filter: LogicalFilter): Int!
+    EAttribute(filter: LogicalFilter): Int
+    EClass(filter: LogicalFilter): Int
+    EClassifier(filter: LogicalFilter): Int
+    EDataType(filter: LogicalFilter): Int
+    EPackage(filter: LogicalFilter): Int
+    EReference(filter: LogicalFilter): Int
+    EParameter(filter: LogicalFilter): Int
+    ETypedElement(filter: LogicalFilter): Int
+}
+
+# Exclusive UML stats
+type UMLStats implements Stats {
+    total(filter: LogicalFilter): Int!
+    Action(filter: LogicalFilter): Int
+    Activity(filter: LogicalFilter): Int
+    Actor(filter: LogicalFilter): Int
+    Association(filter: LogicalFilter): Int
+    Class(filter: LogicalFilter): Int
+    Classifier(filter: LogicalFilter): Int
+    Component(filter: LogicalFilter): Int
+    Enumeration(filter: LogicalFilter): Int
+    Interaction(filter: LogicalFilter): Int
+    Interface(filter: LogicalFilter): Int
+    Package(filter: LogicalFilter): Int
+    State(filter: LogicalFilter): Int
+    StateMachine(filter: LogicalFilter): Int
+    UseCase(filter: LogicalFilter): Int
+}
+
+type EcoreElements {
+    EAttribute(filter: NameFilter): [String]
+    EClass(filter: NameFilter): [String]
+    EClassifier(filter: NameFilter): [String]
+    EDataType(filter: NameFilter): [String]
+    EPackage(filter: NameFilter): [String]
+    EReference(filter: NameFilter): [String]
+    EParameter(filter: NameFilter): [String]
+    ETypedElement(filter: NameFilter): [String]
+}
+
+type UMLElements {
+    Action(filter: NameFilter): [String]
+    Activity(filter: NameFilter): [String]
+    Actor(filter: NameFilter): [String]
+    Association(filter: NameFilter): [String]
+    Class(filter: NameFilter): [String]
+    Classifier(filter: NameFilter): [String]
+    Component(filter: NameFilter): [String]
+    Enumeration(filter: NameFilter): [String]
+    Interaction(filter: NameFilter): [String]
+    Interface(filter: NameFilter): [String]
+    Package(filter: NameFilter): [String]
+    State(filter: NameFilter): [String]
+    StateMachine(filter: NameFilter): [String]
+    UseCase(filter: NameFilter): [String]
+}
+
+# Enums
+
+enum Type {
     ECORE
     XTEXT
     UML
@@ -29,81 +98,25 @@ enum ModelType {
     ARCHIMATE
 }
 
-type Metadata {
-    name: String!
-    description: String
+enum Operator {
+    EQ
+    GTE
+    GT
+    LT
+    LTE
 }
 
-interface Stats {
-    total: Int!
+# Input types
+
+input LogicalFilter {
+    op: Operator!
+    value: Int!
 }
 
-type EcoreStats implements Stats {
-    total: Int!
-    EAttribute: Int
-    EClass: Int
-    EClassifier: Int
-    EDataType: Int
-    EPackage: Int
-    EReference: Int
-    EParameter: Int
-    ETypedElement: Int
+input NameFilter {
+    values: [String]!
 }
 
-# Exclusive UML stats
-type UMLStats implements Stats {
-    total: Int!
-    Action: Int
-    Activity: Int
-    Actor: Int
-    Association: Int
-    Class: Int
-    Classifier: Int
-    Component: Int
-    Enumeration: Int
-    Interaction: Int
-    Interface: Int
-    Package: Int
-    State: Int
-    StateMachine: Int
-    UseCase: Int
-}
+# Unions
 
-interface Elements {
-    EAttribute: [String]
-    EClass: [String]
-    EClassifier: [String]
-    EDataType: [String]
-    EPackage: [String]
-    EReference: [String]
-    EParameter: [String]
-    ETypedElement: [String]
-}
-
-type UMLElements implements Elements {
-    Action: [String]
-    Activity: [String]
-    Actor: [String]
-    Association: [String]
-    Class: [String]
-    Classifier: [String]
-    Component: [String]
-    Enumeration: [String]
-    Interaction: [String]
-    Interface: [String]
-    Package: [String]
-    State: [String]
-    StateMachine: [String]
-    UseCase: [String]
-}
-
-#type EcoreMetamodel implements Metamodel {
-#type EcoreMetamodel {
-#    # common: [String]
-#    enums: [String]
-#    references: [String]
-#    classes: [String]
-#    attributes: [String]
-#    packages(keyword: String): [String]
-#    datatypes: [String]
-#}
+union Elements = EcoreElements | UMLElements

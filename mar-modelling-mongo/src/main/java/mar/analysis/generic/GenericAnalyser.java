@@ -1,5 +1,6 @@
 package mar.analysis.generic;
 
+import mar.analysis.smells.Smell;
 import mar.validation.AnalysisMetadataDocument;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EClass;
@@ -13,6 +14,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.function.ToIntFunction;
 
 public class GenericAnalyser {
 
@@ -26,7 +29,7 @@ public class GenericAnalyser {
         return instance;
     }
 
-    public AnalysisData getAdditionalAnalysis(Resource r, Consumer<Resource> validate) {
+    public AnalysisData getAdditionalAnalysis(Resource r, ToIntFunction<Resource> validate, Consumer<Map<String, List<Smell>>> detectSmells) {
 
         // TODO: ¿tiene sentido almacenar esto como una lista de Strings, o más bien
         // como un conjunto para evitar duplicados?
@@ -64,22 +67,29 @@ public class GenericAnalyser {
         Map<String, Integer> stats = new HashMap<>();
         AtomicInteger numElements = new AtomicInteger();
 
-        elements.forEach((k, v) ->
-
-        {
+        elements.forEach((k, v) -> {
             stats.put(k, v.size());
             numElements.addAndGet(v.size());
         });
 
         stats.put("total", numElements.get());
 
-        /* TODO: Metadata */
+        /* Metadata */
 
         Map<String, List<String>> metadata = new HashMap<>();
 
-        /* TODO: Document */
+        /* Document */
 
         AnalysisMetadataDocument document = new AnalysisMetadataDocument();
+        document.setNumElements(numElements.get());
+
+        Map<String, List<Smell>> smells = new HashMap<>();
+
+        detectSmells.accept(smells);
+
+        if (!smells.isEmpty()) {
+            smells.forEach(document::addSmell);
+        }
 
         return new AnalysisData(stats, metadata, elements, document);
     }

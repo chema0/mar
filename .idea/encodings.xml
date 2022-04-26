@@ -3,16 +3,12 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/mar-api-graphql/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/mar-api-graphql/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/mar-graphql/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/mar-graphql/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/mar-indexer-lucene/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/mar-indexer-lucene/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/mar-indexer-spark/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/mar-indexer-spark/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/mar-modelling-eclipse/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/mar-modelling-eclipse/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/mar-modelling-mongo/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/mar-modelling-mongo/src/main/java-gen" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/mar-modelling-mongo/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/mar-modelling-pnml/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/mar-modelling-pnml/src/main/resources" charset="UTF-8" />
@@ -22,6 +18,5 @@
     <file url="file://$PROJECT_DIR$/mar-modelling/src/main/java-gen" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/mar-modelling/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/mar-spark-merge/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/mar-spark-merge/src/main/resources" charset="UTF-8" />
   </component>
 </project>

@@ -80,80 +80,9 @@ public class SingleEcoreFileAnalyser extends SingleEMFFileAnalyser {
 
     @Override
     protected AnalysisData getAdditionalAnalysis(Resource r) {
-        return genericAnalyser.getAdditionalAnalysis(r, this::validate);
-
-        // List<String> uris = new ArrayList<>();
-
-        // TODO: ¿tiene sentido almacenar esto como una lista de Strings, o más bien
-        // como un conjunto para evitar duplicados?
-        // Map<String, List<String>> elements = new HashMap<>();
-
-        // TreeIterator<EObject> it = r.getAllContents();
-        // while (it.hasNext()) {
-            // EObject obj = it.next();
-
-            // EClass element = obj.eClass();
-            // String elementName = element.getName();
-
-            // EStructuralFeature name = element.getEStructuralFeature("name");
-
-            // try {
-                // if (name != null) {
-                    // Object value = obj.eGet(name);
-                    // System.out.println(elementName + " - " + value);
-
-                    // TODO: ¿tiene sentido almacenar las stats de los elementos nulos?
-                    // if (value != null) {
-                        // elements.putIfAbsent(elementName, new ArrayList<String>());
-
-                        // List<String> values = elements.get(elementName);
-                        // values.add((String) value);
-
-                        // elements.put(elementName, values);
-                    // }
-                // }
-            // } catch (Exception e) {
-               // e.printStackTrace();
-            // }
-        // }
-
-        // Map<String, Integer> stats = new HashMap<>();
-        // AtomicInteger numElements = new AtomicInteger();
-
-        // elements.forEach((k, v) -> {
-            // stats.put(k, v.size());
-            // numElements.addAndGet(v.size());
-        // });
-
-        //stats.put("total", numElements.get());
-
-        // TODO: check this
-        // int numValidationErrors = validate(r);
-        // stats.put("errors", numValidationErrors);
-
-        // Map<String, List<String>> metadata = new HashMap<>();
-        // if (!uris.isEmpty()) {
-            // metadata = new HashMap<>();
-            // metadata.put("nsURI", uris);
-        // }
-
-        // TODO: check this
-        // Metadata as a document
-        // Map<Object, Object> document = new HashMap<>();
-        // Map<String, Integer> smellDocument = new HashMap<>();
-        // document.put("smells", smellDocument);
-
-        // AnalysisMetadataDocument document = new AnalysisMetadataDocument();
-        // document.setNumElements(numElements.get());
-
-        // Map<String, List<Smell>> smells = EcoreSmellCatalog.INSTANCE.detectSmells(r);
-        // if (!smells.isEmpty()) {
-            // smells.forEach((k, v) -> {
-                // document.addSmell(k, v);
-            // });
-        // }
-
-        // return new AnalysisData(stats, metadata, elements, document);
+        return genericAnalyser.getAdditionalAnalysis(r,
+                (resource) -> validate(r),
+                (smells) -> smells = EcoreSmellCatalog.INSTANCE.detectSmells((r)));
     }
 
 }
