@@ -7,19 +7,27 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="mar-indexer-spark" />
+        <module name="mar-modelling-eclipse" />
         <module name="mar.restservice" />
         <module name="mar-ml" />
         <module name="mar-indexer-lucene" />
+        <module name="mar-modelling-xtext" />
+        <module name="mar-spark-merge" />
         <module name="mar-modelling-pnml" />
         <module name="mar-common" />
         <module name="mar-api-graphql" />
-        <module name="mar-graphql" />
-        <module name="mar-indexer-spark" />
-        <module name="mar-modelling-eclipse" />
-        <module name="mar-modelling-xtext" />
-        <module name="mar-spark-merge" />
-        <module name="mar-modelling-mongo" />
         <module name="mar-modelling" />
+        <module name="mar-graphql" />
+      </profile>
+      <profile name="Annotation profile for Root project for MAR" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.22/lombok-1.18.22.jar" />
+        </processorPath>
+        <module name="mar-modelling-mongo" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

@@ -1,4 +1,4 @@
-package mar.mongodb.beans;
+package mar.models.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,11 +1,11 @@
-package mar.mongodb.services;
+package mar.models.service;
 
 import com.mongodb.lang.Nullable;
-import mar.mongodb.beans.Metadata;
-import mar.mongodb.beans.Model;
-import mar.mongodb.beans.Status;
-import mar.mongodb.beans.Type;
-import mar.mongodb.repository.ModelRepository;
+import mar.models.model.Metadata;
+import mar.models.model.Model;
+import mar.models.model.Status;
+import mar.models.model.Type;
+import mar.models.repository.ModelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -15,18 +15,14 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class ModelService {
+public class ModelsService {
 
     @Autowired
     private ModelRepository modelRepository;
 
-    /* CREATE */
-
     public Model insertModel(Model model) {
         return modelRepository.insert(model);
     }
-
-    /* READ */
 
     public Model findModelByModelId(String id) {
         return modelRepository.findByModelId(id);
@@ -49,8 +45,6 @@ public class ModelService {
         return modelRepository.findByType(type, pageable);
     }
 
-    /* UPDATE */
-
     @Nullable
     public Model updateModelStatus(String modelId, Status status) {
         Model model = modelRepository.findByModelId(modelId);
@@ -71,14 +65,12 @@ public class ModelService {
         if (model != null) {
             model.setStats(stats);
             model.setMetadata(metadata);
-            model.setMetamodel(metamodel);
+            model.setElements(metamodel);
             return modelRepository.save(model);
         }
 
         return null;
     }
-
-    /* DELETE */
 
     public List<Model> deleteAllModelsByStatus(Status status) {
         return modelRepository.deleteByStatus(status);

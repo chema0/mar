@@ -1,5 +1,7 @@
 package mar.analysis.ecore;
 
+import mar.analysis.generic.AnalysisData;
+import mar.analysis.generic.GenericAnalyser;
 import mar.analysis.smells.Smell;
 import mar.analysis.smells.ecore.EcoreSmellCatalog;
 import mar.modelling.loader.ILoader;
@@ -9,7 +11,10 @@ import mar.validation.ResourceAnalyser.OptionMap;
 import mar.validation.SingleEMFFileAnalyser;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.TreeIterator;
-import org.eclipse.emf.ecore.*;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EValidatorRegistryImpl;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.Diagnostician;
@@ -26,6 +31,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class SingleEcoreFileAnalyser extends SingleEMFFileAnalyser {
 
     public static final String ID = "ecore";
+
+    public static final GenericAnalyser genericAnalyser = GenericAnalyser.getInstance();
 
     public static class Factory implements ResourceAnalyser.Factory {
 
@@ -73,121 +80,80 @@ public class SingleEcoreFileAnalyser extends SingleEMFFileAnalyser {
 
     @Override
     protected AnalysisData getAdditionalAnalysis(Resource r) {
-        List<String> uris = new ArrayList<String>();
+        return genericAnalyser.getAdditionalAnalysis(r, this::validate);
 
-        List<String> packages = new ArrayList<String>();
-        List<String> classes = new ArrayList<String>();
-        List<String> enums = new ArrayList<String>();
-        List<String> datatypes = new ArrayList<String>();
-        List<String> attributes = new ArrayList<String>();
-        List<String> references = new ArrayList<String>();
+        // List<String> uris = new ArrayList<>();
 
-        Map<String, List<String>> metamodel = new HashMap<>();
+        // TODO: ¿tiene sentido almacenar esto como una lista de Strings, o más bien
+        // como un conjunto para evitar duplicados?
+        // Map<String, List<String>> elements = new HashMap<>();
 
-        TreeIterator<EObject> it = r.getAllContents();
-        while (it.hasNext()) {
-            EObject obj = it.next();
-//            if (obj instanceof EPackage) {
-//                packages.add(((EPackage) obj).getName());
-//                String nsURI = ((EPackage) obj).getNsURI();
-//                if (nsURI != null)
-//                    uris.add(nsURI);
-//            } else if (obj instanceof EClass) {
-//                classes.add(((EClass) obj).getName());
-//            } else if (obj instanceof EAttribute) {
-//                attributes.add(((EAttribute) obj).getEAttributeType().getName());
-//            } else if (obj instanceof EReference) {
-//                references.add(((EReference) obj).getName());
-//            } else if (obj instanceof EEnum) {
-//                enums.add(((EEnum) obj).getName());
-//            } else if (obj instanceof EDataType) {
-//                datatypes.add(((EDataType) obj).getName());
-//            }
+        // TreeIterator<EObject> it = r.getAllContents();
+        // while (it.hasNext()) {
+            // EObject obj = it.next();
 
-//            if (eClassName != null) {
-//                // String key = "diagram_" + type;
-//                List<String> elements = metamodel.get(eClassName);
-//
-//                if (elements == null) {
-                    // elements.add(objName);
-//                    elements = new ArrayList<>();
-//                }
-//
-//                metamodel.put(eClassName, elements);
-//            }
-            String eClassName = obj.eClass().getName();
+            // EClass element = obj.eClass();
+            // String elementName = element.getName();
 
-            try {
-                String objName = ((ENamedElement) obj).getName();
-                System.out.println("eClassName: " + eClassName + ", objName: " + objName);
-                List<String> elements = metamodel.get(eClassName);
+            // EStructuralFeature name = element.getEStructuralFeature("name");
 
-                if (elements == null) {
-                    elements = new ArrayList<>();
-                }
+            // try {
+                // if (name != null) {
+                    // Object value = obj.eGet(name);
+                    // System.out.println(elementName + " - " + value);
 
-                elements.add(objName);
-                metamodel.put(eClassName, elements);
-            } catch (Exception e) {
-                // e.printStackTrace();
-            }
-        }
+                    // TODO: ¿tiene sentido almacenar las stats de los elementos nulos?
+                    // if (value != null) {
+                        // elements.putIfAbsent(elementName, new ArrayList<String>());
 
-        Map<String, Integer> stats = new HashMap<>();
-        AtomicInteger numElements = new AtomicInteger();
+                        // List<String> values = elements.get(elementName);
+                        // values.add((String) value);
 
-        metamodel.forEach((k, v) -> {
-            stats.put(k, v.size());
-            numElements.addAndGet(v.size());
-        });
+                        // elements.put(elementName, values);
+                    // }
+                // }
+            // } catch (Exception e) {
+               // e.printStackTrace();
+            // }
+        // }
 
-        stats.put("elements", numElements.get());
+        // Map<String, Integer> stats = new HashMap<>();
+        // AtomicInteger numElements = new AtomicInteger();
 
-//        int numElements = packages.size() + classes.size() + enums.size() + attributes.size() + references.size();
-//        stats.put("elements", numElements);
-//        stats.put("packages", packages.size());
-//        stats.put("classes", classes.size());
-//        stats.put("enums", enums.size());
-//        stats.put("datatypes", datatypes.size());
-//        stats.put("attributes", attributes.size());
-//        stats.put("references", references.size());
+        // elements.forEach((k, v) -> {
+            // stats.put(k, v.size());
+            // numElements.addAndGet(v.size());
+        // });
+
+        //stats.put("total", numElements.get());
 
         // TODO: check this
         // int numValidationErrors = validate(r);
         // stats.put("errors", numValidationErrors);
 
-        Map<String, List<String>> metadata = null;
-        if (!uris.isEmpty()) {
-            metadata = new HashMap<String, List<String>>();
-            metadata.put("nsURI", uris);
-        }
-
-        /* Metamodel */
-
-//        Map<String, List<String>> metamodel = new HashMap<>();
-//        metamodel.put("packages", packages);
-//        metamodel.put("classes", classes);
-//        metamodel.put("enums", enums);
-//        metamodel.put("datatypes", datatypes);
-//        metamodel.put("attributes", attributes);
-//        metamodel.put("references", references);
+        // Map<String, List<String>> metadata = new HashMap<>();
+        // if (!uris.isEmpty()) {
+            // metadata = new HashMap<>();
+            // metadata.put("nsURI", uris);
+        // }
 
         // TODO: check this
         // Metadata as a document
-        //Map<Object, Object> document = new HashMap<>();
-        //Map<String, Integer> smellDocument = new HashMap<>();
-        //document.put("smells", smellDocument);
+        // Map<Object, Object> document = new HashMap<>();
+        // Map<String, Integer> smellDocument = new HashMap<>();
+        // document.put("smells", smellDocument);
 
-        AnalysisMetadataDocument document = new AnalysisMetadataDocument();
-        document.setNumElements(numElements.get());
-        Map<String, List<Smell>> smells = EcoreSmellCatalog.INSTANCE.detectSmells(r);
-        if (!smells.isEmpty()) {
-            smells.forEach((k, v) -> {
-                document.addSmell(k, v);
-            });
-        }
+        // AnalysisMetadataDocument document = new AnalysisMetadataDocument();
+        // document.setNumElements(numElements.get());
 
-        return new AnalysisData(stats, metadata, metamodel, document);
+        // Map<String, List<Smell>> smells = EcoreSmellCatalog.INSTANCE.detectSmells(r);
+        // if (!smells.isEmpty()) {
+            // smells.forEach((k, v) -> {
+                // document.addSmell(k, v);
+            // });
+        // }
+
+        // return new AnalysisData(stats, metadata, elements, document);
     }
 
 }

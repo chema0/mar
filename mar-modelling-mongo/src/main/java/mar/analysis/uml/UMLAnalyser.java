@@ -1,47 +1,36 @@
 package mar.analysis.uml;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.CheckForNull;
-
-import org.eclipse.emf.common.util.Diagnostic;
-import org.eclipse.emf.common.util.TreeIterator;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.ENamedElement;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.impl.EClassImpl;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.util.Diagnostician;
-import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
-import org.eclipse.uml2.uml.Activity;
-import org.eclipse.uml2.uml.Actor;
-import org.eclipse.uml2.uml.Component;
-import org.eclipse.uml2.uml.Interaction;
-import org.eclipse.uml2.uml.Model;
-import org.eclipse.uml2.uml.Profile;
-import org.eclipse.uml2.uml.StateMachine;
-import org.eclipse.uml2.uml.UMLPackage;
-import org.eclipse.uml2.uml.internal.resource.UMLResourceFactoryImpl;
-
-import mar.analysis.ecore.SingleEcoreFileAnalyser;
+import mar.analysis.generic.AnalysisData;
+import mar.analysis.generic.GenericAnalyser;
 import mar.indexer.common.configuration.ModelLoader;
 import mar.modelling.loader.ILoader;
 import mar.validation.IFileInfo;
 import mar.validation.ResourceAnalyser;
 import mar.validation.ResourceAnalyser.OptionMap;
 import mar.validation.SingleEMFFileAnalyser;
+import org.eclipse.emf.common.util.Diagnostic;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.util.Diagnostician;
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
+import org.eclipse.uml2.uml.Model;
+import org.eclipse.uml2.uml.UMLPackage;
+import org.eclipse.uml2.uml.internal.resource.UMLResourceFactoryImpl;
+
+import javax.annotation.CheckForNull;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 
 public class UMLAnalyser extends SingleEMFFileAnalyser {
 
     public static final String ID = "uml";
+
+    public static final GenericAnalyser genericAnalyser = GenericAnalyser.getInstance();
 
     public static class Factory implements ResourceAnalyser.Factory {
 
@@ -109,60 +98,10 @@ public class UMLAnalyser extends SingleEMFFileAnalyser {
 
     @Override
     protected AnalysisData getAdditionalAnalysis(Resource r) {
-        Map<String, Integer> types = new HashMap<>();
+        AtomicReference<Integer> result = new AtomicReference<>(0);
 
-        Map<String, List<String>> metamodel = new HashMap<>();
+        Consumer<Resource> validate = (resource -> result.set(0));
 
-        TreeIterator<EObject> it = r.getAllContents();
-        while (it.hasNext()) {
-            EObject obj = it.next();
-
-//            if (obj instanceof StateMachine) {
-//                type = "sm";
-//            } else if (obj instanceof Interaction) {
-//                type = "interaction";
-//            } else if (obj instanceof Activity) {
-//                type = "ad";
-//            } else if (obj instanceof Component) {
-//                type = "comp";
-//            } else if (obj instanceof org.eclipse.uml2.uml.Class) {
-//                type = "cd";
-//            } else if (obj instanceof Actor) {
-//                type = "usecase";
-//            } else if (obj instanceof Profile) {
-//                type = "profile";
-//            }
-
-            String eClassName = obj.eClass().getName();
-
-            try {
-                String objName = ((ENamedElement) obj).getName();
-                System.out.println("eClassName: " + eClassName + ", objName: " + objName);
-                List<String> elements = metamodel.get(eClassName);
-
-                if (elements == null) {
-                    elements = new ArrayList<>();
-                }
-
-                elements.add(objName);
-                metamodel.put(eClassName, elements);
-            } catch (Exception e) {
-                // e.printStackTrace();
-            }
-
-//            String type = eClass.getName();
-//
-//            eClass.getClass().cast(obj).getName();
-//
-//            if (type != null) {
-//                // String key = "diagram_" + type;
-//                String key = type;
-//                types.putIfAbsent(key, 0);
-//                types.compute(key, (k, v) -> v + 1);
-//            }
-        }
-
-        return new
-                AnalysisData(types, null, null, null);
+        return genericAnalyser.getAdditionalAnalysis(r, validate);
     }
 }

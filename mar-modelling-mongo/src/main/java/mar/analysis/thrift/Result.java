@@ -15,7 +15,7 @@ public class Result implements org.apache.thrift.TBase<Result, Result._Fields>, 
   private static final org.apache.thrift.protocol.TField STATS_FIELD_DESC = new org.apache.thrift.protocol.TField("stats", org.apache.thrift.protocol.TType.MAP, (short)2);
   private static final org.apache.thrift.protocol.TField METADATA_FIELD_DESC = new org.apache.thrift.protocol.TField("metadata", org.apache.thrift.protocol.TType.MAP, (short)3);
   private static final org.apache.thrift.protocol.TField METADATA_JSON_FIELD_DESC = new org.apache.thrift.protocol.TField("metadata_json", org.apache.thrift.protocol.TType.STRING, (short)4);
-  private static final org.apache.thrift.protocol.TField METAMODEL_FIELD_DESC = new org.apache.thrift.protocol.TField("metamodel", org.apache.thrift.protocol.TType.MAP, (short)5);
+  private static final org.apache.thrift.protocol.TField ELEMENTS_FIELD_DESC = new org.apache.thrift.protocol.TField("elements", org.apache.thrift.protocol.TType.MAP, (short)5);
 
   private static final org.apache.thrift.scheme.SchemeFactory STANDARD_SCHEME_FACTORY = new ResultStandardSchemeFactory();
   private static final org.apache.thrift.scheme.SchemeFactory TUPLE_SCHEME_FACTORY = new ResultTupleSchemeFactory();
@@ -24,7 +24,7 @@ public class Result implements org.apache.thrift.TBase<Result, Result._Fields>, 
   public @org.apache.thrift.annotation.Nullable java.util.Map<java.lang.String,java.lang.Integer> stats; // required
   public @org.apache.thrift.annotation.Nullable java.util.Map<java.lang.String,java.util.List<java.lang.String>> metadata; // required
   public @org.apache.thrift.annotation.Nullable java.lang.String metadata_json; // optional
-  public @org.apache.thrift.annotation.Nullable java.util.Map<java.lang.String,java.util.List<java.lang.String>> metamodel; // required
+  public @org.apache.thrift.annotation.Nullable java.util.Map<java.lang.String,java.util.List<java.lang.String>> elements; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -32,7 +32,7 @@ public class Result implements org.apache.thrift.TBase<Result, Result._Fields>, 
     STATS((short)2, "stats"),
     METADATA((short)3, "metadata"),
     METADATA_JSON((short)4, "metadata_json"),
-    METAMODEL((short)5, "metamodel");
+    ELEMENTS((short)5, "elements");
 
     private static final java.util.Map<java.lang.String, _Fields> byName = new java.util.HashMap<java.lang.String, _Fields>();
 
@@ -56,8 +56,8 @@ public class Result implements org.apache.thrift.TBase<Result, Result._Fields>, 
           return METADATA;
         case 4: // METADATA_JSON
           return METADATA_JSON;
-        case 5: // METAMODEL
-          return METAMODEL;
+        case 5: // ELEMENTS
+          return ELEMENTS;
         default:
           return null;
       }
@@ -116,7 +116,7 @@ public class Result implements org.apache.thrift.TBase<Result, Result._Fields>, 
                 new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)))));
     tmpMap.put(_Fields.METADATA_JSON, new org.apache.thrift.meta_data.FieldMetaData("metadata_json", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.METAMODEL, new org.apache.thrift.meta_data.FieldMetaData("metamodel", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+    tmpMap.put(_Fields.ELEMENTS, new org.apache.thrift.meta_data.FieldMetaData("elements", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.MapMetaData(org.apache.thrift.protocol.TType.MAP, 
             new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING), 
             new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
@@ -132,13 +132,13 @@ public class Result implements org.apache.thrift.TBase<Result, Result._Fields>, 
     java.lang.String status,
     java.util.Map<java.lang.String,java.lang.Integer> stats,
     java.util.Map<java.lang.String,java.util.List<java.lang.String>> metadata,
-    java.util.Map<java.lang.String,java.util.List<java.lang.String>> metamodel)
+    java.util.Map<java.lang.String,java.util.List<java.lang.String>> elements)
   {
     this();
     this.status = status;
     this.stats = stats;
     this.metadata = metadata;
-    this.metamodel = metamodel;
+    this.elements = elements;
   }
 
   /**
@@ -170,9 +170,9 @@ public class Result implements org.apache.thrift.TBase<Result, Result._Fields>, 
     if (other.isSetMetadata_json()) {
       this.metadata_json = other.metadata_json;
     }
-    if (other.isSetMetamodel()) {
-      java.util.Map<java.lang.String,java.util.List<java.lang.String>> __this__metamodel = new java.util.HashMap<java.lang.String,java.util.List<java.lang.String>>(other.metamodel.size());
-      for (java.util.Map.Entry<java.lang.String, java.util.List<java.lang.String>> other_element : other.metamodel.entrySet()) {
+    if (other.isSetElements()) {
+      java.util.Map<java.lang.String,java.util.List<java.lang.String>> __this__metamodel = new java.util.HashMap<java.lang.String,java.util.List<java.lang.String>>(other.elements.size());
+      for (java.util.Map.Entry<java.lang.String, java.util.List<java.lang.String>> other_element : other.elements.entrySet()) {
 
         java.lang.String other_element_key = other_element.getKey();
         java.util.List<java.lang.String> other_element_value = other_element.getValue();
@@ -183,7 +183,7 @@ public class Result implements org.apache.thrift.TBase<Result, Result._Fields>, 
 
         __this__metamodel.put(__this__metamodel_copy_key, __this__metamodel_copy_value);
       }
-      this.metamodel = __this__metamodel;
+      this.elements = __this__metamodel;
     }
   }
 
@@ -197,7 +197,7 @@ public class Result implements org.apache.thrift.TBase<Result, Result._Fields>, 
     this.stats = null;
     this.metadata = null;
     this.metadata_json = null;
-    this.metamodel = null;
+    this.elements = null;
   }
 
   @org.apache.thrift.annotation.Nullable
@@ -322,39 +322,39 @@ public class Result implements org.apache.thrift.TBase<Result, Result._Fields>, 
     }
   }
 
-  public int getMetamodelSize() {
-    return (this.metamodel == null) ? 0 : this.metamodel.size();
+  public int getElementsSize() {
+    return (this.elements == null) ? 0 : this.elements.size();
   }
 
-  public void putToMetamodel(java.lang.String key, java.util.List<java.lang.String> val) {
-    if (this.metamodel == null) {
-      this.metamodel = new java.util.HashMap<java.lang.String,java.util.List<java.lang.String>>();
+  public void putToElements(java.lang.String key, java.util.List<java.lang.String> val) {
+    if (this.elements == null) {
+      this.elements = new java.util.HashMap<java.lang.String,java.util.List<java.lang.String>>();
     }
-    this.metamodel.put(key, val);
+    this.elements.put(key, val);
   }
 
   @org.apache.thrift.annotation.Nullable
-  public java.util.Map<java.lang.String,java.util.List<java.lang.String>> getMetamodel() {
-    return this.metamodel;
+  public java.util.Map<java.lang.String,java.util.List<java.lang.String>> getElements() {
+    return this.elements;
   }
 
-  public Result setMetamodel(@org.apache.thrift.annotation.Nullable java.util.Map<java.lang.String,java.util.List<java.lang.String>> metamodel) {
-    this.metamodel = metamodel;
+  public Result setElements(@org.apache.thrift.annotation.Nullable java.util.Map<java.lang.String,java.util.List<java.lang.String>> elements) {
+    this.elements = elements;
     return this;
   }
 
-  public void unsetMetamodel() {
-    this.metamodel = null;
+  public void unsetElements() {
+    this.elements = null;
   }
 
-  /** Returns true if field metamodel is set (has been assigned a value) and false otherwise */
-  public boolean isSetMetamodel() {
-    return this.metamodel != null;
+  /** Returns true if field elements is set (has been assigned a value) and false otherwise */
+  public boolean isSetElements() {
+    return this.elements != null;
   }
 
-  public void setMetamodelIsSet(boolean value) {
+  public void setElementsIsSet(boolean value) {
     if (!value) {
-      this.metamodel = null;
+      this.elements = null;
     }
   }
 
@@ -392,11 +392,11 @@ public class Result implements org.apache.thrift.TBase<Result, Result._Fields>, 
       }
       break;
 
-    case METAMODEL:
+    case ELEMENTS:
       if (value == null) {
-        unsetMetamodel();
+        unsetElements();
       } else {
-        setMetamodel((java.util.Map<java.lang.String,java.util.List<java.lang.String>>)value);
+        setElements((java.util.Map<java.lang.String,java.util.List<java.lang.String>>)value);
       }
       break;
 
@@ -418,8 +418,8 @@ public class Result implements org.apache.thrift.TBase<Result, Result._Fields>, 
     case METADATA_JSON:
       return getMetadata_json();
 
-    case METAMODEL:
-      return getMetamodel();
+    case ELEMENTS:
+      return getElements();
 
     }
     throw new java.lang.IllegalStateException();
@@ -440,8 +440,8 @@ public class Result implements org.apache.thrift.TBase<Result, Result._Fields>, 
       return isSetMetadata();
     case METADATA_JSON:
       return isSetMetadata_json();
-    case METAMODEL:
-      return isSetMetamodel();
+    case ELEMENTS:
+      return isSetElements();
     }
     throw new java.lang.IllegalStateException();
   }
@@ -495,12 +495,12 @@ public class Result implements org.apache.thrift.TBase<Result, Result._Fields>, 
         return false;
     }
 
-    boolean this_present_metamodel = true && this.isSetMetamodel();
-    boolean that_present_metamodel = true && that.isSetMetamodel();
+    boolean this_present_metamodel = true && this.isSetElements();
+    boolean that_present_metamodel = true && that.isSetElements();
     if (this_present_metamodel || that_present_metamodel) {
       if (!(this_present_metamodel && that_present_metamodel))
         return false;
-      if (!this.metamodel.equals(that.metamodel))
+      if (!this.elements.equals(that.elements))
         return false;
     }
 
@@ -527,9 +527,9 @@ public class Result implements org.apache.thrift.TBase<Result, Result._Fields>, 
     if (isSetMetadata_json())
       hashCode = hashCode * 8191 + metadata_json.hashCode();
 
-    hashCode = hashCode * 8191 + ((isSetMetamodel()) ? 131071 : 524287);
-    if (isSetMetamodel())
-      hashCode = hashCode * 8191 + metamodel.hashCode();
+    hashCode = hashCode * 8191 + ((isSetElements()) ? 131071 : 524287);
+    if (isSetElements())
+      hashCode = hashCode * 8191 + elements.hashCode();
 
     return hashCode;
   }
@@ -582,12 +582,12 @@ public class Result implements org.apache.thrift.TBase<Result, Result._Fields>, 
         return lastComparison;
       }
     }
-    lastComparison = java.lang.Boolean.compare(isSetMetamodel(), other.isSetMetamodel());
+    lastComparison = java.lang.Boolean.compare(isSetElements(), other.isSetElements());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetMetamodel()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.metamodel, other.metamodel);
+    if (isSetElements()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.elements, other.elements);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -647,11 +647,11 @@ public class Result implements org.apache.thrift.TBase<Result, Result._Fields>, 
       first = false;
     }
     if (!first) sb.append(", ");
-    sb.append("metamodel:");
-    if (this.metamodel == null) {
+    sb.append("elements:");
+    if (this.elements == null) {
       sb.append("null");
     } else {
-      sb.append(this.metamodel);
+      sb.append(this.elements);
     }
     first = false;
     sb.append(")");
@@ -763,11 +763,11 @@ public class Result implements org.apache.thrift.TBase<Result, Result._Fields>, 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
-          case 5: // METAMODEL
+          case 5: // ELEMENTS
             if (schemeField.type == org.apache.thrift.protocol.TType.MAP) {
               {
                 org.apache.thrift.protocol.TMap _map21 = iprot.readMapBegin();
-                struct.metamodel = new java.util.HashMap<java.lang.String,java.util.List<java.lang.String>>(2*_map21.size);
+                struct.elements = new java.util.HashMap<java.lang.String,java.util.List<java.lang.String>>(2*_map21.size);
                 @org.apache.thrift.annotation.Nullable java.lang.String _key22;
                 @org.apache.thrift.annotation.Nullable java.util.List<java.lang.String> _val23;
                 for (int _i24 = 0; _i24 < _map21.size; ++_i24)
@@ -784,11 +784,11 @@ public class Result implements org.apache.thrift.TBase<Result, Result._Fields>, 
                     }
                     iprot.readListEnd();
                   }
-                  struct.metamodel.put(_key22, _val23);
+                  struct.elements.put(_key22, _val23);
                 }
                 iprot.readMapEnd();
               }
-              struct.setMetamodelIsSet(true);
+              struct.setElementsIsSet(true);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
@@ -853,11 +853,11 @@ public class Result implements org.apache.thrift.TBase<Result, Result._Fields>, 
           oprot.writeFieldEnd();
         }
       }
-      if (struct.metamodel != null) {
-        oprot.writeFieldBegin(METAMODEL_FIELD_DESC);
+      if (struct.elements != null) {
+        oprot.writeFieldBegin(ELEMENTS_FIELD_DESC);
         {
-          oprot.writeMapBegin(new org.apache.thrift.protocol.TMap(org.apache.thrift.protocol.TType.STRING, org.apache.thrift.protocol.TType.LIST, struct.metamodel.size()));
-          for (java.util.Map.Entry<java.lang.String, java.util.List<java.lang.String>> _iter31 : struct.metamodel.entrySet())
+          oprot.writeMapBegin(new org.apache.thrift.protocol.TMap(org.apache.thrift.protocol.TType.STRING, org.apache.thrift.protocol.TType.LIST, struct.elements.size()));
+          for (java.util.Map.Entry<java.lang.String, java.util.List<java.lang.String>> _iter31 : struct.elements.entrySet())
           {
             oprot.writeString(_iter31.getKey());
             {
@@ -903,7 +903,7 @@ public class Result implements org.apache.thrift.TBase<Result, Result._Fields>, 
       if (struct.isSetMetadata_json()) {
         optionals.set(3);
       }
-      if (struct.isSetMetamodel()) {
+      if (struct.isSetElements()) {
         optionals.set(4);
       }
       oprot.writeBitSet(optionals, 5);
@@ -939,10 +939,10 @@ public class Result implements org.apache.thrift.TBase<Result, Result._Fields>, 
       if (struct.isSetMetadata_json()) {
         oprot.writeString(struct.metadata_json);
       }
-      if (struct.isSetMetamodel()) {
+      if (struct.isSetElements()) {
         {
-          oprot.writeI32(struct.metamodel.size());
-          for (java.util.Map.Entry<java.lang.String, java.util.List<java.lang.String>> _iter36 : struct.metamodel.entrySet())
+          oprot.writeI32(struct.elements.size());
+          for (java.util.Map.Entry<java.lang.String, java.util.List<java.lang.String>> _iter36 : struct.elements.entrySet())
           {
             oprot.writeString(_iter36.getKey());
             {
@@ -1011,7 +1011,7 @@ public class Result implements org.apache.thrift.TBase<Result, Result._Fields>, 
       if (incoming.get(4)) {
         {
           org.apache.thrift.protocol.TMap _map49 = new org.apache.thrift.protocol.TMap(org.apache.thrift.protocol.TType.STRING, org.apache.thrift.protocol.TType.LIST, iprot.readI32());
-          struct.metamodel = new java.util.HashMap<java.lang.String,java.util.List<java.lang.String>>(2*_map49.size);
+          struct.elements = new java.util.HashMap<java.lang.String,java.util.List<java.lang.String>>(2*_map49.size);
           @org.apache.thrift.annotation.Nullable java.lang.String _key50;
           @org.apache.thrift.annotation.Nullable java.util.List<java.lang.String> _val51;
           for (int _i52 = 0; _i52 < _map49.size; ++_i52)
@@ -1027,10 +1027,10 @@ public class Result implements org.apache.thrift.TBase<Result, Result._Fields>, 
                 _val51.add(_elem54);
               }
             }
-            struct.metamodel.put(_key50, _val51);
+            struct.elements.put(_key50, _val51);
           }
         }
-        struct.setMetamodelIsSet(true);
+        struct.setElementsIsSet(true);
       }
     }
   }

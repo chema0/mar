@@ -3,7 +3,7 @@ package mar.validation.server;
 import mar.analysis.thrift.Result;
 import mar.analysis.thrift.ValidateService;
 import mar.analysis.thrift.ValidationJob;
-import mar.mongodb.beans.Status;
+import mar.models.model.Status;
 import mar.ingestion.IngestedMetadata;
 import mar.sandbox.SandboxClient;
 import mar.validation.AnalysisMetadataDocument;
@@ -55,8 +55,8 @@ public class AnalysisClient extends SandboxClient {
 					e.printStackTrace();
 				}
 			}
-			if (jobResult.isSetMetamodel()) {
-				r.withMetamodel(jobResult.metamodel);
+			if (jobResult.isSetElements()) {
+				r.withElements(jobResult.elements);
 			}
 			return r;
 		};
