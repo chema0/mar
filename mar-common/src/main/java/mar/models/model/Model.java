@@ -27,6 +27,7 @@ public class Model {
 
     @Field("relative_file")
     private String relativeFile;
+
     private String hash;
     private Status status;
 

@@ -47,9 +47,7 @@ public class GenericAnalyser {
             try {
                 if (name != null) {
                     Object value = obj.eGet(name);
-                    System.out.println(elementName + " - " + value);
 
-                    // TODO: ¿tiene sentido almacenar las stats de los elementos nulos?
                     if (value != null) {
                         elements.putIfAbsent(elementName, new ArrayList<String>());
 

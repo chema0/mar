@@ -35,10 +35,12 @@ public class AnalysisResult {
 	@JsonProperty
 	private final String modelId;
 	private final Status status;
+
 	@JsonProperty
 	private Map<String, Integer> stats;
 	private Map<String, List<String>> metadata;
 	private Map<String, List<String>> elements;
+
 	@JsonProperty
 	private String jsonMetadata;
 

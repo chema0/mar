@@ -190,10 +190,13 @@ public class ResourceAnalyser implements AutoCloseable {
 
         Metadata metadata = new Metadata();
         AnalysisMetadataDocument document = null;
+
         if (r.getJsonMetadata() != null) {
             document = AnalysisMetadataDocument.loadFromJSON(r.getJsonMetadata());
+
             metadata.setName(document.getExplicitName());
             metadata.setDescription(document.getDescription());
+            metadata.setUrl(document.getURL());
         }
 
         Map<String, List<String>> elements = r.getElements();

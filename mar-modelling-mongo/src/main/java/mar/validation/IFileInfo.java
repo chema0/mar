@@ -70,7 +70,8 @@ public interface IFileInfo {
 		@Override
 		public File getFullFile() {
 			return file;
-		}		
+		}
+
 	}
 
 }

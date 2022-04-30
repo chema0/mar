@@ -253,7 +253,6 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
 
-
             <!-- Doesn't work in Eclipse. So, we rely on a fallback generate.sh which
                 produces files in source file -->
             <!-- <plugin> <groupId>org.apache.thrift.tools</groupId> <artifactId>maven-thrift-plugin</artifactId>

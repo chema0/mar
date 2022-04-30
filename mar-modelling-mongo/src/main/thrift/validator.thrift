@@ -13,7 +13,7 @@ struct Result {
   2: map<string,i32> stats,
   3: map<string,list<string>> metadata,
   4: optional string metadata_json,
-  5: map<string, list<string>> metamodel
+  5: map<string, list<string>> elements
 }
 
 exception InvalidOperation {
