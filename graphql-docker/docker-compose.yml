@@ -29,7 +29,6 @@ services:
 
 volumes:
   mar_data:
-    external: true
 
 networks:
   services-network:

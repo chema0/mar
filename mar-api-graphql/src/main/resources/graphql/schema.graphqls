@@ -11,13 +11,14 @@ type Query {
 type Metadata {
     name(keyword: String): String!
     description: String
+    url: String!
 }
 
 type Model {
     id: ID!
     type: Type!
-    stats: Stats
     metadata: Metadata
+    stats: Stats
     elements: Elements
 }
 

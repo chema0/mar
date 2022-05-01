@@ -28,6 +28,8 @@ public class GraphQlController {
      public Iterable<Model> models(@Argument Integer first, @Argument Type type, DataFetchingEnvironment env, DataFetchingFieldSelectionSet selectionSet) {
         List<SelectedField> fields = selectionSet.getFields("metamodel/packages");
 
+        Object arg = env.getArgument("filter");
+
         if (fields.size() > 0) {
             SelectedField packages = fields.get(0);
             Map<String, Object> arguments = packages.getArguments();
