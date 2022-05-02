@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ModelRepository extends MongoRepository<Model, ObjectId> {
+public interface IModelRepository extends MongoRepository<Model, ObjectId> {
 
     /* READ methods */
 

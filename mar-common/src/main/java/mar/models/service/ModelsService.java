@@ -5,7 +5,7 @@ import mar.models.model.Metadata;
 import mar.models.model.Model;
 import mar.models.model.Status;
 import mar.models.model.Type;
-import mar.models.repository.ModelRepository;
+import mar.models.repository.IModelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,7 +18,7 @@ import java.util.Map;
 public class ModelsService {
 
     @Autowired
-    private ModelRepository modelRepository;
+    private IModelRepository modelRepository;
 
     public Model insertModel(Model model) {
         return modelRepository.insert(model);
