@@ -27,62 +27,62 @@ interface Stats {
 }
 
 type EcoreStats implements Stats {
-    total(filter: LogicalFilter): Int!
-    EAttribute(filter: LogicalFilter): Int
-    EClass(filter: LogicalFilter): Int
-    EClassifier(filter: LogicalFilter): Int
-    EDataType(filter: LogicalFilter): Int
-    EPackage(filter: LogicalFilter): Int
-    EReference(filter: LogicalFilter): Int
-    EParameter(filter: LogicalFilter): Int
-    ETypedElement(filter: LogicalFilter): Int
+    total(filter: LogicalFilterInput): Int!
+    EAttribute(filter: LogicalFilterInput): Int
+    EClass(filter: LogicalFilterInput): Int
+    EClassifier(filter: LogicalFilterInput): Int
+    EDataType(filter: LogicalFilterInput): Int
+    EPackage(filter: LogicalFilterInput): Int
+    EReference(filter: LogicalFilterInput): Int
+    EParameter(filter: LogicalFilterInput): Int
+    ETypedElement(filter: LogicalFilterInput): Int
 }
 
 # Exclusive UML stats
 type UMLStats implements Stats {
-    total(filter: LogicalFilter): Int!
-    Action(filter: LogicalFilter): Int
-    Activity(filter: LogicalFilter): Int
-    Actor(filter: LogicalFilter): Int
-    Association(filter: LogicalFilter): Int
-    Class(filter: LogicalFilter): Int
-    Classifier(filter: LogicalFilter): Int
-    Component(filter: LogicalFilter): Int
-    Enumeration(filter: LogicalFilter): Int
-    Interaction(filter: LogicalFilter): Int
-    Interface(filter: LogicalFilter): Int
-    Package(filter: LogicalFilter): Int
-    State(filter: LogicalFilter): Int
-    StateMachine(filter: LogicalFilter): Int
-    UseCase(filter: LogicalFilter): Int
+    total(filter: LogicalFilterInput): Int!
+    Action(filter: LogicalFilterInput): Int
+    Activity(filter: LogicalFilterInput): Int
+    Actor(filter: LogicalFilterInput): Int
+    Association(filter: LogicalFilterInput): Int
+    Class(filter: LogicalFilterInput): Int
+    Classifier(filter: LogicalFilterInput): Int
+    Component(filter: LogicalFilterInput): Int
+    Enumeration(filter: LogicalFilterInput): Int
+    Interaction(filter: LogicalFilterInput): Int
+    Interface(filter: LogicalFilterInput): Int
+    Package(filter: LogicalFilterInput): Int
+    State(filter: LogicalFilterInput): Int
+    StateMachine(filter: LogicalFilterInput): Int
+    UseCase(filter: LogicalFilterInput): Int
 }
 
 type EcoreElements {
-    EAttribute(filter: NameFilter): [String]
-    EClass(filter: NameFilter): [String]
-    EClassifier(filter: NameFilter): [String]
-    EDataType(filter: NameFilter): [String]
-    EPackage(filter: NameFilter): [String]
-    EReference(filter: NameFilter): [String]
-    EParameter(filter: NameFilter): [String]
-    ETypedElement(filter: NameFilter): [String]
+    EAttribute(filter: NameFilterInput): [String]
+    EClass(filter: NameFilterInput): [String]
+    EClassifier(filter: NameFilterInput): [String]
+    EDataType(filter: NameFilterInput): [String]
+    EPackage(filter: NameFilterInput): [String]
+    EReference(filter: NameFilterInput): [String]
+    EParameter(filter: NameFilterInput): [String]
+    ETypedElement(filter: NameFilterInput): [String]
 }
 
 type UMLElements {
-    Action(filter: NameFilter): [String]
-    Activity(filter: NameFilter): [String]
-    Actor(filter: NameFilter): [String]
-    Association(filter: NameFilter): [String]
-    Class(filter: NameFilter): [String]
-    Classifier(filter: NameFilter): [String]
-    Component(filter: NameFilter): [String]
-    Enumeration(filter: NameFilter): [String]
-    Interaction(filter: NameFilter): [String]
-    Interface(filter: NameFilter): [String]
-    Package(filter: NameFilter): [String]
-    State(filter: NameFilter): [String]
-    StateMachine(filter: NameFilter): [String]
-    UseCase(filter: NameFilter): [String]
+    Action(filter: NameFilterInput): [String]
+    Activity(filter: NameFilterInput): [String]
+    Actor(filter: NameFilterInput): [String]
+    Association(filter: NameFilterInput): [String]
+    Class(filter: NameFilterInput): [String]
+    Classifier(filter: NameFilterInput): [String]
+    Component(filter: NameFilterInput): [String]
+    Enumeration(filter: NameFilterInput): [String]
+    Interaction(filter: NameFilterInput): [String]
+    Interface(filter: NameFilterInput): [String]
+    Package(filter: NameFilterInput): [String]
+    State(filter: NameFilterInput): [String]
+    StateMachine(filter: NameFilterInput): [String]
+    UseCase(filter: NameFilterInput): [String]
 }
 
 # Enums
@@ -101,20 +101,21 @@ enum Type {
 
 enum Operator {
     EQ
-    GTE
     GT
+    GTE
     LT
     LTE
+    NE
 }
 
 # Input types
 
-input LogicalFilter {
+input LogicalFilterInput {
     op: Operator!
     value: Int!
 }
 
-input NameFilter {
+input NameFilterInput {
     values: [String]!
 }
 
