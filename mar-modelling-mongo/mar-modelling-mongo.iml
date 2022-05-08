@@ -86,13 +86,13 @@
     <orderEntry type="library" name="Maven: com.esotericsoftware:minlog:1.3.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.commons:commons-csv:1.8" level="project" />
     <orderEntry type="library" name="Maven: commons-io:commons-io:2.6" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-data-mongodb:2.6.3" level="project" />
-    <orderEntry type="library" name="Maven: org.mongodb:mongodb-driver-sync:4.4.1" level="project" />
-    <orderEntry type="library" name="Maven: org.mongodb:bson:4.4.1" level="project" />
-    <orderEntry type="library" name="Maven: org.mongodb:mongodb-driver-core:4.4.1" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework.data:spring-data-mongodb:3.3.1" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-tx:5.3.15" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework.data:spring-data-commons:2.6.1" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-data-mongodb:2.6.7" level="project" />
+    <orderEntry type="library" name="Maven: org.mongodb:mongodb-driver-sync:4.4.2" level="project" />
+    <orderEntry type="library" name="Maven: org.mongodb:bson:4.4.2" level="project" />
+    <orderEntry type="library" name="Maven: org.mongodb:mongodb-driver-core:4.4.2" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.data:spring-data-mongodb:3.3.4" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-tx:5.3.19" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.data:spring-data-commons:2.6.4" level="project" />
     <orderEntry type="module" module-name="mar-modelling-pnml" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.ws.commons.axiom:axiom-impl:1.2.22" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.ws.commons.axiom:axiom-api:1.2.22" level="project" />

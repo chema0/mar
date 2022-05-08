@@ -1,9 +1,9 @@
 package mar;
 
 import graphql.schema.DataFetchingFieldSelectionSet;
-import graphql.schema.SelectedField;
 import mar.models.model.LogicalFilter;
 import mar.models.model.Model;
+import mar.models.model.NameFilter;
 import mar.models.model.Type;
 import mar.models.service.ModelsService;
 import mar.utils.FiltersParser;
@@ -12,10 +12,7 @@ import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 public class GraphQlController {
@@ -35,7 +32,13 @@ public class GraphQlController {
 
         List<LogicalFilter> statsFilters = parser.filtersFromStats(selectionSet.getFields("stats/*"));
 
-        // List<NameFilter>
+        List<NameFilter> elementsFilters = parser.filtersFromElements(selectionSet.getFields("elements/*"));
+
+        if (statsFilters.size() > 0 || elementsFilters.size() > 0) {
+            return modelsService.findModelsByTypeWithFilters(first, type,
+                    statsFilters.size() > 0 ? statsFilters : null,
+                    elementsFilters.size() > 0 ? elementsFilters : null);
+        }
 
         return modelsService.findModelsByType(first, type);
     }

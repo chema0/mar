@@ -1,21 +1,36 @@
 package mar.models.service;
 
+import com.mongodb.MongoClientSettings;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoCollection;
 import com.mongodb.lang.Nullable;
-import mar.models.model.Metadata;
-import mar.models.model.Model;
-import mar.models.model.Status;
-import mar.models.model.Type;
+import mar.models.model.*;
 import mar.models.repository.IModelRepository;
+import org.bson.Document;
+import org.bson.codecs.pojo.PojoCodecProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
+import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
+import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
 @Service
 public class ModelsService {
+
+    @Autowired
+    private MongoClient mongoClient;
+
+    @Autowired
+    private MongoTemplate mongoTemplate;
 
     @Autowired
     private IModelRepository modelRepository;
@@ -29,7 +44,7 @@ public class ModelsService {
     }
 
     public List<Model> findModelsExcludingByStatus(Status status) {
-        return modelRepository.findExcludingByStatus(status);
+        return modelRepository.findByStatusNot(status);
     }
 
     public List<Model> findModelsByStatus(Status status) {
@@ -37,12 +52,47 @@ public class ModelsService {
     }
 
     public List<Model> findModelsByHashNotDuplicated(String hash) {
-        return modelRepository.findByHashNotDuplicated(hash);
+        return modelRepository.findByHashAndDuplicateOfIsNull(hash);
     }
 
     public Iterable<Model> findModelsByType(int limit, Type type) {
+        // FIXME: check this
         Pageable pageable = PageRequest.of(1, limit);
         return modelRepository.findByType(type, pageable);
+    }
+
+    public Iterable<Model> findModelsByTypeWithFilters(int limit, Type type,
+                                                       List<LogicalFilter> logicalFilters, List<NameFilter> nameFilters) {
+
+        Document query = new Document();
+
+        if (type != null) {
+            query.append("type", type.name());
+            // query.addCriteria(Criteria.where("type").is(type));
+        }
+
+        if (logicalFilters != null) {
+            query.append("$and",
+                    logicalFilters.stream()
+                            .map(logicalFilter -> new Document("stats." + logicalFilter.getElement(),
+                                    new Document("$" + logicalFilter.getOperator(), logicalFilter.getValue())))
+                            .collect(Collectors.toList()));
+        }
+
+        if (nameFilters != null) {
+            query.append("$and",
+                    nameFilters.stream()
+                            .map(nameFilter -> new Document("elements." + nameFilter.getElement(),
+                                    new Document("$in", nameFilter.getNames())))
+                            .collect(Collectors.toList()));
+        }
+
+        // Access to Mongo and filter the documents using the Mongo cursor
+
+        MongoCollection<Model> collection = mongoTemplate.getCollection("models")
+                .withDocumentClass(Model.class);
+
+        return collection.find(query).limit(limit);
     }
 
     @Nullable

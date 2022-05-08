@@ -26,7 +26,14 @@ public interface IModelRepository extends MongoRepository<Model, ObjectId> {
     Model findByModelId(String modelId);
 
     /**
-     * Retrieve all <code>Model</code>s from the data store by type.
+     * Retrieve all <code>Model</code>s from the data store paginated.
+     *
+     * @return a <code>Page</code> of <code>Model</code>s
+     */
+    Page<Model> findModelsBy(Pageable pageable);
+
+    /**
+     * Retrieve all <code>Model</code>s from the data store by type and paginated.
      *
      * @param type the type to search for
      * @param pageable the pagination information
@@ -40,8 +47,7 @@ public interface IModelRepository extends MongoRepository<Model, ObjectId> {
      * @param status the status to exclude by
      * @return a <code>List</code> of <code>Model</code>s
      */
-    @Query("{ status: { $ne: 'NOT_PROCESSED' } }")
-    List<Model> findExcludingByStatus(Status status);
+    List<Model> findByStatusNot(Status status);
 
     /**
      * Retrieve all <code>Model</code>s from the data store by status.
@@ -57,8 +63,7 @@ public interface IModelRepository extends MongoRepository<Model, ObjectId> {
      * @param hash the hash to search for
      * @return a <code>List</code> of <code>Model</code>s
      */
-    @Query("{ 'hash': ?0, 'duplicate_of': null }")
-    List<Model> findByHashNotDuplicated(String hash);
+    List<Model> findByHashAndDuplicateOfIsNull(String hash);
 
     /* UPDATE methods */
 
@@ -69,6 +74,7 @@ public interface IModelRepository extends MongoRepository<Model, ObjectId> {
      *
      * @param status the status to delete by
      * @return a <code>List</code> of <code>Model</code>s
+     *
      */
     List<Model> deleteByStatus(Status status);
 }

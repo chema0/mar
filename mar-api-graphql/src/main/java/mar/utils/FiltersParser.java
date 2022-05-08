@@ -1,7 +1,11 @@
 package mar.utils;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import graphql.schema.SelectedField;
 import mar.models.model.LogicalFilter;
+import mar.models.model.NameFilter;
+import mar.schema.inputs.LogicalFilterInput;
+import mar.schema.inputs.NameFilterInput;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -11,6 +15,8 @@ import java.util.Map;
 public class FiltersParser {
 
     private static FiltersParser instance;
+
+    private final ObjectMapper mapper = new ObjectMapper();
 
     public static FiltersParser getInstance() {
         if (instance == null) {
@@ -22,20 +28,38 @@ public class FiltersParser {
 
     public List<LogicalFilter> filtersFromStats(List<SelectedField> fields) {
 
-        List<LogicalFilter> logicalFilters = new ArrayList<>();
+        List<LogicalFilter> filters = new ArrayList<>();
 
         fields.forEach(f -> {
             Map<String, Object> args = f.getArguments();
 
             if (args.containsKey("filter")) {
-                LinkedHashMap input = (LinkedHashMap) args.get("filter");
+                LogicalFilterInput input = mapper.convertValue(args.get("filter"), LogicalFilterInput.class);
 
-                logicalFilters.add(new LogicalFilter(f.getName(),
-                        "$" + input.get("op").toString().toLowerCase(), (Integer) input.get("value")));
+                filters.add(new LogicalFilter(f.getName(),
+                        input.getOp().name().toLowerCase(), input.getValue()));
             }
         });
 
-        return logicalFilters;
+        return filters;
+    }
+
+    public List<NameFilter> filtersFromElements(List<SelectedField> fields) {
+
+        List<NameFilter> filters = new ArrayList<>();
+
+        fields.forEach(f -> {
+            Map<String, Object> args = f.getArguments();
+
+            if (args.containsKey("filter")) {
+                NameFilterInput input = mapper.convertValue(args.get("filter"), NameFilterInput.class);
+
+                filters.add(new NameFilter(f.getName(),
+                        input.getValues()));
+            }
+        });
+
+        return filters;
     }
 
 }

@@ -16,6 +16,7 @@ type Metadata {
 
 type Model {
     id: ID!
+    modelId: ID!
     type: Type!
     metadata: Metadata
     stats: Stats
