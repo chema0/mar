@@ -5,7 +5,6 @@ import mar.models.model.Model;
 import mar.models.model.Status;
 import mar.models.model.Type;
 import mar.models.service.ModelsService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 

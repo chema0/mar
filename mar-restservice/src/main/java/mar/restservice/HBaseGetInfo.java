@@ -16,7 +16,7 @@ import org.apache.hadoop.hbase.util.Bytes;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 import mar.restservice.model.IModelResult;
-import mar.utils.Utils;
+import mar.api.utils.Utils;
 import mar.validation.AnalysisMetadataDocument;
 
 /**

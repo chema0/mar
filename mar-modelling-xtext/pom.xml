@@ -61,6 +61,8 @@
 			<groupId>elysium</groupId>
 			<artifactId>elysium</artifactId>
 			<version>0.6.0</version>
+			<scope>system</scope>
+			<systemPath>${REPO_MAR}/thirdparty/lilypond/org.elysium_0.6.0.201805301416.jar</systemPath>
 		</dependency>
 
 		<!-- Needed for Elysium for Lilypond -->
