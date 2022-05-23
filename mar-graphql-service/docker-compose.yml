@@ -1,4 +1,3 @@
-version: "3.8"
 services:
   mongo_db:
     restart: always
@@ -16,8 +15,8 @@ services:
     depends_on:
       - mongo_db
     build:
-      context: "${REPO_MAR}/mar-api-graphql"
-      dockerfile: "${REPO_MAR}/graphql-docker/Dockerfile"
+      context: .
+      dockerfile: Dockerfile
     ports:
       - 8080:8080
     links:

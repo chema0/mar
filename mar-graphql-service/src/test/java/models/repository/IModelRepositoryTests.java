@@ -1,4 +1,4 @@
-package models;
+package models.repository;
 
 import mar.GraphqlAPIApplication;
 import mar.models.model.Model;

@@ -21,9 +21,6 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class AnalysisDB implements Closeable {
 
-    @Nonnull
-    private Connection connection;
-
     ModelsService modelsService;
 
     @Nonnull
@@ -40,16 +37,8 @@ public class AnalysisDB implements Closeable {
 
     @Override
     // TODO: check
-    public void close() throws IOException {
-        /* if (connection != null) {
-            try {
-                if (!connection.getAutoCommit())
-                    connection.commit();
-                connection.close();
-            } catch (SQLException e) {
-                throw new IOException(e);
-            }
-        } */
+    public void close() {
+
     }
 
     @CheckForNull
@@ -93,7 +82,6 @@ public class AnalysisDB implements Closeable {
         modelsService.updateModelProperties(modelId, stats, elements, metamodel);
     }
 
-    // TODO: check to use instead of mongo
     public static class AnalysisModel {
         @Nonnull
         private String id;
