@@ -17,7 +17,8 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.13" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-core:1.3" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-core:2.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest:2.2" level="project" />
     <orderEntry type="module" module-name="mar-common" />
     <orderEntry type="library" name="Maven: com.google.guava:guava:30.0-jre" level="project" />
     <orderEntry type="library" name="Maven: com.google.guava:failureaccess:1.0.1" level="project" />
@@ -33,7 +34,7 @@
     <orderEntry type="library" name="Maven: org.apache.opennlp:opennlp-tools:1.9.2" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.uml2:org.eclipse.uml2.types:2.0.0.v20140910-1354" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.uml2:org.eclipse.uml2.uml:5.0.1.v20140910-1354" level="project" />
-    <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.8.6" level="project" />
+    <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.9.0" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.uml2:org.eclipse.uml2.common:2.0.1.v20140910-1354" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.emf:org.eclipse.emf.ecore.xmi:2.16.0" level="project" />
     <orderEntry type="library" name="Maven: com.esotericsoftware:kryo:4.0.2" level="project" />
@@ -88,7 +89,7 @@
     <orderEntry type="module-library">
       <library name="Maven: elysium:elysium:0.6.0">
         <CLASSES>
-          <root url="jar://${project.parent.basedir}/thirdparty/lilypond/org.elysium_0.6.0.201805301416.jar!/" />
+          <root url="jar://${REPO_MAR}/thirdparty/lilypond/org.elysium_0.6.0.201805301416.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

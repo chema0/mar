@@ -128,7 +128,42 @@ services:
     ports:
       - 127.0.0.1:9090:9090
 
+  # Extends with GraphQL services
+
+  mongodb:
+    restart: always
+    image: mongo:5.0.6
+    ports:
+      - 27017:27017
+    volumes:
+      - "mongo_data:/data/mongodb"
+    networks:
+      mar-network:
+        aliases:
+          - mongo_db
+
+  graphql-service:
+    depends_on:
+      - mongodb
+    build:
+      context: .
+      dockerfile: graphql.Dockerfile
+    ports:
+      - 8080:8080
+    links:
+      - mongodb
+    networks:
+      mar-network:
+        aliases:
+          - graphql-api
+
 volumes:
   hadoop_namenode:
   hadoop_datanode:
   hadoop_historyserver:
+  mongo_data:
+
+networks:
+  mar-network:
+    name: mar-network
+    driver: bridge

@@ -1,0 +1,14 @@
+spring:
+  data:
+    mongodb:
+      port: 27017
+
+  graphql:
+    websocket:
+      path: /graphql
+    schema:
+      printer:
+        enabled: true
+    graphiql:
+      enabled: true
+      path: /graphiql

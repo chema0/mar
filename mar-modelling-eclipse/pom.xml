@@ -59,6 +59,7 @@
 			<artifactId>archimate-jdom</artifactId>
 			<version>4.2.0</version>
 			<scope>system</scope>
+<!--			<systemPath>${REPO_MAR}/thirdparty/archimate/com.archimatetool.jdom.jar</systemPath>-->
 			<systemPath>${REPO_MAR}/thirdparty/archimate/com.archimatetool.jdom.jar</systemPath>
 		</dependency>
 
