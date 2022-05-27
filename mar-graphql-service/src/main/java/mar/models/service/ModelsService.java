@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
@@ -55,14 +56,12 @@ public class ModelsService {
         return modelRepository.findByType(type, Pageable.ofSize(limit));
     }
 
-    public Iterable<Model> findModelsByTypeWithFilters(int limit, Type type,
-                                                       List<LogicalFilter> logicalFilters, List<NameFilter> nameFilters) {
+    public Iterable<Model> findModelsByTypeWithFilters(int limit, Type type, List<LogicalFilter> logicalFilters, List<NameFilter> nameFilters) {
 
         Document query = new Document();
 
         if (type != null) {
             query.append("type", type.name());
-            // query.addCriteria(Criteria.where("type").is(type));
         }
 
         if (logicalFilters != null) {

@@ -1,6 +1,7 @@
 package models.repository;
 
 import mar.GraphqlAPIApplication;
+import mar.models.model.Metadata;
 import mar.models.model.Model;
 import mar.models.model.Status;
 import mar.models.model.Type;
@@ -14,7 +15,7 @@ import org.springframework.test.context.ContextConfiguration;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ContextConfiguration(classes = GraphqlAPIApplication.class)
 @DataMongoTest
@@ -64,6 +65,9 @@ public class IModelRepositoryTests {
                 .hash(hash)
                 .status(Status.VALID)
                 .duplicateOf(null)
+                .metadata(
+                        new Metadata("twitter_diagram", "Domain diagram of Twitter.", "")
+                )
                 .build();
 
         repository.insert(model);
@@ -152,6 +156,32 @@ public class IModelRepositoryTests {
         assert model != null;
 
         assertEquals(model.getHash(), hash);
+    }
+
+    @Test
+    void findByNameContainsTest() {
+        String keyword = "twitter";
+
+        Model model = repository.findByNameContains(keyword)
+                .stream()
+                .findFirst()
+                .orElse(null);
+
+        assert model != null;
+
+        assertTrue(model.getMetadata().getName().contains(keyword));
+    }
+
+    @Test
+    void findByNameNotContainsTest() {
+        String keyword = "whatsapp";
+
+        Model model = repository.findByNameContains(keyword)
+                .stream()
+                .findFirst()
+                .orElse(null);
+
+        assertNull(model);
     }
 
     @Test

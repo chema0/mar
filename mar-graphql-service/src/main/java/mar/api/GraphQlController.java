@@ -1,6 +1,7 @@
 package mar.api;
 
 import graphql.schema.DataFetchingFieldSelectionSet;
+import graphql.schema.SelectedField;
 import mar.models.model.LogicalFilter;
 import mar.models.model.Model;
 import mar.models.model.NameFilter;
@@ -29,6 +30,19 @@ public class GraphQlController {
 
     @QueryMapping
     public Iterable<Model> models(@Argument Integer first, @Argument Type type, DataFetchingFieldSelectionSet selectionSet) {
+
+        // String keyword = null;
+
+        // if (selectionSet.contains("metadata/name")) {
+            // Object value = selectionSet.getFields("metadata/name")
+                    // .get(0)
+                    // .getArguments()
+                    // .get("keyword");
+
+            // if (value != null) {
+                // keyword = value.toString();
+            // }
+        // }
 
         List<LogicalFilter> statsFilters = parser.filtersFromStats(selectionSet.getFields("stats/*"));
 

@@ -31,8 +31,6 @@ public class GenericAnalyser {
 
     public AnalysisData getAdditionalAnalysis(Resource r, ToIntFunction<Resource> validate, Consumer<Map<String, List<Smell>>> detectSmells) {
 
-        // TODO: ¿tiene sentido almacenar esto como una lista de Strings, o más bien
-        // como un conjunto para evitar duplicados?
         Map<String, List<String>> elements = new HashMap<>();
 
         TreeIterator<EObject> it = r.getAllContents();
@@ -44,21 +42,17 @@ public class GenericAnalyser {
 
             EStructuralFeature name = element.getEStructuralFeature("name");
 
-            try {
-                if (name != null) {
-                    Object value = obj.eGet(name);
+            if (name != null) {
+                Object value = obj.eGet(name);
 
-                    if (value != null) {
-                        elements.putIfAbsent(elementName, new ArrayList<String>());
+                if (value != null) {
+                    elements.putIfAbsent(elementName, new ArrayList<String>());
 
-                        List<String> values = elements.get(elementName);
-                        values.add((String) value);
+                    List<String> values = elements.get(elementName);
+                    values.add((String) value);
 
-                        elements.put(elementName, values);
-                    }
+                    elements.put(elementName, values);
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
             }
         }
 

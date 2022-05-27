@@ -8,7 +8,8 @@ type Query {
 }
 
 type Metadata {
-    name(keyword: String): String!
+    # name(keyword: String): String!
+    name: String!
     description: String
     url: String!
 }

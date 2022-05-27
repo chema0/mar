@@ -7,6 +7,7 @@ import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 
@@ -66,7 +67,14 @@ public interface IModelRepository extends MongoRepository<Model, ObjectId> {
      */
     List<Model> findByHashAndDuplicateOfIsNull(String hash);
 
-    /* UPDATE methods */
+    /**
+     * Retrieve all <code>Model</code>s from the data store by its name.
+     *
+     * @param keyword to be contained in the name of the model
+     * @return a <code>List</code> of <code>Model</code>s
+     */
+    @Query(value="{ 'metadata.name': { $regex: '?0' } }")
+    List<Model> findByNameContains(String keyword);
 
     /* DELETE methods */
 
