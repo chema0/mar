@@ -63,4 +63,5 @@ public class MongoConfiguration {
     MongoTemplate mongoTemplate() {
         return new MongoTemplate(mongoClient(), DATABASE);
     }
+
 }

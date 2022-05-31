@@ -1,6 +1,7 @@
 package mar.api.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import graphql.com.google.common.collect.Iterables;
 import graphql.schema.SelectedField;
 import mar.models.model.LogicalFilter;
 import mar.models.model.NameFilter;
@@ -8,6 +9,7 @@ import mar.api.inputs.LogicalFilterInput;
 import mar.api.inputs.NameFilterInput;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,36 +27,50 @@ public class FiltersParser {
         return instance;
     }
 
-    public List<LogicalFilter> filtersFromStats(List<SelectedField> fields) {
+    public Map<String, List<LogicalFilter>> filtersFromStats(List<SelectedField> fields) {
 
-        List<LogicalFilter> filters = new ArrayList<>();
+        Map<String, List<LogicalFilter>> filters = new HashMap<>();
 
         fields.forEach(f -> {
             Map<String, Object> args = f.getArguments();
 
+            String[] splittedField = f.getFullyQualifiedName().split("\\.");
+            String type = splittedField[1];
+
             if (args.containsKey("filter")) {
                 LogicalFilterInput input = mapper.convertValue(args.get("filter"), LogicalFilterInput.class);
 
-                filters.add(new LogicalFilter(f.getName(),
-                        input.getOp().name().toLowerCase(), input.getValue()));
+                filters.putIfAbsent(type, new ArrayList<>());
+
+                List<LogicalFilter> values = filters.get(type);
+                values.add(new LogicalFilter(f.getName(), input.getOp().name().toLowerCase(), input.getValue()));
+
+                filters.put(type, values);
             }
         });
 
         return filters;
     }
 
-    public List<NameFilter> filtersFromElements(List<SelectedField> fields) {
+    public Map<String, List<NameFilter>> filtersFromElements(List<SelectedField> fields) {
 
-        List<NameFilter> filters = new ArrayList<>();
+        Map<String, List<NameFilter>> filters = new HashMap<>();
 
         fields.forEach(f -> {
             Map<String, Object> args = f.getArguments();
 
+            String[] splittedField = f.getFullyQualifiedName().split("\\.");
+            String type = splittedField[1];
+
             if (args.containsKey("filter")) {
                 NameFilterInput input = mapper.convertValue(args.get("filter"), NameFilterInput.class);
 
-                filters.add(new NameFilter(f.getName(),
-                        input.getValues()));
+                filters.putIfAbsent(type, new ArrayList<>());
+
+                List<NameFilter> values = filters.get(type);
+                values.add(new NameFilter(f.getName(), input.getValues()));
+
+                filters.put(type, values);
             }
         });
 

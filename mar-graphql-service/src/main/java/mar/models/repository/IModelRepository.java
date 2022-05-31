@@ -1,8 +1,6 @@
 package mar.models.repository;
 
-import mar.models.model.Model;
-import mar.models.model.Status;
-import mar.models.model.Type;
+import mar.models.model.*;
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

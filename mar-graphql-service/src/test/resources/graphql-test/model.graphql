@@ -1,0 +1,7 @@
+query Model($id: String!) {
+    model(id: $id) {
+        id
+        modelId
+        type
+    }
+}

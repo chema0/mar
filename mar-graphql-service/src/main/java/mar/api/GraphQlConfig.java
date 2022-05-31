@@ -16,9 +16,9 @@ public class GraphQlConfig {
     public RuntimeWiringConfigurer runtimeWiringConfigurer() {
         return wiringBuilder -> wiringBuilder
                 .type("Stats",
-                        typeWiring -> typeWiring.typeResolver(typeResolvers.InterfaceResolver()))
+                        typeWiring -> typeWiring.typeResolver(typeResolvers.interfaceResolver()))
                 .type("Elements",
-                        typeWiring -> typeWiring.typeResolver(typeResolvers.InterfaceResolver()));
+                        typeWiring -> typeWiring.typeResolver(typeResolvers.interfaceResolver()));
     }
 }
 

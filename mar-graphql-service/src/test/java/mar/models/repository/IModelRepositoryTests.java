@@ -1,4 +1,4 @@
-package models.repository;
+package mar.models.repository;
 
 import mar.GraphqlAPIApplication;
 import mar.models.model.Metadata;

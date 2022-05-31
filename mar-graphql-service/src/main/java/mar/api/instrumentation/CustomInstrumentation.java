@@ -16,12 +16,15 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class CustomInstrumentation extends SimpleInstrumentation {
 
-    // FIXME: handle queryies with no operation name
-
     @Override
     public InstrumentationContext<ExecutionResult> beginExecution(InstrumentationExecutionParameters parameters) {
         // Ignoring introspection queries, not relevant
         String operation = parameters.getOperation();
+
+        if (operation == null) {
+            return null;
+        }
+
         final boolean logging = !operation.equals("IntrospectionQuery");
 
         long startNanos = System.nanoTime();

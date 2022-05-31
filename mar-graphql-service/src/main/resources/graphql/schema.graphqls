@@ -9,9 +9,9 @@ type Query {
 
 type Metadata {
     # name(keyword: String): String!
-    name: String!
+    name: String
     description: String
-    url: String!
+    url: String
 }
 
 type Model {
@@ -24,7 +24,7 @@ type Model {
 }
 
 interface Stats {
-    total: Int!
+    total(filter: LogicalFilterInput): Int!
 }
 
 union Elements = EcoreElements | UMLElements

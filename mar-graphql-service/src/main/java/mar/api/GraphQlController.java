@@ -14,6 +14,7 @@ import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class GraphQlController {
@@ -34,19 +35,19 @@ public class GraphQlController {
         // String keyword = null;
 
         // if (selectionSet.contains("metadata/name")) {
-            // Object value = selectionSet.getFields("metadata/name")
-                    // .get(0)
-                    // .getArguments()
-                    // .get("keyword");
+        // Object value = selectionSet.getFields("metadata/name")
+        // .get(0)
+        // .getArguments()
+        // .get("keyword");
 
-            // if (value != null) {
-                // keyword = value.toString();
-            // }
+        // if (value != null) {
+        // keyword = value.toString();
+        // }
         // }
 
-        List<LogicalFilter> statsFilters = parser.filtersFromStats(selectionSet.getFields("stats/*"));
+        Map<String, List<LogicalFilter>> statsFilters = parser.filtersFromStats(selectionSet.getFields("stats/*"));
 
-        List<NameFilter> elementsFilters = parser.filtersFromElements(selectionSet.getFields("elements/*"));
+        Map<String, List<NameFilter>> elementsFilters = parser.filtersFromElements(selectionSet.getFields("elements/*"));
 
         boolean isFiltering = statsFilters.size() > 0 || elementsFilters.size() > 0;
 

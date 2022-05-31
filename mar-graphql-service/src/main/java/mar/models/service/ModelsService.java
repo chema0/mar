@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
@@ -56,7 +55,8 @@ public class ModelsService {
         return modelRepository.findByType(type, Pageable.ofSize(limit));
     }
 
-    public Iterable<Model> findModelsByTypeWithFilters(int limit, Type type, List<LogicalFilter> logicalFilters, List<NameFilter> nameFilters) {
+    public Iterable<Model> findModelsByTypeWithFilters(int limit, Type type, Map<String, List<LogicalFilter>> logicalFilters,
+                                                       Map<String, List<NameFilter>> nameFilters) {
 
         Document query = new Document();
 
@@ -65,19 +65,25 @@ public class ModelsService {
         }
 
         if (logicalFilters != null) {
-            query.append("$and",
-                    logicalFilters.stream()
+            query.append("$or", logicalFilters.keySet()
+                    .stream()
+                    .map(k -> new Document("$and", logicalFilters.get(k)
+                            .stream()
                             .map(logicalFilter -> new Document("stats." + logicalFilter.getElement(),
                                     new Document("$" + logicalFilter.getOperator(), logicalFilter.getValue())))
-                            .collect(Collectors.toList()));
+                            .collect(Collectors.toList())))
+                    .collect(Collectors.toList()));
         }
 
         if (nameFilters != null) {
-            query.append("$and",
-                    nameFilters.stream()
+            query.append("$or", nameFilters.keySet()
+                    .stream()
+                    .map(k -> new Document("$and", nameFilters.get(k)
+                            .stream()
                             .map(nameFilter -> new Document("elements." + nameFilter.getElement(),
                                     new Document("$in", nameFilter.getNames())))
-                            .collect(Collectors.toList()));
+                            .collect(Collectors.toList())))
+                    .collect(Collectors.toList()));
         }
 
         // Access to Mongo and filter the documents using the Mongo cursor

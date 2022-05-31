@@ -1,0 +1,9 @@
+query Models($type: Type){
+    models(type: $type) {
+        modelId
+        type
+        stats {
+            total
+        }
+    }
+}
