@@ -1,7 +1,9 @@
 package mar.models.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import mar.GraphqlAPIApplication;
 import mar.api.GraphQlController;
+import mar.api.inputs.LogicalFilterInput;
 import mar.models.model.Metadata;
 import mar.models.model.Model;
 import mar.models.model.Type;
@@ -32,6 +34,8 @@ public class GraphQlControllerTest {
 
     @MockBean
     private MappingMongoConverter mappingMongoConverter;
+
+    private final ObjectMapper mapper = new ObjectMapper();
 
     private List<Model> models;
 
@@ -70,18 +74,13 @@ public class GraphQlControllerTest {
                 .execute()
                 .path("data/models")
                 .entity(List.class)
-                .matches(list -> list.size() == 10);
-    }
-
-    @Test
-    void modelsWrongFieldErrorTest() {
-        given(modelsService.findAllModels(10))
-                .willReturn(Collections.checkedList(models, Model.class));
-
-        this.graphQlTester.documentName("mar/models")
-                .execute()
-                .errors()
-                .satisfy(responseErrors -> responseErrors.forEach(System.out::println));
+                .matches(list -> list.size() == 10)
+                .matches(list ->
+                        list.stream().allMatch(o -> {
+                            Model model = mapper.convertValue(o, Model.class);
+                            return model.getType().equals(Type.UML);
+                        })
+                );
     }
 
 }
